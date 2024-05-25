@@ -7,6 +7,9 @@ const swaggerDocument = require("../docs/swagger.json");
     const authRouter = require("./authRouter");
 */
 
+router.use("/api-docs", swaggerUI.serve);
+router.use("/api-docs", swaggerUI.setup(swaggerDocument));
+
 /*
     Define other routes here, for example:
     router.use("/api/v1/auth", authRouter);
