@@ -55,8 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Airports",
-      createdAt: "created_at",
-      updatedAt: "updated_at",
+      createdAt: "created_at"
     }
   );
   return Airports;
