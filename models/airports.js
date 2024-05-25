@@ -13,13 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "arrival_airport_id",
         },
-        as: "arrivalAirport",
       });
       Airports.hasMany(models.Flights, {
         foreignKey: {
           name: "departure_airport_id",
         },
-        as: "departureAirport",
       });
     }
   }
@@ -57,7 +55,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Airports",
-      underscored: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
   return Airports;
