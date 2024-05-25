@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const flight = require("../controllers/FlightController")
+const flight = require("../controllers/flightController")
 
 // route untuk menambah data
 router.post("/create", flight.createFlight);
