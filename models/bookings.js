@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Bookings.belongsTo(models.Users, {
-        foreignKey: {
-          name: "user_id",
-        },
-      });
       Bookings.belongsTo(models.Flights, {
         foreignKey: {
           name: "flight_id",
@@ -24,9 +19,16 @@ module.exports = (sequelize, DataTypes) => {
           name: "discount_id",
         },
       });
-      Bookings.belongsToMany(models.Passengers, {
-        through: models.BookingDetails,
-        foreignKey: "booking_id",
+      Bookings.belongsTo(models.Users, {
+        foreignKey: {
+          name: "user_id",
+        },
+      });
+
+      Bookings.hasMany(models.Booking_Details, {
+        foreignKey: {
+          name: "booking_id",
+        },
       });
     }
   }

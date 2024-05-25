@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Booking_Details extends Model {
+  class Seats extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,47 +9,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Booking_Details.belongsTo(models.Seats, {
+      Seats.belongsTo(models.Flights, {
+        foreignKey: {
+          name: "flight_id",
+        },
+      });
+
+      Seats.hasMany(models.Booking_Details, {
         foreignKey: {
           name: "seat_id",
         },
       });
-      Booking_Details.belongsTo(models.Bookings, {
-        foreignKey: {
-          name: "booking_id",
-        },
-      });
-      Booking_Details.belongsTo(models.Passengers, {
-        foreignKey: {
-          name: "passenger_id",
-        },
-      });
     }
   }
-  Booking_Details.init(
+  Seats.init(
     {
-      seat_id: {
+      seat_row: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      seat_column: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      booking_id: {
+      seat_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      flight_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      passenger_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      price: {
-        type: DataTypes.DECIMAL,
+      seat_status: {
+        type: DataTypes.ENUM(["available", "unavailable", "locked"]),
+        defaultValue: "available",
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Booking_Details",
+      modelName: "Seats",
       underscored: true,
     }
   );
-  return Booking_Details;
+  return Seats;
 };
