@@ -40,7 +40,7 @@ module.exports = {
         allowNull: false,
       },
       reset_password_token: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       reset_password_resend_at: {
