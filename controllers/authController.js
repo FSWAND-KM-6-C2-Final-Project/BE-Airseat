@@ -191,7 +191,23 @@ const login = async (req, res, next) => {
   }
 };
 
+const checkUser = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: "Success",
+      message: "User data successfully retrieved",
+      requestAt: req.requestTime,
+      data: {
+        user: req.user,
+      },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
 module.exports = {
   register,
   login,
+  checkUser,
 };
