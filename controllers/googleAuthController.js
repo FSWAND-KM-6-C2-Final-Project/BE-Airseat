@@ -1,7 +1,7 @@
 const ApiError = require("../utils/apiError");
 const { google } = require("googleapis");
-const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
+const createToken = require("../utils/createToken");
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -9,22 +9,12 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_REDIRECT_URL
 );
 
-function createToken(user) {
-  const payload = {
-    id: user.id,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-  };
-
-  return jwt.sign(payload, process.env.JWT_SECRET);
-}
-
 const getGoogleURL = async (req, res, next) => {
   try {
     const scopes = [
       "https://www.googleapis.com/auth/userinfo.profile",
       "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/user.phonenumbers.read",
     ];
 
     const url = await oauth2Client.generateAuthUrl({
@@ -38,6 +28,26 @@ const getGoogleURL = async (req, res, next) => {
       requestAt: req.requestTime,
       data: {
         url,
+      },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const getGoogleToken = async (req, res, next) => {
+  try {
+    const { code } = req.query;
+
+    if (!code) {
+      return next(new ApiError("Unexpected error, please try again", 400));
+    }
+
+    res.status(200).json({
+      status: "Success",
+      message: "Succesfully get google token",
+      data: {
+        token: code,
       },
     });
   } catch (err) {
@@ -68,7 +78,7 @@ const registerOrLoginViaGoogle = async (req, res, next) => {
 
     if (isGeneralUserExist) {
       return next(
-        new ApiError("User is already registered with another method", 400)
+        new ApiError("Email is already registered using another method", 400)
       );
     }
 
@@ -100,7 +110,9 @@ const registerOrLoginViaGoogle = async (req, res, next) => {
       });
 
       if (!user) {
-        return next(new ApiError("Unexpected Error", 400));
+        return next(
+          new ApiError("Unexpected error, user account is not registered!", 400)
+        );
       }
 
       token = createToken({
@@ -123,5 +135,6 @@ const registerOrLoginViaGoogle = async (req, res, next) => {
 
 module.exports = {
   getGoogleURL,
+  getGoogleToken,
   registerOrLoginViaGoogle,
 };
