@@ -20,15 +20,7 @@ module.exports = async (req, res, next) => {
         id: payload.id,
         email: payload.email,
       },
-      attributes: [
-        "id",
-        "google_id",
-        "first_name",
-        "last_name",
-        "email",
-        "phone_number",
-        "auth_type",
-      ],
+      attributes: ["id", "full_name", "email", "phone_number", "user_status"],
     });
 
     req.user = user;
