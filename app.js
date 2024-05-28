@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const dayjs = require("dayjs");
 
 const errorController = require("./controllers/errorController");
 const router = require("./routes");
@@ -14,7 +15,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  req.requestTime = new Date();
+  req.requestTime = dayjs().format();
   next();
 });
 

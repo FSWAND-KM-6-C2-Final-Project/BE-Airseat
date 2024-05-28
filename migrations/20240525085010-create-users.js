@@ -9,15 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      google_id: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      first_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      last_name: {
+      full_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -34,13 +26,20 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      auth_type: {
-        type: Sequelize.ENUM(["google", "general"]),
-        defaultValue: "general",
-        allowNull: false,
+      verification_user_token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      verification_user_resend_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      verification_user_expired_at: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
       reset_password_token: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       reset_password_resend_at: {
@@ -50,6 +49,11 @@ module.exports = {
       reset_password_expired_at: {
         type: Sequelize.DATE,
         allowNull: true,
+      },
+      user_status: {
+        type: Sequelize.ENUM(["verified", "unverified"]),
+        allowNull: false,
+        defaultValue: "unverified",
       },
       created_at: {
         allowNull: false,
