@@ -7,21 +7,165 @@ dayjs.extend(localizedFormat);
 
 const bcrypt = require("bcrypt");
 
-const createResetToken = async (req, res, next) => {
+const createResetPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
+
+    if (!email || email === null || email === "") {
+      return next(new ApiError("Email is required", 400));
+    }
 
     const user = await Users.findOne({
       where: {
         email: email,
-        auth_type: "general",
       },
     });
 
     if (!user) {
+      return next(new ApiError("User is not exist", 400));
+    }
+
+    if (user.user_status === "unverified") {
       return next(
-        new ApiError("User is not exist or logged in using another method", 400)
+        new ApiError("User is not verified, please verify your account", 400)
       );
+    }
+
+    if (
+      user.reset_password_token &&
+      user.reset_password_token !== "" &&
+      user.reset_password_token !== null &&
+      user.reset_password_resend_at &&
+      user.reset_password_resend_at !== "" &&
+      user.reset_password_resend_at !== null &&
+      user.reset_password_expired_at &&
+      user.reset_password_expired_at !== "" &&
+      user.reset_password_expired_at !== null
+    ) {
+      return next(
+        new ApiError(
+          "Your reset password is exist, if your OTP is expired please resend it",
+          400
+        )
+      );
+    }
+
+    const token = Math.floor(Math.random() * 900000) + 100000;
+
+    const nowTime = dayjs();
+    const resend_at = nowTime.add(1, "minute").format();
+    const expired_at = nowTime.add(1, "hour").format();
+
+    const createResetPasswordToken = await Users.update(
+      {
+        reset_password_token: token,
+        reset_password_resend_at: resend_at,
+        reset_password_expired_at: expired_at,
+      },
+      {
+        where: {
+          id: user.id,
+          email: email,
+        },
+      }
+    );
+
+    if (!createResetPasswordToken) {
+      return next(
+        new ApiError("Unexpected Error!, failed to create reset token", 400)
+      );
+    }
+
+    const recipient_name = `${user.first_name} ${user.last_name}`;
+    const subject = "[No Reply] - Reset Password OTP";
+    const html_text = `
+    <p>Hello ${recipient_name},</p>
+    <p>We received a request to reset the password for your account. If you did not request this, please ignore this email.</p>
+    <p>
+        Your OTP :
+        <b>${token}</b>
+    </p>
+    <p>For the security of your account, please ensure that your new password is strong and unique, and different from your previous password.</p>
+    <p>Thank you for your attention.</p>
+    <p>Best regards,</p>
+    <br>
+    <p>Airseat</p>
+    `;
+    const plain_text = `
+        Hello ${recipient_name},
+
+        We received a request to reset the password for your account. If you did not request this, please ignore this email.
+
+        Your OTP : ${token}
+
+        For the security of your account, please ensure that your new password is strong and unique, and different from your previous password.
+
+        Thank you for your attention.
+
+        Best regards,
+
+
+        Airseat
+      `;
+
+    const sendResetOTP = await sendEmail(email, subject, plain_text, html_text);
+
+    if (!sendResetOTP) {
+      return next(new ApiError("Unexpected error!, failed to send OTP", 400));
+    }
+
+    res.status(200).json({
+      status: "Success",
+      message: "Reset password OTP is sent, please check your email.",
+      requestAt: req.requestTime,
+      data: {
+        id: user.id,
+        email: email,
+        reset_password_resend_at: resend_at,
+        reset_password_expired_at: expired_at,
+      },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const resendResetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email || email === null || email === "") {
+      return next(new ApiError("Email is required", 400));
+    }
+
+    const user = await Users.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return next(new ApiError("User is not exist", 400));
+    }
+
+    if (user.user_status === "unverified") {
+      return next(
+        new ApiError("User is not verified, please verify your account", 400)
+      );
+    }
+
+    if (
+      !user.reset_password_token ||
+      user.reset_password_token === null ||
+      user.reset_password_token === "" ||
+      !user.reset_password_resend_at ||
+      user.reset_password_resend_at === null ||
+      user.reset_password_resend_at === "" ||
+      !user.reset_password_expired_at ||
+      user.reset_password_expired_at === null ||
+      user.reset_password_expired_at === ""
+    ) {
+      return next(new ApiError("No password changed request", 400));
     }
 
     // Check is reset_password_resend_at isBefore than now
@@ -46,7 +190,7 @@ const createResetToken = async (req, res, next) => {
     const resend_at = nowTime.add(1, "minute").format();
     const expired_at = nowTime.add(1, "hour").format();
 
-    const createToken = await Users.update(
+    const updateToken = await Users.update(
       {
         reset_password_token: token,
         reset_password_resend_at: resend_at,
@@ -55,18 +199,18 @@ const createResetToken = async (req, res, next) => {
       {
         where: {
           id: user.id,
-          email: email,
+          email,
         },
       }
     );
 
-    if (!createToken) {
+    if (!updateToken) {
       return next(
         new ApiError("Unexpected Error!, failed to create reset token", 400)
       );
     }
 
-    const recipient_name = `${user.first_name} ${user.last_name}`;
+    const recipient_name = `${updateToken.full_name}`;
     const subject = "[No Reply] - Reset Password OTP";
     const html_text = `
     <p>Hello ${recipient_name},</p>
@@ -108,12 +252,11 @@ const createResetToken = async (req, res, next) => {
 
     res.status(200).json({
       status: "Success",
-      message: "Reset password otp email is sent, please check your email.",
+      message: "Reset password OTP is sent, please check your email.",
       requestAt: req.requestTime,
       data: {
         id: user.id,
         email: email,
-        reset_password_token: token,
         reset_password_resend_at: resend_at,
         reset_password_expired_at: expired_at,
       },
@@ -123,9 +266,35 @@ const createResetToken = async (req, res, next) => {
   }
 };
 
-const verifyResetTokenAndChangedPassword = async (req, res, next) => {
+const verifyResetPassword = async (req, res, next) => {
   try {
     const { code, email, password, confirm_password } = req.body;
+
+    // Check missing fields
+    const missingFields = [];
+
+    if (!code || code === null || code === "") {
+      missingFields.push("OTP Code");
+    }
+    if (!email || email === null || email === "") {
+      missingFields.push("Email");
+    }
+    if (!password || password === null || password === "") {
+      missingFields.push("password");
+    }
+    if (
+      !confirm_password ||
+      confirm_password === null ||
+      confirm_password === ""
+    ) {
+      missingFields.push("Confirm Password");
+    }
+
+    if (missingFields.length > 0) {
+      return next(
+        new ApiError(`${missingFields.join(", ")} should be required!`, 400)
+      );
+    }
 
     const user = await Users.findOne({
       where: {
@@ -155,7 +324,12 @@ const verifyResetTokenAndChangedPassword = async (req, res, next) => {
 
     //  If not expired
     if (dayjs().isAfter(dayjs(user.reset_password_expired_at))) {
-      return next(new ApiError("Password change request is expired", 400));
+      return next(
+        new ApiError(
+          "Password change request is expired, please request new reset password",
+          400
+        )
+      );
     }
 
     // Code field required validation
@@ -213,6 +387,7 @@ const verifyResetTokenAndChangedPassword = async (req, res, next) => {
 };
 
 module.exports = {
-  createResetToken,
-  verifyResetTokenAndChangedPassword,
+  createResetPassword,
+  resendResetPassword,
+  verifyResetPassword,
 };

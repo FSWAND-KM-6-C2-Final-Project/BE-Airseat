@@ -2,26 +2,21 @@ const ApiError = require("../utils/apiError");
 const bcrypt = require("bcrypt");
 const { Users } = require("../models");
 const createToken = require("../utils/createToken");
+const sendEmail = require("../utils/sendEmail");
+const dayjs = require("dayjs");
+const localizedFormat = require("dayjs/plugin/localizedFormat");
+dayjs.extend(localizedFormat);
 
 const register = async (req, res, next) => {
   try {
-    const {
-      first_name,
-      last_name,
-      email,
-      phone_number,
-      password,
-      confirm_password,
-    } = req.body;
+    const { full_name, email, phone_number, password, confirm_password } =
+      req.body;
 
     // Check missing fields
     const missingFields = [];
 
-    if (!first_name || first_name === null || first_name === "") {
-      missingFields.push("First Name");
-    }
-    if (!last_name || last_name === null || last_name === "") {
-      missingFields.push("Last Name");
+    if (!full_name || full_name === null || full_name === "") {
+      missingFields.push("Full Name");
     }
     if (!email || email === null || email === "") {
       missingFields.push("Email");
@@ -69,20 +64,6 @@ const register = async (req, res, next) => {
       );
     }
 
-    // Is email with google auth is exist check
-    const isGoogleAccountExist = await Users.findOne({
-      where: {
-        email: email,
-        auth_type: "google",
-      },
-    });
-
-    if (isGoogleAccountExist) {
-      return next(
-        new ApiError("Email is already registered using another method", 400)
-      );
-    }
-
     // Is phone number is exist check
     const isPhoneNumberExist = await Users.findOne({
       where: {
@@ -95,14 +76,13 @@ const register = async (req, res, next) => {
     }
 
     // Is email with general auth is exist check
-    const isGeneralAccountExist = await Users.findOne({
+    const isUserExist = await Users.findOne({
       where: {
         email: email,
-        auth_type: "general",
       },
     });
 
-    if (isGeneralAccountExist) {
+    if (isUserExist) {
       return next(new ApiError("Email is already registered", 400));
     }
 
@@ -110,11 +90,20 @@ const register = async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
+    const token = Math.floor(Math.random() * 900000) + 100000;
+
+    const nowTime = dayjs();
+    const resend_at = nowTime.add(1, "minute").format();
+    const expired_at = nowTime.add(1, "hour").format();
+
     const createUser = await Users.create({
-      first_name,
-      last_name,
+      full_name,
       email,
       phone_number,
+      verification_user_token: token,
+      verification_user_resend_at: resend_at,
+      verification_user_expired_at: expired_at,
+      user_status: "unverified",
       password: hashedPassword,
     });
 
@@ -124,10 +113,56 @@ const register = async (req, res, next) => {
       );
     }
 
+    const recipient_name = `${createUser.full_name}`;
+    const subject = "[No Reply] - Verify Your Email";
+    const html_text = `
+    <p>Hello ${recipient_name},</p>
+    <p>Thank you for registering with Airseat. To activate your account, please use the following One-Time Password (OTP) code:</p>
+    <p>
+        Your OTP :
+        <b>${token}</b>
+    </p>
+    <p>This OTP code is valid for 1 hour. If this OTP code expires, you can request a new OTP through the activation page.</p>
+    <p>Thank you for your attention.</p>
+    <p>Best regards,</p>
+    <br>
+    <p>Airseat</p>
+    `;
+    const plain_text = `
+        Hello ${recipient_name},
+
+        Thank you for registering with Airseat. To activate your account, please use the following One-Time Password (OTP) code:
+
+        Your OTP : ${token}
+
+        This OTP code is valid for 1 hour. If this OTP code expires, you can request a new OTP through the activation page.
+
+        Thank you for your attention.
+
+        Best regards,
+
+
+        Airseat
+      `;
+
+    const sendResetOTP = await sendEmail(email, subject, plain_text, html_text);
+
+    if (!sendResetOTP) {
+      return next(
+        new ApiError("Unexpected error!, failed to send OTP email", 400)
+      );
+    }
+
     res.status(201).json({
       status: "Success",
-      message: "User account successfully registered",
+      message:
+        "User account successfully registered, please check your email to activate your account",
       requestAt: req.requestTime,
+      data: {
+        email: createUser.email,
+        verification_user_resend_at: resend_at,
+        verification_user_expired_at: expired_at,
+      },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -158,7 +193,6 @@ const login = async (req, res, next) => {
     }
 
     let searchCondition = {};
-    searchCondition.auth_type = "general";
 
     if (email) {
       searchCondition.email = email;
@@ -171,10 +205,16 @@ const login = async (req, res, next) => {
     });
 
     if (user && bcrypt.compareSync(password, user.password)) {
+      if (user.user_status === "unverified") {
+        return next(
+          new ApiError("User is not verified, please verify your account", 401)
+        );
+      }
+
       const token = createToken({
         id: user.id,
         first_name: user.first_name,
-        last_name: user.last_name,
+        full_name: user.full_name,
         email: user.email,
       });
 
