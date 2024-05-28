@@ -1,9 +1,10 @@
 const router = require("express").Router();
 
-const airport = require("../controllers/airport")
+const airport = require("../controllers/airport");
+const upload = require("../utils/multerConfig");
 
 // route untuk menambah data
-router.post("/create", airport.createAirport);
+router.post("/create", upload.single("airport_picture"), airport.createAirport);
 // route untuk mengambil semua data
 router.get("/get", airport.findAirport);
 // route untuk mengambil data sesuai id

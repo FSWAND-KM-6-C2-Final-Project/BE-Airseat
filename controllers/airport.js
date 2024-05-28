@@ -1,9 +1,33 @@
 const { Airports } = require("../models");
 const ApiError = require("../utils/ApiError");
 
+const multer = require("multer");
+const ImageKit = require("../utils/imageKit");
+
+const uploadImage = async (file) => {
+  try {
+    const split = file.originalname.split(".");
+    const extension = split[split.length - 1];
+
+    // upload file ke imagekit
+    const uploadedImage = await ImageKit.upload({
+      file: file.buffer,
+      fileName: `IMG-${Date.now()}.${extension}`,
+      folder: "coba",
+    });
+    if (!uploadedImage) {
+      return next(new ApiError("Could not upload image", 500));
+    }
+    return uploadedImage.url;
+  } catch (err) {
+    return err.message;
+  }
+};
+
 const findAirport = async (req, res, next) => {
   try {
-    const { AirportName, createdBy, manufacture, type, page, limit } = req.query;
+    const { AirportName, createdBy, manufacture, type, page, limit } =
+      req.query;
 
     const condition = {};
 
@@ -31,7 +55,7 @@ const findAirport = async (req, res, next) => {
     });
 
     const totalPages = Math.ceil(totalCount / pageSize);
-    
+
     res.status(200).json({
       status: "Success",
       message: "Airports succesfully retrieved",
@@ -56,7 +80,7 @@ const findAirportById = async (req, res, next) => {
     const id = req.params.id;
     const airport = await Airports.findOne({
       where: {
-        id
+        id,
       },
     });
 
@@ -78,7 +102,13 @@ const findAirportById = async (req, res, next) => {
 };
 
 const updateAirport = async (req, res, next) => {
-  const { airport_name, airport_city, airport_city_code, airport_picture, airport_continent } = req.body;
+  const {
+    airport_name,
+    airport_city,
+    airport_city_code,
+    airport_picture,
+    airport_continent,
+  } = req.body;
   try {
     const id = req.params.id;
     const airport = await Airports.findOne({
@@ -95,11 +125,11 @@ const updateAirport = async (req, res, next) => {
         airport_city,
         airport_city_code,
         airport_picture,
-        airport_continent
+        airport_continent,
       },
       {
         where: {
-          id
+          id,
         },
       }
     );
@@ -113,9 +143,9 @@ const updateAirport = async (req, res, next) => {
       status: "Success",
       message: "Airport succesfully Update",
       requestAt: req.requestTime,
-      data:{
-        updatedAirport
-      }
+      data: {
+        updatedAirport,
+      },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -127,7 +157,7 @@ const deleteAirport = async (req, res, next) => {
     const id = req.params.id;
     const airport = await Airports.findOne({
       where: {
-        id
+        id,
       },
     });
 
@@ -136,7 +166,7 @@ const deleteAirport = async (req, res, next) => {
     }
     await airport.destroy({
       where: {
-        id
+        id,
       },
     });
 
@@ -151,15 +181,27 @@ const deleteAirport = async (req, res, next) => {
 };
 
 const createAirport = async (req, res, next) => {
-  const { airport_name, airport_city, airport_city_code, airport_picture, airport_continent } = req.body;
+  const { airport_name, airport_city, airport_city_code, airport_continent } =
+    req.body;
 
   try {
+    const file = req.file;
+
+    if (!file) {
+      return next(new ApiError("No file uploaded", 400));
+    }
+
+    let image;
+    if (file) {
+      image = await uploadImage(file);
+    }
+
     const newAirport = await Airports.create({
       airport_name,
       airport_city,
       airport_city_code,
-      airport_picture,
-      airport_continent
+      airport_picture: image,
+      airport_continent,
     });
 
     res.status(200).json({
