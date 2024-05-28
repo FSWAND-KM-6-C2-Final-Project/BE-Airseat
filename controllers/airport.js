@@ -102,15 +102,12 @@ const findAirportById = async (req, res, next) => {
 };
 
 const updateAirport = async (req, res, next) => {
-  const {
-    airport_name,
-    airport_city,
-    airport_city_code,
-    airport_picture,
-    airport_continent,
-  } = req.body;
   try {
+    const { airport_name, airport_city, airport_city_code, airport_continent } =
+      req.body;
+
     const id = req.params.id;
+
     const airport = await Airports.findOne({
       where: {
         id,
@@ -119,20 +116,44 @@ const updateAirport = async (req, res, next) => {
     if (!airport) {
       return next(new ApiError(`Airport with id '${id}' is not found`, 404));
     }
-    await Airports.update(
-      {
-        airport_name,
-        airport_city,
-        airport_city_code,
-        airport_picture,
-        airport_continent,
-      },
-      {
-        where: {
-          id,
+
+    const file = req.file || "";
+
+    let updateAirport;
+
+    if (file !== "") {
+      let image = await uploadImage(file);
+
+      await Airports.update(
+        {
+          airport_name,
+          airport_city,
+          airport_city_code,
+          airport_picture: image,
+          airport_continent,
         },
-      }
-    );
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      await Airports.update(
+        {
+          airport_name,
+          airport_city,
+          airport_city_code,
+          airport_continent,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
+
     const updatedAirport = await Airports.findOne({
       where: {
         id,
