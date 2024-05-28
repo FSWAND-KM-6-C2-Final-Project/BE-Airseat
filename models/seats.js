@@ -49,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Seats",
-      underscored: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
   return Seats;

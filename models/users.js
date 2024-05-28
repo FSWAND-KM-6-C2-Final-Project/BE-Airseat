@@ -23,15 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Users.init(
     {
-      google_id: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      first_name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      last_name: {
+      full_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -48,13 +40,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      auth_type: {
-        type: DataTypes.ENUM(["google", "general"]),
-        defaultValue: "general",
-        allowNull: false,
+      verification_user_token: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      verification_user_resend_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      verification_user_expired_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
       },
       reset_password_token: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       reset_password_resend_at: {
@@ -65,11 +64,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      user_status: {
+        type: DataTypes.ENUM(["verified", "unverified"]),
+        allowNull: false,
+        defaultValue: "unverified",
+      },
     },
     {
       sequelize,
       modelName: "Users",
-      underscored: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     }
   );
   return Users;

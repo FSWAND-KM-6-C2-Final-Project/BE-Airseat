@@ -8,11 +8,19 @@ const swaggerDocument = require("../docs/swagger.json");
 */
 const flightRouter = require("./flightRouter");
 
+const authRouter = require("./authRouter");
+
 /*
     Define other routes here, for example:
     router.use("/api/v1/auth", authRouter);
 */
 
 router.use("/api/v1/flight", flightRouter);
+
+// Swagger docs
+router.use("/api-docs", swaggerUI.serve);
+router.use("/api-docs", swaggerUI.setup(swaggerDocument));
+
+router.use("/api/v1/auth", authRouter);
 
 module.exports = router;
