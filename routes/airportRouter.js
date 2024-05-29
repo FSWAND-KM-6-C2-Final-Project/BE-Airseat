@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const airport = require("../controllers/airport");
+const airport = require("../controllers/airportController");
 const upload = require("../utils/multerConfig");
 
 // route untuk menambah data
