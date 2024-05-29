@@ -5,17 +5,1416 @@
     "description": "This comprehensive documentation provides detailed information and references for the Airseat REST API.",
     "version": "1.0.0"
   },
-  "tags": [],
   "servers": [
     {
-      "url": "http://localhost:3000/api/v1"
+      "url": "https://plucky-agent-424606-s3.et.r.appspot.com"
     }
   ],
   "components": {
     "securitySchemes": {
-      "bearerToken": {
+      "bearerAuth": {
         "type": "http",
         "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Auth > Register"
+    },
+    {
+      "name": "Auth > Login"
+    },
+    {
+      "name": "Auth > User Information"
+    },
+    {
+      "name": "Auth > Reset Password",
+      "description": "This module is designed for password reset functionality."
+    },
+    {
+      "name": "Auth > User Email Verification",
+      "description": "This module is used for account verification to enable login. "
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": ["Auth > Register"],
+        "summary": "Register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "full_name": "Akbar Rahmat",
+                  "email": "akbarrahmatmulyatama@gmail.com",
+                  "phone_number": "087883812700",
+                  "password": "Users123456",
+                  "confirm_password": "Users123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "326"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"146-Qf+9RcJgnnCg1pxddBRcBGwuMGM\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:19:41 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "User account successfully registered, please check your email to activate your account",
+                  "requestAt": "2024-05-28T13:19:37+07:00",
+                  "data": {
+                    "email": "akbarrahmatmulyatama@gmail.com",
+                    "verification_user_resend_at": "2024-05-28T13:20:37+07:00",
+                    "verification_user_expired_at": "2024-05-28T14:19:37+07:00"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "150"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"96-waA5DyQBXY9xDxby8niV9WKAie4\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:17:57 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Required Field Validation",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Full Name, Email, Phone Number, password, Confirm Password should be required!",
+                      "requestAt": "2024-05-28T13:17:57+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - Email Format Is Not Correct",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email format is not correct!",
+                      "requestAt": "2024-05-28T13:18:31+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - Password Not Match",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Password & Confirm Password is should be match!",
+                      "requestAt": "2024-05-28T13:19:00+07:00"
+                    }
+                  },
+                  "example-3": {
+                    "summary": "Failed - Phone Number Is Already Registered",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Phone number is already registered",
+                      "requestAt": "2024-05-28T13:20:56+07:00"
+                    }
+                  },
+                  "example-4": {
+                    "summary": "Failed - Email Is Already Registered",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email is already registered",
+                      "requestAt": "2024-05-28T13:21:20+07:00"
+                    }
+                  },
+                  "example-5": {
+                    "summary": "Failed - Password Should 8 Or More Character",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Password is should be 8 or more character!",
+                      "requestAt": "2024-05-28T13:22:15+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth > Login"],
+        "summary": "Login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "akbarrahmatm.msc@gmail.com",
+                  "password": "Users123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Mon, 27 May 2024 11:57:01 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Vary": {
+                "schema": {
+                  "type": "string",
+                  "example": "Accept-Encoding"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"147-0kUiHjocpZRuVetzUSxahlqJ4Mk\""
+                }
+              },
+              "Content-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "gzip"
+                }
+              },
+              "Via": {
+                "schema": {
+                  "type": "string",
+                  "example": "1.1 google"
+                }
+              },
+              "Alt-Svc": {
+                "schema": {
+                  "type": "string",
+                  "example": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              },
+              "Transfer-Encoding": {
+                "schema": {
+                  "type": "string",
+                  "example": "chunked"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Success - Login With Email Success",
+                    "value": {
+                      "status": "Success",
+                      "message": "Successfully logged in",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkFrYmFyIFJhaG1hdCIsImxhc3RfbmFtZSI6Ik11bHlhdGFtYSIsImVtYWlsIjoiYWtiYXJyYWhtYXRtdWx5YXRhbWFAZ21haWwuY29tIiwiaWF0IjoxNzE2ODExMDIxLCJleHAiOjE3MTc0MTU4MjF9.tK2Y10RteeoCqt84zh9dUsFkGDOaHNSS98ZV8fGvJAk"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Success - Login With Phone Number Success",
+                    "value": {
+                      "status": "Success",
+                      "message": "Successfully logged in",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6IkFrYmFyIFJhaG1hdCIsImxhc3RfbmFtZSI6Ik11bHlhdGFtYSIsImVtYWlsIjoiYWtiYXJyYWhtYXRtdWx5YXRhbWFAZ21haWwuY29tIiwiaWF0IjoxNzE2ODExMjEwLCJleHAiOjE3MTc0MTYwMTB9._sjYOJ9cLrtXqx7TvJ0DdwIUx3hObzrdyWbk-COSEPE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Mon, 27 May 2024 11:59:25 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "104"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"68-vNXWmtgfWs0LUqdRYfzXqVr5vg4\""
+                }
+              },
+              "Via": {
+                "schema": {
+                  "type": "string",
+                  "example": "1.1 google"
+                }
+              },
+              "Alt-Svc": {
+                "schema": {
+                  "type": "string",
+                  "example": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Email or phone number is required",
+                  "requestAt": "2024-05-27T11:59:25.885Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Mon, 27 May 2024 11:57:18 GMT"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "90"
+                }
+              },
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"5a-ODizFawffzTmwMapsx7HIXcmAzU\""
+                }
+              },
+              "Via": {
+                "schema": {
+                  "type": "string",
+                  "example": "1.1 google"
+                }
+              },
+              "Alt-Svc": {
+                "schema": {
+                  "type": "string",
+                  "example": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Wrong Password Or Username",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Invalid credentials",
+                      "requestAt": "2024-05-27T11:57:17.950Z"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed Login - Account Is Not Verified Yet",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not verified, please verify your account",
+                      "requestAt": "2024-05-28T13:28:57+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": ["Auth > User Information"],
+        "summary": "Check User Information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "253"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"fd-w+5+tS0BIk+doREeb0Ksb7RF2zo\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:30:29 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "User data successfully retrieved",
+                  "requestAt": "2024-05-28T13:30:29+07:00",
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "full_name": "Akbar Rahmat",
+                      "email": "akbarrahmatmulyatama@gmail.com",
+                      "phone_number": "087883812700",
+                      "user_status": "verified"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "88"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"58-r7yvH/vh9JQF/sGWlcrtH2TAwJ0\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:31:10 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Token not found!",
+                  "requestAt": "2024-05-28T13:31:10+07:00"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "84"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"54-UoPUnPGCIQu5qHSU2kSN0Qb5Kh8\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:31:39 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Error",
+                  "message": "jwt malformed",
+                  "requestAt": "2024-05-28T13:31:39+07:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/password-reset/resend": {
+      "post": {
+        "tags": ["Auth > Reset Password"],
+        "summary": "Resend OTP",
+        "requestBody": {
+          "content": {}
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "291"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"123-//h5gPmYyGgzBeO7Z5ssnQ91feM\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:02:39 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Reset password OTP is sent, please check your email.",
+                  "requestAt": "2024-05-28T13:02:34+07:00",
+                  "data": {
+                    "id": 2,
+                    "email": "akbarrahmatm.tugas@gmail.com",
+                    "reset_password_resend_at": "2024-05-28T13:03:34+07:00",
+                    "reset_password_expired_at": "2024-05-28T14:02:34+07:00"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "153"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"99-icG5UBxiaOE2/naILv5cbDv2/wA\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:16:29 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Resend Period Is Still Active",
+                    "value": {
+                      "status": "Failed",
+                      "message": "You cannot resend your OTP email, please wait until Tuesday, May 28, 2024 1:17 PM",
+                      "requestAt": "2024-05-28T13:16:29+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - Email Is Required",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email is required",
+                      "requestAt": "2024-05-28T12:58:26+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - User Not Exist",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not exist",
+                      "requestAt": "2024-05-28T13:00:02+07:00"
+                    }
+                  },
+                  "example-3": {
+                    "summary": "Failed - User Not Verified",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not verified, please verify your account",
+                      "requestAt": "2024-05-28T13:01:17+07:00"
+                    }
+                  },
+                  "example-4": {
+                    "summary": "Failed - No Password Reset Request",
+                    "value": {
+                      "status": "Failed",
+                      "message": "No password changed request",
+                      "requestAt": "2024-05-28T13:02:02+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/password-change/verify": {
+      "post": {
+        "tags": ["Auth > Reset Password"],
+        "summary": "Verify Password Change OTP",
+        "requestBody": {
+          "content": {}
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "119"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"77-gVOKxP2NH/uOfoN26QlCkuY6yL4\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:13:16 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Password changed, please login to your account",
+                  "requestAt": "2024-05-28T13:13:16+07:00"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "135"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"87-E5E7GLQqnkd7ndRibObfwvQ3Y0A\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:08:33 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Required Field Validation",
+                    "value": {
+                      "status": "Failed",
+                      "message": "OTP Code, Email, password, Confirm Password should be required!",
+                      "requestAt": "2024-05-28T13:08:33+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - Wrong OTP",
+                    "value": {
+                      "status": "Failed",
+                      "message": "OTP Code is wrong",
+                      "requestAt": "2024-05-28T13:11:30+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - User Not Exist",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not exist",
+                      "requestAt": "2024-05-28T13:11:47+07:00"
+                    }
+                  },
+                  "example-3": {
+                    "summary": "Failed - No Password Reset Request",
+                    "value": {
+                      "status": "Failed",
+                      "message": "No password changed request",
+                      "requestAt": "2024-05-28T13:12:31+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/activation/verify": {
+      "post": {
+        "tags": ["Auth > User Email Verification"],
+        "summary": "Verify Activation Account OTP",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "akbarrahmatm.msc@gmail.com",
+                  "code": "528890"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "118"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"76-4wKDQYVOVogCTvZ68SxcFn/S7iw\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 05:38:01 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "User activate, please login into your account",
+                  "requestAt": "2024-05-28T12:38:01+07:00"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "107"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"6b-5o+bs0id5u6YGkcOBQKqb2OCNIM\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:09:50 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Required Field Validation",
+                    "value": {
+                      "status": "Failed",
+                      "message": "OTP Code, Email should be required!",
+                      "requestAt": "2024-05-28T13:09:50+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - User Already Verified",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is already verified",
+                      "requestAt": "2024-05-28T12:40:07+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - Wrong OTP",
+                    "value": {
+                      "status": "Failed",
+                      "message": "OTP Code is wrong",
+                      "requestAt": "2024-05-28T12:40:42+07:00"
+                    }
+                  },
+                  "example-3": {
+                    "summary": "Failed - User Not Exist",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not exist",
+                      "requestAt": "2024-05-28T12:41:20+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/activation/resend": {
+      "post": {
+        "tags": ["Auth > User Email Verification"],
+        "summary": "Resend OTP",
+        "requestBody": {
+          "content": {}
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "292"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"124-VI89E7P1JWcf9VIIqRfIKW+i2GU\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:25:06 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "User activation OTP is sent, please check your email",
+                  "requestAt": "2024-05-28T13:25:02+07:00",
+                  "data": {
+                    "email": "akbarrahmatmulyatama@gmail.com",
+                    "verification_user_resend_at": "2024-05-28T13:26:02+07:00",
+                    "verification_user_expired_at": "2024-05-28T14:25:02+07:00"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "153"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"99-jr8ttmymoU8OnO7nPw192klz+Ro\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 06:13:54 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Resend Period Still Active",
+                    "value": {
+                      "status": "Failed",
+                      "message": "You cannot resend your OTP email, please wait until Tuesday, May 28, 2024 1:14 PM",
+                      "requestAt": "2024-05-28T13:13:54+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - Email Is Required",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email is required",
+                      "requestAt": "2024-05-28T12:44:39+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - User Already Verified",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is already verified",
+                      "requestAt": "2024-05-28T12:45:59+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
