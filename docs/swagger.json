@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://{{url}}"
+      "url": "https://plucky-agent-424606-s3.et.r.appspot.com"
     }
   ],
   "components": {
@@ -33,11 +33,11 @@
     },
     {
       "name": "Auth > Reset Password",
-      "description": "This module is designed for password reset functionality. It includes the following requests:\n\n**Reset Password Request**\n\n**Password Reset Verification:**\n\n- Password reset verification must be completed within 1 day of the most recent OTP request.    \n\n**Resend OTP:**\n\n- You can resend the OTP only after 1 minute has passed since the last OTP request."
+      "description": "This module is designed for password reset functionality."
     },
     {
       "name": "Auth > User Email Verification",
-      "description": "This module is used for account verification to enable login. It includes several requests:\n\n**Verify Activation Account**\n\n- Account verification can only be completed within 1 day after the last OTP request.    \n\n**Resend OTP**\n\n- Resending the OTP is allowed only after a minimum of 1 minute has passed since the last OTP request."
+      "description": "This module is used for account verification to enable login. "
     }
   ],
   "paths": {
