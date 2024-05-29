@@ -1,12 +1,20 @@
 const router = require("express").Router();
 
-const Airline = require("../controllers/airlineController");
+const airlineController = require("../controllers/airlineController");
+const upload = require("../utils/multerConfig");
 
-router.post("/", Airline.createAirline );
-router.patch('/:id', Airline.updateAirline);
-router.get("/", Airline.getAllAirlines);
-router.get("/:id", Airline.getAirlineById);
-router.delete("/:id", Airline.deleteAirline);
-
+router.post(
+  "/",
+  upload.single("airline_picture"),
+  airlineController.createAirline
+);
+router.patch(
+  "/:id",
+  upload.single("airline_picture"),
+  airlineController.updateAirline
+);
+router.get("/", airlineController.getAllAirlines);
+router.get("/:id", airlineController.getAirlineById);
+router.delete("/:id", airlineController.deleteAirline);
 
 module.exports = router;

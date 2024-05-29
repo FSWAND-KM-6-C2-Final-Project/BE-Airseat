@@ -1,7 +1,5 @@
 const { Airports } = require("../models");
 const ApiError = require("../utils/apiError");
-
-const multer = require("multer");
 const ImageKit = require("../utils/imageKit");
 
 const uploadImage = async (file) => {
@@ -13,7 +11,7 @@ const uploadImage = async (file) => {
     const uploadedImage = await ImageKit.upload({
       file: file.buffer,
       fileName: `IMG-${Date.now()}.${extension}`,
-      folder: "coba",
+      folder: "airport",
     });
     if (!uploadedImage) {
       return next(new ApiError("Could not upload image", 500));
@@ -118,8 +116,6 @@ const updateAirport = async (req, res, next) => {
     }
 
     const file = req.file || "";
-
-    let updateAirport;
 
     if (file !== "") {
       let image = await uploadImage(file);
