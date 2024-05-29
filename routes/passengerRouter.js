@@ -2,18 +2,18 @@ const router = require("express").Router();
 const passengers = require("../controllers/passengersController");
 
 //get all passengers
-router.get("/get", passengers.findPassengers);
+router.get("/", passengers.findPassengers);
 
 // Create a new passenger
-router.post("/create", passengers.createPassengers);
+router.post("/", passengers.createPassengers);
 
 //get passenger by ID
-router.get("/get/:id", passengers.findByIdPassengers);
+router.get("/:id", passengers.findByIdPassengers);
 
 //get Update an existing passenger
-router.patch("/update/:id", passengers.updatePassengers);
+router.patch("/:id", passengers.updatePassengers);
 
 // Delete a passenger
-router.delete("/delete/:id", passengers.deletePassengers);
+router.delete("/:id", passengers.deletePassengers);
 
 module.exports = router;
