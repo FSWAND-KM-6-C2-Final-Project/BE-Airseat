@@ -1,5 +1,5 @@
 const { Seats } = require("../models");
-const ApiError = require("../utils/ApiError");
+const ApiError = require("../utils/apiError");
 
 const findSeats = async (req, res, next) => {
   try {
@@ -31,7 +31,7 @@ const findSeats = async (req, res, next) => {
     });
 
     const totalPages = Math.ceil(totalCount / pageSize);
-    
+
     res.status(200).json({
       status: "Success",
       message: "Seats succesfully retrieved",
@@ -56,7 +56,7 @@ const findSeatById = async (req, res, next) => {
     const id = req.params.id;
     const seat = await Seats.findOne({
       where: {
-        id
+        id,
       },
     });
 
@@ -95,11 +95,11 @@ const updateSeat = async (req, res, next) => {
         seat_column,
         seat_name,
         flight_id,
-        seat_status
+        seat_status,
       },
       {
         where: {
-          id
+          id,
         },
       }
     );
@@ -113,9 +113,9 @@ const updateSeat = async (req, res, next) => {
       status: "Success",
       message: "Seat succesfully Update",
       requestAt: req.requestTime,
-      data:{
-        updatedSeat
-      }
+      data: {
+        updatedSeat,
+      },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -127,7 +127,7 @@ const deleteSeat = async (req, res, next) => {
     const id = req.params.id;
     const seat = await Seats.findOne({
       where: {
-        id
+        id,
       },
     });
 
@@ -136,7 +136,7 @@ const deleteSeat = async (req, res, next) => {
     }
     await seat.destroy({
       where: {
-        id
+        id,
       },
     });
 
@@ -155,11 +155,11 @@ const createSeat = async (req, res, next) => {
 
   try {
     const newSeat = await Seats.create({
-        seat_row,
-        seat_column,
-        seat_name,
-        flight_id,
-        seat_status
+      seat_row,
+      seat_column,
+      seat_name,
+      flight_id,
+      seat_status,
     });
 
     res.status(200).json({
