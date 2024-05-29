@@ -11,7 +11,6 @@ const airportRouter = require("./airportRouter");
 const authRouter = require("./authRouter");
 const seatRouter = require("./seatRouter");
 const airlineRouter = require("./airlineRouter");
-
 const passengerRouter = require("./passengerRouter");
 
 /*
