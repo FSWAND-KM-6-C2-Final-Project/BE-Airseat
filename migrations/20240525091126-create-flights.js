@@ -53,10 +53,6 @@ module.exports = {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      seat: {
-        type: Sequelize.JSON,
-        allowNull: false,
-      },
       airline_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

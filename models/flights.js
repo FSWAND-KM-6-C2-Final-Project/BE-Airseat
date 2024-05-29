@@ -85,10 +85,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: false,
       },
-      seat: {
-        type: DataTypes.JSON,
-        allowNull: false,
-      },
       airline_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
