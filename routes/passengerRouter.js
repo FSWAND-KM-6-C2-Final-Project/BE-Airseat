@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const passengers = require("../controllers/passengersControllers");
+const passengers = require("../controllers/passengersController");
 
 //get all passengers
 router.get("/get", passengers.findPassengers);
