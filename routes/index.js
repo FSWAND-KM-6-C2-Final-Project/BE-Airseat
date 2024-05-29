@@ -10,6 +10,7 @@ const flightRouter = require("./flightRouter");
 const airportRouter = require("./airportRouter");
 const authRouter = require("./authRouter");
 const seatRouter = require("./seatRouter");
+const airlineRouter = require("./airlineRouter");
 
 const passengerRouter = require("./passengerRouter");
 
@@ -23,6 +24,7 @@ router.use("/api/v1/airport", airportRouter);
 router.use("/api/v1/auth", authRouter);
 router.use("/api/v1/seat", seatRouter);
 router.use("/api/v1/passenger", passengerRouter);
+router.use("/api/v1/airline", airlineRouter);
 
 // Swagger docs
 router.use("/api-docs", swaggerUI.serve);
