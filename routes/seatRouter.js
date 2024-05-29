@@ -1,16 +1,16 @@
 const router = require("express").Router();
 
-const seat = require("../controllers/seatsController")
+const seat = require("../controllers/seatsController");
 
 // route untuk menambah data
-router.post("/create", seat.createSeat);
+router.post("/", seat.createSeat);
 // route untuk mengambil semua data
-router.get("/get", seat.findSeats);
+router.get("/", seat.findSeats);
 // route untuk mengambil data sesuai id
-router.get("/get/:id", seat.findSeatById);
+router.get("/:id", seat.findSeatById);
 // route untuk mengedit data sesuai id
-router.patch("/update/:id", seat.updateSeat);
+router.patch("/:id", seat.updateSeat);
 // route untuk menghapus data sesuai dengan id
-router.delete("/delete/:id", seat.deleteSeat);
+router.delete("/:id", seat.deleteSeat);
 
 module.exports = router;
