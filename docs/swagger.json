@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://plucky-agent-424606-s3.et.r.appspot.com"
+      "url": "https://plucky-agent-424606-s3.et.r.appspot.com",
+      "description": "Production"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Development"
     }
   ],
   "components": {
@@ -20,33 +25,18 @@
   },
   "tags": [
     {
-      "name": "Auth"
+      "name": "Auth",
+      "description": "this API is for Auth resources"
     },
     {
-      "name": "Auth > Register"
-    },
-    {
-      "name": "Auth > Login"
-    },
-    {
-      "name": "Auth > User Information"
-    },
-    {
-      "name": "Auth > Reset Password",
-      "description": "This module is designed for password reset functionality."
-    },
-    {
-      "name": "Auth > User Email Verification",
-      "description": "This module is used for account verification to enable login."
-    },
-    {
-      "name": "Airline"
+      "name": "Airline",
+      "description": "this API is for Airline resources"
     }
   ],
   "paths": {
     "/api/v1/auth/register": {
       "post": {
-        "tags": ["Auth > Register"],
+        "tags": ["Auth"],
         "summary": "Register",
         "requestBody": {
           "content": {
@@ -250,7 +240,7 @@
     },
     "/api/v1/auth/login": {
       "post": {
-        "tags": ["Auth > Login"],
+        "tags": ["Auth"],
         "summary": "Login",
         "requestBody": {
           "content": {
@@ -504,7 +494,7 @@
     },
     "/api/v1/auth/me": {
       "get": {
-        "tags": ["Auth > User Information"],
+        "tags": ["Auth"],
         "summary": "Check User Information",
         "security": [
           {
@@ -721,8 +711,8 @@
     },
     "/api/v1/auth/password-reset": {
       "post": {
-        "tags": ["Auth > Reset Password"],
-        "summary": "Reset Password Request",
+        "tags": ["Auth"],
+        "summary": "This module is designed for password reset functionality.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -898,7 +888,7 @@
     },
     "/api/v1/auth/password-reset/resend": {
       "post": {
-        "tags": ["Auth > Reset Password"],
+        "tags": ["Auth"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
@@ -1082,7 +1072,7 @@
     },
     "/api/v1/auth/password-reset/verify": {
       "post": {
-        "tags": ["Auth > Reset Password"],
+        "tags": ["Auth"],
         "summary": "Verify Password Change OTP",
         "requestBody": {
           "content": {
@@ -1264,7 +1254,7 @@
     },
     "/api/v1/auth/activation/verify": {
       "post": {
-        "tags": ["Auth > User Email Verification"],
+        "tags": ["Auth"],
         "summary": "Verify Activation Account OTP",
         "requestBody": {
           "content": {
@@ -1444,7 +1434,7 @@
     },
     "/api/v1/auth/activation/resend": {
       "post": {
-        "tags": ["Auth > User Email Verification"],
+        "tags": ["Auth"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
