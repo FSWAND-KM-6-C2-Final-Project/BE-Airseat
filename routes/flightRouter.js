@@ -1,16 +1,16 @@
 const router = require("express").Router();
 
-const flight = require("../controllers/flightController")
+const flightController = require("../controllers/flightController");
 
 // route untuk menambah data
-router.post("/create", flight.createFlight);
+router.post("/", flightController.createFlight);
 // route untuk mengambil semua data
-router.get("/get", flight.findFligths);
+router.get("/", flightController.findFligths);
 // route untuk mengambil data sesuai id
-router.get("/get/:id", flight.findFlightById);
+router.get("/:id", flightController.findFlightById);
 // route untuk mengedit data sesuai id
-router.patch("/update/:id", flight.updateFlight);
+router.patch("/:id", flightController.updateFlight);
 // route untuk menghapus data sesuai dengan id
-router.delete("/delete/:id", flight.deleteFlight);
+router.delete("/:id", flightController.deleteFlight);
 
 module.exports = router;
