@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://plucky-agent-424606-s3.et.r.appspot.com"
+      "url": "https://plucky-agent-424606-s3.et.r.appspot.com",
+      "description": "Production"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Development"
     }
   ],
   "components": {
@@ -20,30 +25,18 @@
   },
   "tags": [
     {
-      "name": "Auth"
+      "name": "Auth",
+      "description": "this API is for Auth resources"
     },
     {
-      "name": "Auth > Register"
-    },
-    {
-      "name": "Auth > Login"
-    },
-    {
-      "name": "Auth > User Information"
-    },
-    {
-      "name": "Auth > Reset Password",
-      "description": "This module is designed for password reset functionality."
-    },
-    {
-      "name": "Auth > User Email Verification",
-      "description": "This module is used for account verification to enable login. "
+      "name": "Airline",
+      "description": "this API is for Airline resources"
     }
   ],
   "paths": {
     "/api/v1/auth/register": {
       "post": {
-        "tags": ["Auth > Register"],
+        "tags": ["Auth"],
         "summary": "Register",
         "requestBody": {
           "content": {
@@ -51,8 +44,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "full_name": "Akbar Rahmat",
-                  "email": "akbarrahmatmulyatama@gmail.com",
+                  "full_name": "Tester account",
+                  "email": "theslowedchill@gmail.com",
                   "phone_number": "087883812700",
                   "password": "Users123456",
                   "confirm_password": "Users123456"
@@ -247,7 +240,7 @@
     },
     "/api/v1/auth/login": {
       "post": {
-        "tags": ["Auth > Login"],
+        "tags": ["Auth"],
         "summary": "Login",
         "requestBody": {
           "content": {
@@ -255,7 +248,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "akbarrahmatm.msc@gmail.com",
+                  "email": "theslowedchill@gmail.com",
                   "password": "Users123456"
                 }
               }
@@ -501,7 +494,7 @@
     },
     "/api/v1/auth/me": {
       "get": {
-        "tags": ["Auth > User Information"],
+        "tags": ["Auth"],
         "summary": "Check User Information",
         "security": [
           {
@@ -716,9 +709,186 @@
         }
       }
     },
+    "/api/v1/auth/password-reset": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "This module is designed for password reset functionality.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "theslowedchill@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "291"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"123-xdtni5eKCdgAGPmkicMEaCFp0ho\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 05:51:09 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Reset password OTP is sent, please check your email.",
+                  "requestAt": "2024-05-28T12:51:05+07:00",
+                  "data": {
+                    "id": 2,
+                    "email": "akbarrahmatm.tugas@gmail.com",
+                    "reset_password_resend_at": "2024-05-28T12:52:05+07:00",
+                    "reset_password_expired_at": "2024-05-28T13:51:05+07:00"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "89"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"59-jvOTFbyFBbN8j+OlhEGF09DLr+Y\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 28 May 2024 05:48:54 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "example-0": {
+                    "summary": "Failed - Email Is Required",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email is required",
+                      "requestAt": "2024-05-28T12:48:54+07:00"
+                    }
+                  },
+                  "example-1": {
+                    "summary": "Failed - User Not Exist",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not exist",
+                      "requestAt": "2024-05-28T12:49:56+07:00"
+                    }
+                  },
+                  "example-2": {
+                    "summary": "Failed - User Not Verified",
+                    "value": {
+                      "status": "Failed",
+                      "message": "User is not verified, please verify your account",
+                      "requestAt": "2024-05-28T12:50:37+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/password-reset/resend": {
       "post": {
-        "tags": ["Auth > Reset Password"],
+        "tags": ["Auth"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
@@ -900,12 +1070,24 @@
         }
       }
     },
-    "/api/v1/auth/password-change/verify": {
+    "/api/v1/auth/password-reset/verify": {
       "post": {
-        "tags": ["Auth > Reset Password"],
+        "tags": ["Auth"],
         "summary": "Verify Password Change OTP",
         "requestBody": {
-          "content": {}
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "code": "305679",
+                  "email": "akbarrahmatmulyatama@gmail.com",
+                  "password": "Users123456",
+                  "confirm_password": "Users123456"
+                }
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -1072,7 +1254,7 @@
     },
     "/api/v1/auth/activation/verify": {
       "post": {
-        "tags": ["Auth > User Email Verification"],
+        "tags": ["Auth"],
         "summary": "Verify Activation Account OTP",
         "requestBody": {
           "content": {
@@ -1080,8 +1262,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "akbarrahmatm.msc@gmail.com",
-                  "code": "528890"
+                  "email": "theslowedchill@gmail.com",
+                  "code": "383966"
                 }
               }
             }
@@ -1252,7 +1434,7 @@
     },
     "/api/v1/auth/activation/resend": {
       "post": {
-        "tags": ["Auth > User Email Verification"],
+        "tags": ["Auth"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
@@ -1409,6 +1591,796 @@
                       "message": "User is already verified",
                       "requestAt": "2024-05-28T12:45:59+07:00"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/airline": {
+      "post": {
+        "tags": ["Airline"],
+        "summary": "Create Airline Data",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_name": {
+                    "type": "string",
+                    "example": "Gaada "
+                  },
+                  "airline_picture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "299"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"12b-fycuAs03/pSuFqU2TBK8QLW5fkQ\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:06:42 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Airline successfully created",
+                  "data": {
+                    "newAirline": {
+                      "id": 2,
+                      "airline_name": "Garuda Indonesia",
+                      "airline_picture": "https://ik.imagekit.io/iaqozxfxq/airline/IMG-1716984399305_IReSpXAPt.png",
+                      "updated_at": "2024-05-29T12:06:42.559Z",
+                      "created_at": "2024-05-29T12:06:42.559Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "88"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"58-m+rX79wKu+b0E7pBXKz+J3cBw4U\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:04:04 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "No file uploaded",
+                  "requestAt": "2024-05-29T19:04:04+07:00"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "103"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"67-+TpaoCBeDuqHtaJ7/LSm3MtQUUA\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:07:29 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Error",
+                  "message": "Airline name should be required!",
+                  "requestAt": "2024-05-29T19:07:29+07:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/airline/{id}": {
+      "patch": {
+        "tags": ["Airline"],
+        "summary": "Update Airline Data",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_name": {
+                    "type": "string",
+                    "example": "Lion Air Indonesia"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "334"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"14e-dAeE4PF4tcC4Cor2HQopEPlL9SE\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 11:58:51 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Airline Successfully Updated",
+                  "requesatAt": "2024-05-29T18:58:48+07:00",
+                  "data": {
+                    "updatedData": {
+                      "id": 1,
+                      "airline_name": "Lion Air ",
+                      "airline_picture": "https://ik.imagekit.io/iaqozxfxq/airline/IMG-1716983928770_MNhTDkXRZ.png",
+                      "created_at": "2024-05-29T11:45:45.452Z",
+                      "updated_at": "2024-05-29T11:58:51.632Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "104"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"68-WkGkGIF/wZFzTBfupXTY/PU1X+Y\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:03:32 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Airline name should be required!",
+                  "requestAt": "2024-05-29T19:03:32+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Airline"],
+        "summary": "Delete Airline Data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "109"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"6d-B735K+Un4iGBMOPYHlZQVfcUf+o\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:12:49 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Airline with is successfully deleted",
+                  "requestAt": "2024-05-29T19:12:49+07:00"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "89"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"59-gNnZ6ohDylPwqqjVE06fJk0OroU\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:11:36 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Airline not found",
+                  "requestAt": "2024-05-29T19:11:36+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Airline"],
+        "summary": "Get Airline Data By Id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "347"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"15b-vRgMK3X+3Dpf7ZML5K1i8Y322po\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:31:21 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Airline with id 2 successfully retrieved",
+                  "reqestAt": "2024-05-29T19:31:21+07:00",
+                  "data": {
+                    "airline": {
+                      "id": 2,
+                      "airline_name": "Garuda Indonesia",
+                      "airline_picture": "https://ik.imagekit.io/iaqozxfxq/airline/IMG-1716984399305_IReSpXAPt.png",
+                      "created_at": "2024-05-29T12:06:42.559Z",
+                      "updated_at": "2024-05-29T12:06:42.559Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "89"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"59-s/qtX/NrIEmqvRh7qvZe938+pw4\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:31:39 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Airline not found",
+                  "requestAt": "2024-05-29T19:31:39+07:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/airline/": {
+      "get": {
+        "tags": ["Airline"],
+        "summary": "Get All Airline Data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "344"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"158-MvxZDg/2v1L6apnB0mxXe19qUd0\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Wed, 29 May 2024 12:33:01 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Airline successfully retrieved",
+                  "requestAt": "2024-05-29T19:33:00+07:00",
+                  "data": {
+                    "allAirlines": [
+                      {
+                        "id": 2,
+                        "airline_name": "Garuda Indonesia",
+                        "airline_picture": "https://ik.imagekit.io/iaqozxfxq/airline/IMG-1716984399305_IReSpXAPt.png",
+                        "created_at": "2024-05-29T12:06:42.559Z",
+                        "updated_at": "2024-05-29T12:06:42.559Z"
+                      }
+                    ]
                   }
                 }
               }
