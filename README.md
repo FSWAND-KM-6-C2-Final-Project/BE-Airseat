@@ -18,7 +18,7 @@ Airseat is an android and web-based application that has features to be able to 
 | Akbar Rahmat Mulyatama       | Auth System, Booking System API (Booking & Booking Detail) |
 | Achmad Sarifitra Noer Rahman | Seat, Flight, Airport API                                  |
 | Qonita Afifah                | Airline, Discount API                                      |
-| Asyifa Maharani Gustina      | Airline, Discount API` -`Notification, Passenger API       |
+| Asyifa Maharani Gustina      | Notification, Passenger API                                |
 
 ## DB Structure
 
