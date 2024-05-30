@@ -1,5 +1,7 @@
 const { Seats } = require("../models");
 const ApiError = require("../utils/apiError");
+const { Op } = require("sequelize");
+const { isInt } = require("validator");
 
 const findSeats = async (req, res, next) => {
   try {
@@ -45,6 +47,69 @@ const findSeats = async (req, res, next) => {
           pageSize,
         },
       },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const createBulkSeats = async (req, res, next) => {
+  try {
+    const seats = req.body.seats;
+
+    if (!seats) {
+      return next(new ApiError("Seats is required", 400));
+    }
+
+    console.log(seats);
+
+    const newSeats = await Seats.bulkCreate(seats);
+
+    if (!newSeats) {
+      return next(new ApiError("Unexpected Error!, seats not created", 400));
+    }
+
+    res.status(201).json({
+      status: "Success",
+      message: "Seats is successfully created",
+      requestAt: req.requestTime,
+      data: { newSeats },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const findBookedSeatsByFlightId = async (req, res, next) => {
+  try {
+    const flightId = req.params.flightId;
+
+    if (!flightId || flightId === null) {
+      return next(new ApiError("Flight ID is required", 400));
+    }
+
+    if (!isInt(flightId)) {
+      return next(new ApiError("Flight ID is should be integer", 400));
+    }
+
+    const seats = await Seats.findAll({
+      where: {
+        flight_id: flightId,
+        seat_status: {
+          [Op.or]: ["locked", "unavailable"],
+        },
+      },
+    });
+
+    if (!seats) {
+      return next(new ApiError(`Flight with id '${flightId}' not found`, 400));
+    }
+
+    res.status(200).json({
+      status: "Success",
+      message: "Seats is successfully retrieved",
+      requestAt: req.requestTime,
+      data: { seats },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -125,6 +190,11 @@ const updateSeat = async (req, res, next) => {
 const deleteSeat = async (req, res, next) => {
   try {
     const id = req.params.id;
+
+    if (!isInt(id)) {
+      return next(new ApiError("Seat ID Should be integer", 400));
+    }
+
     const seat = await Seats.findOne({
       where: {
         id,
@@ -132,8 +202,9 @@ const deleteSeat = async (req, res, next) => {
     });
 
     if (!seat) {
-      next(new ApiError(`Seat with id '${id}' is not found`, 404));
+      return next(new ApiError(`Seat with id '${id}' is not found`, 404));
     }
+
     await seat.destroy({
       where: {
         id,
@@ -181,4 +252,6 @@ module.exports = {
   updateSeat,
   deleteSeat,
   createSeat,
+  createBulkSeats,
+  findBookedSeatsByFlightId,
 };
