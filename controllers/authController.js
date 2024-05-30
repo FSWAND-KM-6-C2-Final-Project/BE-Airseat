@@ -5,6 +5,7 @@ const createToken = require("../utils/createToken");
 const sendEmail = require("../utils/sendEmail");
 const dayjs = require("dayjs");
 const localizedFormat = require("dayjs/plugin/localizedFormat");
+const { default: isEmail } = require("validator/lib/isEmail");
 dayjs.extend(localizedFormat);
 
 const register = async (req, res, next) => {
@@ -42,11 +43,7 @@ const register = async (req, res, next) => {
     }
 
     // Check if email is in correct format
-    if (
-      !email.match(
-        /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
-      )
-    ) {
+    if (!isEmail(email)) {
       return next(new ApiError("Email format is not correct!", 400));
     }
 
@@ -211,12 +208,14 @@ const login = async (req, res, next) => {
         );
       }
 
-      const token = createToken({
+      const payload = {
         id: user.id,
-        first_name: user.first_name,
         full_name: user.full_name,
         email: user.email,
-      });
+        user_status: user.user_status,
+      };
+
+      const token = createToken(payload);
 
       res.status(200).json({
         status: "Success",
