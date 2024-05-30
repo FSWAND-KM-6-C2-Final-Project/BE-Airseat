@@ -1,6 +1,5 @@
 const { Seats } = require("../models");
 const ApiError = require("../utils/apiError");
-const exampleSeats = require("../data/seat.json");
 const { Op } = require("sequelize");
 const { isInt } = require("validator");
 
