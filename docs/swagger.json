@@ -39,6 +39,14 @@
     {
       "name": "Flight",
       "description": "This API is for Flight resources"
+    },
+    {
+      "name": "Seat",
+      "description": "This API is for Seat resources"
+    },
+    {
+      "name": "Passenger",
+      "description": "This API is for Passenger resources"
     }
   ],
   "paths": {
@@ -3768,6 +3776,1782 @@
                   "status": "Failed",
                   "message": "Flight with id '20' is not found",
                   "requestAt": "2024-05-29T22:15:03+07:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seat": {
+      "get": {
+        "tags": ["Seat"],
+        "summary": "Get All Seats",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "1982"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"7be-zL3wsmgfjNYkKMJ7bUXnSmRuB6A\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:35:58 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seats succesfully retrieved",
+                  "requestAt": "2024-05-30T08:35:58+07:00",
+                  "data": {
+                    "seats": [
+                      {
+                        "id": 2,
+                        "seat_row": "B",
+                        "seat_column": 1,
+                        "seat_name": "B1",
+                        "flight_id": 1,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:12:16.678Z",
+                        "updated_at": "2024-05-30T01:12:16.678Z"
+                      },
+                      {
+                        "id": 3,
+                        "seat_row": "C",
+                        "seat_column": 1,
+                        "seat_name": "C1",
+                        "flight_id": 1,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:12:16.678Z",
+                        "updated_at": "2024-05-30T01:12:16.678Z"
+                      },
+                      {
+                        "id": 4,
+                        "seat_row": "D",
+                        "seat_column": 1,
+                        "seat_name": "D1",
+                        "flight_id": 1,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:12:16.678Z",
+                        "updated_at": "2024-05-30T01:12:16.678Z"
+                      },
+                      {
+                        "id": 5,
+                        "seat_row": "E",
+                        "seat_column": 1,
+                        "seat_name": "E1",
+                        "flight_id": 1,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:12:16.678Z",
+                        "updated_at": "2024-05-30T01:12:16.678Z"
+                      },
+                      {
+                        "id": 6,
+                        "seat_row": "F",
+                        "seat_column": 1,
+                        "seat_name": "F1",
+                        "flight_id": 1,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:12:16.678Z",
+                        "updated_at": "2024-05-30T01:12:16.678Z"
+                      },
+                      {
+                        "id": 7,
+                        "seat_row": "A",
+                        "seat_column": 1,
+                        "seat_name": "A1",
+                        "flight_id": 2,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:14:11.284Z",
+                        "updated_at": "2024-05-30T01:14:11.284Z"
+                      },
+                      {
+                        "id": 8,
+                        "seat_row": "B",
+                        "seat_column": 1,
+                        "seat_name": "B1",
+                        "flight_id": 2,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:14:11.284Z",
+                        "updated_at": "2024-05-30T01:14:11.284Z"
+                      },
+                      {
+                        "id": 9,
+                        "seat_row": "C",
+                        "seat_column": 1,
+                        "seat_name": "C1",
+                        "flight_id": 2,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:14:11.284Z",
+                        "updated_at": "2024-05-30T01:14:11.284Z"
+                      },
+                      {
+                        "id": 10,
+                        "seat_row": "D",
+                        "seat_column": 1,
+                        "seat_name": "D1",
+                        "flight_id": 2,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:14:11.284Z",
+                        "updated_at": "2024-05-30T01:14:11.284Z"
+                      },
+                      {
+                        "id": 11,
+                        "seat_row": "E",
+                        "seat_column": 1,
+                        "seat_name": "E1",
+                        "flight_id": 2,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:14:11.284Z",
+                        "updated_at": "2024-05-30T01:14:11.284Z"
+                      }
+                    ],
+                    "pagination": {
+                      "totalData": 23,
+                      "totalPages": 3,
+                      "pageNum": 1,
+                      "pageSize": 10
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Seat"],
+        "summary": "Create Seat Data",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "seat_row": "B",
+                  "seat_column": "2",
+                  "seat_name": "B1",
+                  "flight_id": 1,
+                  "seat_status": "locked"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "292"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"124-N0IS4qfbk0miFXj05mEA91Eg7qA\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:45:04 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seat successfully created",
+                  "requestAt": "2024-05-30T08:45:04+07:00",
+                  "data": {
+                    "newSeat": {
+                      "id": 31,
+                      "seat_row": "B",
+                      "seat_column": 2,
+                      "seat_name": "B1",
+                      "flight_id": 1,
+                      "seat_status": "locked",
+                      "updated_at": "2024-05-30T01:45:04.133Z",
+                      "created_at": "2024-05-30T01:45:04.133Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seat/{id}": {
+      "get": {
+        "tags": ["Seat"],
+        "summary": "Get Seats Data By ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "294"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"126-pKHVy0Dt0iKVgE2+d4Qjqcx3llw\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:36:51 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seat succesfully retrieved",
+                  "requestAt": "2024-05-30T08:36:51+07:00",
+                  "data": {
+                    "seat": {
+                      "id": 3,
+                      "seat_row": "C",
+                      "seat_column": 1,
+                      "seat_name": "C1",
+                      "flight_id": 1,
+                      "seat_status": "unavailable",
+                      "created_at": "2024-05-30T01:12:16.678Z",
+                      "updated_at": "2024-05-30T01:12:16.678Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "103"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"67-aVDFHI/Ks9p4VTouPPDxPW+hO1E\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:37:23 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Seat with id '300' is not found",
+                  "requestAt": "2024-05-30T08:37:23+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Seat"],
+        "summary": "Update Seat Data",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "seat_status": "available"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "19"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "297"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"129-KxfQSDe9KMmRWcCyDF63tqm2hrE\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:31:28 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seat succesfully Update",
+                  "requestAt": "2024-05-30T08:31:28+07:00",
+                  "data": {
+                    "updatedSeat": {
+                      "id": 19,
+                      "seat_row": "A",
+                      "seat_column": 1,
+                      "seat_name": "A1",
+                      "flight_id": 4,
+                      "seat_status": "available",
+                      "created_at": "2024-05-30T01:28:56.195Z",
+                      "updated_at": "2024-05-30T01:31:28.189Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "103"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"67-eau3nTitZJaTSdoLl7LPpeCGD8Y\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:32:06 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Seat with id '192' is not found",
+                  "requestAt": "2024-05-30T08:32:06+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Seat"],
+        "summary": "Delete Seat Data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "113"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"71-2G+//gtcCUBrMc86SwxElGUhGEs\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:33:07 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seat with id '1' is successfully deleted",
+                  "requestAt": "2024-05-30T08:33:07+07:00"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "104"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"68-JmBdK3YolOvyYZbq1Sb+tvVAW9Y\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:33:27 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Seat with id '1000' is not found",
+                  "requestAt": "2024-05-30T08:33:27+07:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seat/booked/{flightId}": {
+      "get": {
+        "tags": ["Seat"],
+        "summary": "Get Booked (Unavailable) Seats By Flight ID",
+        "parameters": [
+          {
+            "name": "flightId",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "1013"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"3f5-j6SJFT40jqcDS4x7VAOOK9z640o\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:28:59 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seats is successfully retrieved",
+                  "requestAt": "2024-05-30T08:28:59+07:00",
+                  "data": {
+                    "seats": [
+                      {
+                        "id": 19,
+                        "seat_row": "A",
+                        "seat_column": 1,
+                        "seat_name": "A1",
+                        "flight_id": 4,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:28:56.195Z",
+                        "updated_at": "2024-05-30T01:28:56.195Z"
+                      },
+                      {
+                        "id": 20,
+                        "seat_row": "B",
+                        "seat_column": 1,
+                        "seat_name": "B1",
+                        "flight_id": 4,
+                        "seat_status": "locked",
+                        "created_at": "2024-05-30T01:28:56.195Z",
+                        "updated_at": "2024-05-30T01:28:56.195Z"
+                      },
+                      {
+                        "id": 22,
+                        "seat_row": "D",
+                        "seat_column": 1,
+                        "seat_name": "D1",
+                        "flight_id": 4,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:28:56.195Z",
+                        "updated_at": "2024-05-30T01:28:56.195Z"
+                      },
+                      {
+                        "id": 23,
+                        "seat_row": "E",
+                        "seat_column": 1,
+                        "seat_name": "E1",
+                        "flight_id": 4,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:28:56.195Z",
+                        "updated_at": "2024-05-30T01:28:56.195Z"
+                      },
+                      {
+                        "id": 24,
+                        "seat_row": "F",
+                        "seat_column": 1,
+                        "seat_name": "F1",
+                        "flight_id": 4,
+                        "seat_status": "locked",
+                        "created_at": "2024-05-30T01:28:56.195Z",
+                        "updated_at": "2024-05-30T01:28:56.195Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seat/bulk": {
+      "post": {
+        "tags": ["Seat"],
+        "summary": "Create Bulk Seats",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "seats": [
+                    {
+                      "seat_row": "A",
+                      "seat_column": "1",
+                      "seat_name": "A1",
+                      "flight_id": 5,
+                      "seat_status": "unavailable"
+                    },
+                    {
+                      "seat_row": "B",
+                      "seat_column": "1",
+                      "seat_name": "B1",
+                      "flight_id": 5,
+                      "seat_status": "locked"
+                    },
+                    {
+                      "seat_row": "C",
+                      "seat_column": "1",
+                      "seat_name": "C1",
+                      "flight_id": 5,
+                      "seat_status": "available"
+                    },
+                    {
+                      "seat_row": "D",
+                      "seat_column": "1",
+                      "seat_name": "D1",
+                      "flight_id": 5,
+                      "seat_status": "unavailable"
+                    },
+                    {
+                      "seat_row": "E",
+                      "seat_column": "1",
+                      "seat_name": "E1",
+                      "flight_id": 5,
+                      "seat_status": "unavailable"
+                    },
+                    {
+                      "seat_row": "F",
+                      "seat_column": "1",
+                      "seat_name": "F1",
+                      "flight_id": 5,
+                      "seat_status": "locked"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "1192"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"4a8-nRGV8VUK1hGIesKdfbnpKkPXg3E\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 01:42:58 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Seats is successfully created",
+                  "requestAt": "2024-05-30T08:42:57+07:00",
+                  "data": {
+                    "newSeats": [
+                      {
+                        "id": 25,
+                        "seat_row": "A",
+                        "seat_column": 1,
+                        "seat_name": "A1",
+                        "flight_id": 5,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      },
+                      {
+                        "id": 26,
+                        "seat_row": "B",
+                        "seat_column": 1,
+                        "seat_name": "B1",
+                        "flight_id": 5,
+                        "seat_status": "locked",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      },
+                      {
+                        "id": 27,
+                        "seat_row": "C",
+                        "seat_column": 1,
+                        "seat_name": "C1",
+                        "flight_id": 5,
+                        "seat_status": "available",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      },
+                      {
+                        "id": 28,
+                        "seat_row": "D",
+                        "seat_column": 1,
+                        "seat_name": "D1",
+                        "flight_id": 5,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      },
+                      {
+                        "id": 29,
+                        "seat_row": "E",
+                        "seat_column": 1,
+                        "seat_name": "E1",
+                        "flight_id": 5,
+                        "seat_status": "unavailable",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      },
+                      {
+                        "id": 30,
+                        "seat_row": "F",
+                        "seat_column": 1,
+                        "seat_name": "F1",
+                        "flight_id": 5,
+                        "seat_status": "locked",
+                        "created_at": "2024-05-30T01:42:57.937Z",
+                        "updated_at": "2024-05-30T01:42:57.937Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/passenger": {
+      "get": {
+        "tags": ["Passenger"],
+        "summary": "Get All Passenger Data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "494"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"1ee-SrTS26vFrj5EFTaayfZxuLl3PGg\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:02:59 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Passangers succesfully retrived",
+                  "requestAt": "2024-05-30T09:02:59+07:00",
+                  "data": {
+                    "passengers": [
+                      {
+                        "id": 1,
+                        "first_name": "Akbar Rahmat",
+                        "last_name": "Mulyatama",
+                        "title": "mr",
+                        "dob": "2003-11-27T17:00:00.000Z",
+                        "nationality": "Indonesia",
+                        "identification_type": "paspor",
+                        "identification_number": "A12387",
+                        "identification_country": "Indonesia",
+                        "identification_expired": "2026-11-21T17:00:00.000Z",
+                        "created_at": "2024-05-30T02:02:22.668Z",
+                        "updated_at": "2024-05-30T02:02:22.668Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Passenger"],
+        "summary": "Create Passenger Data",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "first_name": "Akbar Rahmat",
+                  "last_name": "Mulyatama",
+                  "title": "mr",
+                  "dob": "2003-11-28T00:00:00+07:00",
+                  "nationality": "Indonesia",
+                  "identification_type": "paspor",
+                  "identification_number": "A12387",
+                  "identification_country": "Indonesia",
+                  "identification_expired": "2026-11-22T00:00:00+07:00"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "494"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"1ee-Nw1nfdM6mgk0oNv0NbZjg3BhNW8\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:02:22 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Passengers successfully created",
+                  "requestAt": "2024-05-30T09:02:22+07:00",
+                  "data": {
+                    "newPassenger": {
+                      "id": 1,
+                      "first_name": "Akbar Rahmat",
+                      "last_name": "Mulyatama",
+                      "title": "mr",
+                      "dob": "2003-11-27T17:00:00.000Z",
+                      "nationality": "Indonesia",
+                      "identification_type": "paspor",
+                      "identification_number": "A12387",
+                      "identification_country": "Indonesia",
+                      "identification_expired": "2026-11-21T17:00:00.000Z",
+                      "updated_at": "2024-05-30T02:02:22.668Z",
+                      "created_at": "2024-05-30T02:02:22.668Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/passenger/{id}": {
+      "get": {
+        "tags": ["Passenger"],
+        "summary": "Get Passenger Data By ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "485"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"1e5-klt4Bp5KsArr8OS6Nn9AzRM40Kk\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:10:20 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Passengers succesfully retrieved",
+                  "requestAt": "2024-05-30T09:10:20+07:00",
+                  "data": {
+                    "passenger": {
+                      "id": 1,
+                      "first_name": "Akbar",
+                      "last_name": "Mulyatama",
+                      "title": "mr",
+                      "dob": "2003-11-27T17:00:00.000Z",
+                      "nationality": "Indonesia",
+                      "identification_type": "paspor",
+                      "identification_number": "A12387",
+                      "identification_country": "Indonesia",
+                      "identification_expired": "2026-11-21T17:00:00.000Z",
+                      "created_at": "2024-05-30T02:02:22.668Z",
+                      "updated_at": "2024-05-30T02:05:21.290Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "109"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"6d-9dxrolBwLQEoyVf7n/lqe40DK3k\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:13:13 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Passengers with id '100' is not found",
+                  "requestAt": "2024-05-30T09:13:13+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Passenger"],
+        "summary": "Update Passenger Data",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "first_name": "Akbar"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "482"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"1e2-vOgWhzvrlJbA1DX7UewjidZTBFw\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:05:21 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Passengers succesfully Update",
+                  "requestAt": "2024-05-30T09:05:21+07:00",
+                  "data": {
+                    "passenger": {
+                      "id": 1,
+                      "first_name": "Akbar",
+                      "last_name": "Mulyatama",
+                      "title": "mr",
+                      "dob": "2003-11-27T17:00:00.000Z",
+                      "nationality": "Indonesia",
+                      "identification_type": "paspor",
+                      "identification_number": "A12387",
+                      "identification_country": "Indonesia",
+                      "identification_expired": "2026-11-21T17:00:00.000Z",
+                      "created_at": "2024-05-30T02:02:22.668Z",
+                      "updated_at": "2024-05-30T02:05:21.290Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "109"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"6d-v4m0rD75QON5esWyxdXmLHeA7tM\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:05:51 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Passengers with id '000' is not found",
+                  "requestAt": "2024-05-30T09:05:51+07:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Passenger"],
+        "summary": "Delete Passenger Data",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "example": "2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "118"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"76-Bvurv/bKsMF1DAehafeVchsuuvM\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:09:31 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Success",
+                  "message": "Passenger with id '2' is successfully deleted",
+                  "requestAt": "2024-05-30T09:09:31+07:00"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "109"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"6d-tsCJyqIepiOEaqEA6kSfkHPzZIA\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Thu, 30 May 2024 02:09:09 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "status": "Failed",
+                  "message": "Passengers with id '200' is not found",
+                  "requestAt": "2024-05-30T09:09:09+07:00"
                 }
               }
             }
