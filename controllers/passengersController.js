@@ -3,12 +3,13 @@ const ApiError = require("../utils/apiError");
 
 const findPassengers = async (req, res, next) => {
   try {
-    const passenger = await Passengers.findAll();
+    const passengers = await Passengers.findAll();
     res.status(200).json({
       status: "Success",
       message: "Passangers succesfully retrived",
+      requestAt: req.requestTime,
       data: {
-        passenger,
+        passengers,
       },
     });
   } catch (err) {
@@ -18,13 +19,18 @@ const findPassengers = async (req, res, next) => {
 
 const findByIdPassengers = async (req, res, next) => {
   try {
+    const passenger_id = req.params.id;
+
     const passenger = await Passengers.findOne({
       where: {
-        id: req.params.id,
+        id: passenger_id,
       },
     });
+
     if (!passenger) {
-      return next(new ApiError(`Passengers with id '${id}' is not found`, 404));
+      return next(
+        new ApiError(`Passengers with id '${passenger_id}' is not found`, 404)
+      );
     }
     res.status(200).json({
       status: "Success",
@@ -69,7 +75,7 @@ const createPassengers = async (req, res, next) => {
       status: "Success",
       message: "Passengers successfully created",
       requestAt: req.requestTime,
-      data: newPassenger,
+      data: { newPassenger },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -90,6 +96,20 @@ const updatePassengers = async (req, res, next) => {
   } = req.body;
 
   try {
+    const passenger_id = req.params.id;
+
+    const isPassengerExist = await Passengers.findOne({
+      where: {
+        id: passenger_id,
+      },
+    });
+
+    if (!isPassengerExist) {
+      return next(
+        new ApiError(`Passengers with id '${passenger_id}' is not found`, 404)
+      );
+    }
+
     const passenger = await Passengers.update(
       {
         first_name,
@@ -104,15 +124,28 @@ const updatePassengers = async (req, res, next) => {
       },
       {
         where: {
-          id: req.params.id,
+          id: passenger_id,
         },
       }
     );
+
+    if (!passenger) {
+      return next(
+        new ApiError("Unexpected error !, passenger not updated", 400)
+      );
+    }
+
+    const updatedPassenger = await Passengers.findOne({
+      where: {
+        id: passenger_id,
+      },
+    });
+
     res.status(200).json({
       status: "Success",
       message: "Passengers succesfully Update",
       requestAt: req.requestTime,
-      data: passenger,
+      data: { passenger: updatedPassenger },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -121,20 +154,23 @@ const updatePassengers = async (req, res, next) => {
 
 const deletePassengers = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const passenger_id = req.params.id;
+
     const passenger = await Passengers.findOne({
       where: {
-        id,
+        id: passenger_id,
       },
     });
 
     if (!passenger) {
-      next(new ApiError(`Passengers with id '${id}' is not found`, 404));
+      return next(
+        new ApiError(`Passengers with id '${passenger_id}' is not found`, 404)
+      );
     }
 
     await passenger.destroy({
       where: {
-        id,
+        id: passenger_id,
       },
     });
 
@@ -144,7 +180,7 @@ const deletePassengers = async (req, res, next) => {
       requestAt: req.requestTime,
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    return next(new ApiError(err.message, 400));
   }
 };
 
