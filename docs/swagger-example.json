@@ -7,12 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://plucky-agent-424606-s3.et.r.appspot.com",
-      "description": "Production"
-    },
-    {
-      "url": "http://localhost:3000",
-      "description": "Development"
+      "url": "http://{{url}}"
     }
   ],
   "components": {
@@ -25,38 +20,49 @@
   },
   "tags": [
     {
-      "name": "Auth",
-      "description": "This API is for Auth resources"
+      "name": "Auth"
     },
     {
-      "name": "Airline",
-      "description": "This API is for Airline resources"
+      "name": "Auth > Register"
     },
     {
-      "name": "Airport",
-      "description": "This API is for Airport resources"
+      "name": "Auth > Login",
+      "description": "JWT Payload Data :\n\n`{   \"id\": xxx,   \"full_name\": \"xxx\",   \"email\": \"xxx\",   \"user_status\": \"xxx\",   \"iat\": xxx,   \"exp\": xxx   }`\n\nJWT Expired in 7 day after token generated"
     },
     {
-      "name": "Flight",
-      "description": "This API is for Flight resources"
+      "name": "Auth > User Information"
     },
     {
-      "name": "Seat",
-      "description": "This API is for Seat resources"
+      "name": "Auth > Reset Password",
+      "description": "This module is designed for password reset functionality. It includes the following requests:\n\n**Reset Password Request**\n\n**Password Reset Verification:**\n\n- Password reset verification must be completed within 1 day of the most recent OTP request.    \n\n**Resend OTP:**\n\n- You can resend the OTP only after 1 minute has passed since the last OTP request."
     },
     {
-      "name": "Passenger",
-      "description": "This API is for Passenger resources"
+      "name": "Auth > User Email Verification",
+      "description": "This module is used for account verification to enable login. It includes several requests:\n\n**Verify Activation Account**\n\n- Account verification can only be completed within 1 day after the last OTP request.    \n\n**Resend OTP**\n\n- Resending the OTP is allowed only after a minimum of 1 minute has passed since the last OTP request."
     },
     {
-      "name": "Discount",
-      "description": "This API is for Discount resources"
+      "name": "Airline"
+    },
+    {
+      "name": "Airport"
+    },
+    {
+      "name": "Flight"
+    },
+    {
+      "name": "Seat"
+    },
+    {
+      "name": "Passenger"
+    },
+    {
+      "name": "Discount"
     }
   ],
   "paths": {
     "/api/v1/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > Register"],
         "summary": "Register",
         "requestBody": {
           "content": {
@@ -260,7 +266,7 @@
     },
     "/api/v1/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > Login"],
         "summary": "Login",
         "requestBody": {
           "content": {
@@ -268,7 +274,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "akbarrahmatmulyatama@gmail.com",
+                  "email": "theslowedchill@gmail.com",
                   "password": "Users123456"
                 }
               }
@@ -514,7 +520,7 @@
     },
     "/api/v1/auth/me": {
       "get": {
-        "tags": ["Auth"],
+        "tags": ["Auth > User Information"],
         "summary": "Check User Information",
         "security": [
           {
@@ -731,8 +737,8 @@
     },
     "/api/v1/auth/password-reset": {
       "post": {
-        "tags": ["Auth"],
-        "summary": "This module is designed for password reset functionality.",
+        "tags": ["Auth > Reset Password"],
+        "summary": "Reset Password Request",
         "requestBody": {
           "content": {
             "application/json": {
@@ -908,7 +914,7 @@
     },
     "/api/v1/auth/password-reset/resend": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > Reset Password"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
@@ -1092,7 +1098,7 @@
     },
     "/api/v1/auth/password-reset/verify": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > Reset Password"],
         "summary": "Verify Password Change OTP",
         "requestBody": {
           "content": {
@@ -1274,7 +1280,7 @@
     },
     "/api/v1/auth/activation/verify": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > User Email Verification"],
         "summary": "Verify Activation Account OTP",
         "requestBody": {
           "content": {
@@ -1454,7 +1460,7 @@
     },
     "/api/v1/auth/activation/resend": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Auth > User Email Verification"],
         "summary": "Resend OTP",
         "requestBody": {
           "content": {}
