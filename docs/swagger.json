@@ -1713,7 +1713,7 @@
                 "properties": {
                   "airline_name": {
                     "type": "string",
-                    "example": "Gaada "
+                    "example": "Super Air Jet"
                   },
                   "airline_picture": {
                     "type": "string",
@@ -2503,7 +2503,35 @@
         "tags": ["Airport"],
         "summary": "Create Airport Data",
         "requestBody": {
-          "content": {}
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airport_name": {
+                    "type": "string",
+                    "example": "Husein Sastranegara"
+                  },
+                  "airport_city": {
+                    "type": "string",
+                    "example": "Bandung"
+                  },
+                  "airport_city_code": {
+                    "type": "string",
+                    "example": "BDG"
+                  },
+                  "airport_picture": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "continent": {
+                    "type": "string",
+                    "example": "asia"
+                  }
+                }
+              }
+            }
+          }
         },
         "responses": {
           "200": {
