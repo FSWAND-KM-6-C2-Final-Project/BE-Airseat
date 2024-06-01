@@ -50,12 +50,12 @@ module.exports = (sequelize, DataTypes) => {
           "va_mandiri",
           "va_permata",
         ]),
-        allowNull: false,
         defaultValue: "card",
+        allowNull: true,
       },
       payment_id: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       flight_id: {
         type: DataTypes.INTEGER,

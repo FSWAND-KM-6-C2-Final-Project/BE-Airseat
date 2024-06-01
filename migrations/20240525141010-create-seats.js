@@ -25,6 +25,16 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      class: {
+        type: Sequelize.ENUM([
+          "economy",
+          "premium_economy",
+          "business",
+          "first_class",
+        ]),
+        defaultValue: "economy",
+        allowNull: false,
+      },
       seat_status: {
         type: Sequelize.ENUM(["available", "unavailable", "locked"]),
         defaultValue: "available",

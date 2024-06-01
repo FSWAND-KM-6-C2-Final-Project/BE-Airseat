@@ -40,6 +40,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      class: {
+        type: DataTypes.ENUM([
+          "economy",
+          "premium_economy",
+          "business",
+          "first_class",
+        ]),
+        defaultValue: "economy",
+        allowNull: false,
+      },
       seat_status: {
         type: DataTypes.ENUM(["available", "unavailable", "locked"]),
         defaultValue: "available",

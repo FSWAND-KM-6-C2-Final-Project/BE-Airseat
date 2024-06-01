@@ -25,12 +25,12 @@ module.exports = {
           "va_mandiri",
           "va_permata",
         ]),
-        allowNull: false,
         defaultValue: "card",
+        allowNull: true,
       },
       payment_id: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       flight_id: {
         type: Sequelize.INTEGER,

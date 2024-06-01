@@ -9,6 +9,10 @@ router.post("/bulk", seatsController.createBulkSeats);
 router.get("/", seatsController.findSeats);
 // route untuk mengambil data sesuai id
 router.get("/:id", seatsController.findSeatById);
+router.get(
+  "/available/:flightId",
+  seatsController.findAvailableSeatsByFlightId
+);
 router.get("/booked/:flightId", seatsController.findBookedSeatsByFlightId);
 // route untuk mengedit data sesuai id
 router.patch("/:id", seatsController.updateSeat);

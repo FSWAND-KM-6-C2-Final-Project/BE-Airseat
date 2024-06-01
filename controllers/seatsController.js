@@ -80,6 +80,42 @@ const createBulkSeats = async (req, res, next) => {
   }
 };
 
+const findAvailableSeatsByFlightId = async (req, res, next) => {
+  try {
+    const flightId = req.params.flightId;
+
+    if (!flightId || flightId === null) {
+      return next(new ApiError("Flight ID is required", 400));
+    }
+
+    if (!isInt(flightId)) {
+      return next(new ApiError("Flight ID is should be integer", 400));
+    }
+
+    const seats = await Seats.findAll({
+      where: {
+        flight_id: flightId,
+        seat_status: "available",
+      },
+    });
+
+    if (!seats) {
+      return next(
+        new ApiError(`Seats with Flight id '${flightId}' not found`, 400)
+      );
+    }
+
+    res.status(200).json({
+      status: "Success",
+      message: "Seats is successfully retrieved",
+      requestAt: req.requestTime,
+      data: { seats },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
 const findBookedSeatsByFlightId = async (req, res, next) => {
   try {
     const flightId = req.params.flightId;
@@ -102,7 +138,9 @@ const findBookedSeatsByFlightId = async (req, res, next) => {
     });
 
     if (!seats) {
-      return next(new ApiError(`Flight with id '${flightId}' not found`, 400));
+      return next(
+        new ApiError(`Seats with Flight id '${flightId}' not found`, 400)
+      );
     }
 
     res.status(200).json({
@@ -254,4 +292,5 @@ module.exports = {
   createSeat,
   createBulkSeats,
   findBookedSeatsByFlightId,
+  findAvailableSeatsByFlightId,
 };
