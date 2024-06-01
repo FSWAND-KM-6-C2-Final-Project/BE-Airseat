@@ -13,6 +13,7 @@ const seatRouter = require("./seatRouter");
 const airlineRouter = require("./airlineRouter");
 const passengerRouter = require("./passengerRouter");
 const discountRouter = require("./discountRouter");
+const bookingRouter = require("./bookingRouter");
 
 /*
     Define other routes here, for example:
@@ -26,6 +27,7 @@ router.use("/api/v1/seat", seatRouter);
 router.use("/api/v1/passenger", passengerRouter);
 router.use("/api/v1/airline", airlineRouter);
 router.use("/api/v1/discount", discountRouter);
+router.use("/api/v1/booking", bookingRouter);
 
 // Swagger docs
 router.use("/api-docs", swaggerUI.serve);
