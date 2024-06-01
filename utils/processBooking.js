@@ -97,6 +97,7 @@ const processBooking = async (input, userId) => {
 
       totalAmount += seatPrice;
       itemDetails.push({
+        id: bookingCode,
         name: `Seat ${p.seat.seat_row}${p.seat.seat_column} for ${p.first_name} ${p.last_name}`,
         price: seatPrice,
         quantity: 1,
@@ -144,10 +145,10 @@ const processBooking = async (input, userId) => {
           transaction_details: {
             order_id: bookingCode,
             gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
           },
+          customer_details: customerDetails,
+          seller_details: sellerDetails,
+          item_details: itemDetails,
         };
         break;
       case "va_bni":
@@ -248,7 +249,12 @@ const processBooking = async (input, userId) => {
     // Commit transaksi jika semuanya sukses
     await transaction.commit();
 
-    return booking;
+    const returnData = {
+      booking,
+      payment_data: chargeMidtrans,
+    };
+
+    return returnData;
   } catch (error) {
     await transaction.rollback();
     throw error;
