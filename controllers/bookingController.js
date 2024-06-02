@@ -1,7 +1,8 @@
 const ApiError = require("../utils/apiError");
 const processBooking = require("../utils/processBooking");
-const { Bookings } = require("../models");
+const { Bookings, Booking_Details, Seats } = require("../models");
 const axios = require("axios");
+const { Op } = require("sequelize");
 
 const createBooking = async (req, res, next) => {
   try {
@@ -17,6 +18,132 @@ const createBooking = async (req, res, next) => {
       message: "Booking is created successfully",
       data: booking,
     });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const updateBookingStatus = async (req, res, next) => {
+  try {
+    const { transaction_status, order_id } = req.body;
+
+    if (transaction_status) {
+      if (
+        transaction_status === "capture" ||
+        transaction_status === "settlement"
+      ) {
+        const booking = await Bookings.update(
+          {
+            booking_status: "issued",
+          },
+          {
+            where: {
+              booking_code: order_id,
+            },
+          }
+        );
+
+        if (!booking) {
+          return next(new ApiError("Booking not found", 404));
+        }
+
+        const getBookingId = await Bookings.findOne({
+          where: {
+            booking_code: order_id,
+          },
+        });
+
+        const bookingDetails = await Booking_Details.findAll({
+          where: {
+            booking_id: getBookingId.id,
+          },
+        });
+
+        const seatIds = await bookingDetails.map((detail) => detail.seat_id);
+
+        // Ubah seat jadi unavailbale
+        await Seats.update(
+          {
+            seat_status: "unavailable",
+          },
+          {
+            where: {
+              id: {
+                [Op.and]: seatIds,
+              },
+            },
+          }
+        );
+
+        res.status(200).json({
+          status: "Success",
+          message: `Booking for ${order_id} Status is successfully issued`,
+          requestAt: req.requestTime,
+        });
+      } else if (
+        transaction_status === "deny" ||
+        transaction_status === "expire" ||
+        transaction_status === "cancel" ||
+        transaction_status === "expire" ||
+        transaction_status === "failure"
+      ) {
+        const booking = await Bookings.update(
+          {
+            booking_status: "issued",
+          },
+          {
+            where: {
+              booking_code: order_id,
+            },
+          }
+        );
+
+        if (!booking) {
+          return next(new ApiError("Booking not found", 404));
+        }
+
+        const getBookingId = await Bookings.findOne({
+          where: {
+            booking_code: order_id,
+          },
+        });
+
+        const bookingDetails = await Booking_Details.findAll({
+          where: {
+            booking_id: getBookingId.id,
+          },
+        });
+
+        const seatIds = await bookingDetails.map((detail) => detail.seat_id);
+
+        // Ubah seat jadi available
+        await Seats.update(
+          {
+            seat_status: "available",
+          },
+          {
+            where: {
+              id: {
+                [Op.and]: seatIds,
+              },
+            },
+          }
+        );
+
+        res.status(200).json({
+          status: "Success",
+          message: `Booking for ${order_id} Status is successfully canceled`,
+          requestAt: req.requestTime,
+        });
+      } else if (transaction_status === "pending") {
+        res.status(200).json({
+          status: "Success",
+          message: `Booking for ${order_id} Status is pending`,
+        });
+      } else {
+        throw new Error("No status");
+      }
+    }
   } catch (err) {
     return next(new ApiError(err.message, 400));
   }
@@ -67,4 +194,5 @@ const getPaymentStatus = async (req, res, next) => {
 module.exports = {
   createBooking,
   getPaymentStatus,
+  updateBookingStatus,
 };

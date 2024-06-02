@@ -32,6 +32,7 @@ const processBooking = async (input, userId) => {
       {
         booking_code: bookingCode,
         flight_id: input.flight_id,
+        payment_method: input.payment_method,
         discount_id: input.discount_id,
         ordered_by_first_name: input.ordered_by.first_name,
         ordered_by_last_name: input.ordered_by.last_name,
@@ -112,6 +113,11 @@ const processBooking = async (input, userId) => {
       if (discount) {
         const discountAmount = (totalAmount * discount.discount_amount) / 100;
         totalAmount = totalAmount - discountAmount;
+        itemDetails.push({
+          name: `Discount ${discount.discount_amount}% from Airseat`,
+          price: -discountAmount,
+          quantity: 1,
+        });
       }
     }
 
@@ -136,116 +142,102 @@ const processBooking = async (input, userId) => {
       url: "https://airseat.netlify.com",
     };
 
-    let parameter;
+    let chargeMidtrans;
 
-    switch (input.payment_method) {
-      case "gopay":
-        parameter = {
-          payment_type: "gopay",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-          },
-          customer_details: customerDetails,
-          seller_details: sellerDetails,
-          item_details: itemDetails,
-        };
-        break;
-      case "va_bni":
-        parameter = {
-          payment_type: "bank_transfer",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-          bank_transfer: {
-            bank: "bni",
-          },
-        };
-      case "va_bri":
-        parameter = {
-          payment_type: "bank_transfer",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-          bank_transfer: {
-            bank: "bri",
-          },
-        };
-      case "va_mandiri":
-        parameter = {
-          payment_type: "echannel",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-          echannel: {
-            bill_info1: "Payment:",
-            bill_info2: "Online purchase",
-          },
-        };
+    const paymentMethod = input.payment_method;
 
-      case "va_bca":
-        parameter = {
-          payment_type: "bank_transfer",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-          bank_transfer: {
-            bank: "bca",
-          },
-        };
+    if (paymentMethod === "card") {
+      const tokenParameter = {
+        card_number: input.card_detail.card_number,
+        card_exp_month: input.card_detail.card_exp_month,
+        card_exp_year: input.card_detail.card_exp_year,
+        card_cvv: input.card_detail.card_cvv,
+        client_key: process.env.MIDTRANS_CLIENT_KEY,
+      };
 
-      case "va_cimb":
-        parameter = {
-          payment_type: "bank_transfer",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-          bank_transfer: {
-            bank: "cimb",
-          },
-        };
+      const tokenResponse = await coreApi.cardToken(tokenParameter);
 
-      case "va_permata":
-        parameter = {
-          payment_type: "permata",
-          transaction_details: {
-            order_id: bookingCode,
-            gross_amount: totalAmount,
-            customer_details: customerDetails,
-            seller_details: sellerDetails,
-            item_details: itemDetails,
-          },
-        };
+      const tokenId = tokenResponse.token_id;
+
+      const cardParams = {
+        payment_type: "credit_card",
+        transaction_details: {
+          gross_amount: 12145,
+          order_id: orderId,
+        },
+        credit_card: {
+          token_id: tokenId, // change with your card token
+          authentication: true,
+        },
+      };
+
+      chargeMidtrans = await coreApi.charge(cardParams);
+    } else if (paymentMethod === "gopay") {
+      let parameter = {
+        payment_type: "gopay",
+        transaction_details: {
+          order_id: bookingCode,
+          gross_amount: totalAmount,
+        },
+        customer_details: customerDetails,
+        seller_details: sellerDetails,
+        item_details: itemDetails,
+      };
+
+      chargeMidtrans = await coreApi.charge(parameter);
+    } else if (
+      paymentMethod === "va_bni" ||
+      paymentMethod === "va_bca" ||
+      paymentMethod === "va_bri" ||
+      paymentMethod === "va_cimb"
+    ) {
+      let parameter = {
+        payment_type: "bank_transfer",
+        transaction_details: {
+          order_id: bookingCode,
+          gross_amount: totalAmount,
+        },
+        bank_transfer: {
+          bank: paymentMethod.replace("va_", ""),
+        },
+      };
+
+      chargeMidtrans = await coreApi.charge(parameter);
+    } else if (paymentMethod === "va_permata") {
+      let parameter = {
+        payment_type: paymentMethod.replace("va_", ""),
+        transaction_details: {
+          order_id: bookingCode,
+          gross_amount: totalAmount,
+        },
+        customer_details: customerDetails,
+        seller_details: sellerDetails,
+        item_details: itemDetails,
+      };
+
+      chargeMidtrans = await coreApi.charge(parameter);
+    } else if (paymentMethod === "va_mandiri") {
+      let parameter = {
+        payment_type: "echannel",
+        transaction_details: {
+          order_id: bookingCode,
+          gross_amount: totalAmount,
+        },
+        echannel: {
+          bill_info1: "Payment:",
+          bill_info2: "Online purchase",
+        },
+      };
+
+      chargeMidtrans = await coreApi.charge(parameter);
+    } else {
+      throw new Error("Payment method is not valid");
     }
 
-    const chargeMidtrans = await coreApi.charge(parameter);
-
-    //   Update Payment ID
     await booking.update(
       { payment_id: chargeMidtrans.transaction_id },
       { transaction }
     );
-
     // Commit transaksi jika semuanya sukses
     await transaction.commit();
 
@@ -255,9 +247,9 @@ const processBooking = async (input, userId) => {
     };
 
     return returnData;
-  } catch (error) {
+  } catch (err) {
     await transaction.rollback();
-    throw error;
+    throw err;
   }
 };
 
