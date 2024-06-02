@@ -67,11 +67,7 @@ const updateBookingStatus = async (req, res, next) => {
             seat_status: "unavailable",
           },
           {
-            where: {
-              id: {
-                [Op.and]: seatIds,
-              },
-            },
+            where: { id: seatIds },
           }
         );
 
@@ -122,11 +118,7 @@ const updateBookingStatus = async (req, res, next) => {
             seat_status: "available",
           },
           {
-            where: {
-              id: {
-                [Op.and]: seatIds,
-              },
-            },
+            where: { id: seatIds },
           }
         );
 

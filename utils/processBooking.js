@@ -137,11 +137,6 @@ const processBooking = async (input, userId) => {
       },
     };
 
-    const sellerDetails = {
-      name: "Airseat",
-      url: "https://airseat.netlify.com",
-    };
-
     let chargeMidtrans;
 
     const paymentMethod = input.payment_method;
@@ -169,6 +164,8 @@ const processBooking = async (input, userId) => {
           token_id: tokenId, // change with your card token
           authentication: true,
         },
+        customer_details: customerDetails,
+        item_details: itemDetails,
       };
 
       chargeMidtrans = await coreApi.charge(cardParams);
@@ -180,7 +177,6 @@ const processBooking = async (input, userId) => {
           gross_amount: totalAmount,
         },
         customer_details: customerDetails,
-        seller_details: sellerDetails,
         item_details: itemDetails,
       };
 
@@ -197,6 +193,8 @@ const processBooking = async (input, userId) => {
           order_id: bookingCode,
           gross_amount: totalAmount,
         },
+        customer_details: customerDetails,
+        item_details: itemDetails,
         bank_transfer: {
           bank: paymentMethod.replace("va_", ""),
         },
@@ -211,7 +209,6 @@ const processBooking = async (input, userId) => {
           gross_amount: totalAmount,
         },
         customer_details: customerDetails,
-        seller_details: sellerDetails,
         item_details: itemDetails,
       };
 
@@ -227,6 +224,8 @@ const processBooking = async (input, userId) => {
           bill_info1: "Payment:",
           bill_info2: "Online purchase",
         },
+        customer_details: customerDetails,
+        item_details: itemDetails,
       };
 
       chargeMidtrans = await coreApi.charge(parameter);
