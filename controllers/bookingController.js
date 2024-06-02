@@ -1,5 +1,6 @@
 const ApiError = require("../utils/apiError");
 const processBooking = require("../utils/processBooking");
+const { Bookings } = require("../models");
 const axios = require("axios");
 
 const createBooking = async (req, res, next) => {
@@ -24,6 +25,16 @@ const createBooking = async (req, res, next) => {
 const getPaymentStatus = async (req, res, next) => {
   try {
     const { bookingCode } = req.params;
+
+    const booking = await Bookings.findOne({
+      where: {
+        booking_code: bookingCode,
+      },
+    });
+
+    if (!booking) {
+      return next(new ApiError("Booking code not found", 404));
+    }
 
     const encodedServerKey = Buffer.from(
       process.env.MIDTRANS_SERVER_KEY + ":"
