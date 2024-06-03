@@ -1,4 +1,7 @@
 const midtransClient = require("midtrans-client");
+const dayjs = require("dayjs");
+const localizedFormat = require("dayjs/plugin/localizedFormat");
+dayjs.extend(localizedFormat);
 
 const {
   Bookings,
@@ -47,7 +50,7 @@ const processBooking = async (input, userId) => {
         ordered_by_phone_number: input.ordered_by.phone_number,
         ordered_by_email: input.ordered_by.email,
         total_amount: 0,
-        booking_expired: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam dari sekarang
+        booking_expired: dayjs().add(1, "day").format(), // 1 hari dari sekarang
         booking_status: "unpaid",
         user_id: userId,
       },
@@ -144,14 +147,24 @@ const processBooking = async (input, userId) => {
       const discount = await Discounts.findByPk(input.discount_id, {
         transaction,
       });
+
       if (discount) {
-        const discountAmount = (totalAmount * discount.discount_amount) / 100;
-        totalAmount = totalAmount - discountAmount;
-        itemDetails.push({
-          name: `Discount ${discount.discount_amount}% from Airseat`,
-          price: -discountAmount,
-          quantity: 1,
-        });
+        if (totalAmount >= discount.minimum_order) {
+          if (dayjs().isBefore(discount.discount_expired)) {
+            const discountAmount =
+              (totalAmount * discount.discount_amount) / 100;
+            totalAmount = totalAmount - discountAmount;
+            itemDetails.push({
+              name: `Discount ${discount.discount_amount}% from Airseat`,
+              price: -discountAmount,
+              quantity: 1,
+            });
+          } else {
+            throw new Error("Discount is expired");
+          }
+        } else {
+          throw new Error("Discount does not meet the minimum order");
+        }
       }
     }
 
