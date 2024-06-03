@@ -2,7 +2,6 @@ const ApiError = require("../utils/apiError");
 const processBooking = require("../utils/processBooking");
 const { Bookings, Booking_Details, Seats } = require("../models");
 const axios = require("axios");
-const crypto = require("crypto");
 
 const createBooking = async (req, res, next) => {
   try {
@@ -25,25 +24,7 @@ const createBooking = async (req, res, next) => {
 
 const updateBookingStatus = async (req, res, next) => {
   try {
-    const {
-      transaction_status,
-      order_id,
-      signature_key,
-      status_code,
-      gross_amount,
-    } = req.body;
-
-    // Check signature key
-    const serverKey = process.env.MIDTRANS_SERVER_KEY;
-    const hash = crypto.createHash("sha512");
-    hash.update(order_id + status_code + gross_amount + serverKey);
-    const expectedSignatureKey = hash.digest("hex");
-
-    if (signature_key !== expectedSignatureKey) {
-      return next(new ApiError("Invalid signature key", 403));
-    }
-
-    console.log(`Transaction status : ${transaction_status}`);
+    const { transaction_status, order_id } = req.body;
 
     if (transaction_status) {
       if (

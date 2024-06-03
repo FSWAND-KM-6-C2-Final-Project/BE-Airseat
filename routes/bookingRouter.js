@@ -2,9 +2,14 @@ const router = require("express").Router();
 
 const bookingController = require("../controllers/bookingController");
 const authenticate = require("../middlewares/authenticate");
+const checkSignatureKey = require("../middlewares/checkSignatureKey");
 
 router.post("/", authenticate, bookingController.createBooking);
-router.post("/update", bookingController.updateBookingStatus);
+router.post(
+  "/update",
+  checkSignatureKey,
+  bookingController.updateBookingStatus
+);
 router.get(
   "/pay/status/:bookingCode",
   authenticate,
