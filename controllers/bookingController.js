@@ -43,6 +43,8 @@ const updateBookingStatus = async (req, res, next) => {
       return next(new ApiError("Invalid signature key", 403));
     }
 
+    console.log(`Transaction status : ${transaction_status}`);
+
     if (transaction_status) {
       if (
         transaction_status === "capture" ||
@@ -103,7 +105,7 @@ const updateBookingStatus = async (req, res, next) => {
         // If status payment is not success
         const booking = await Bookings.update(
           {
-            booking_status: "issued",
+            booking_status: "cancelled",
           },
           {
             where: {
