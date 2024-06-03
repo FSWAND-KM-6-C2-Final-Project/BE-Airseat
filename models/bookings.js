@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "flight_id",
         },
+        as: "flight",
+      });
+      Bookings.belongsTo(models.Flights, {
+        foreignKey: {
+          name: "return_flight_id",
+        },
+        as: "returnFlight",
       });
       Bookings.belongsTo(models.Discounts, {
         foreignKey: {
@@ -29,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "booking_id",
         },
+        as: "bookingDetail",
       });
     }
   }

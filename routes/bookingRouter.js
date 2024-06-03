@@ -15,5 +15,6 @@ router.get(
   authenticate,
   bookingController.getPaymentStatus
 );
+router.get("/detail", authenticate, bookingController.getDetailBooking);
 
 module.exports = router;
