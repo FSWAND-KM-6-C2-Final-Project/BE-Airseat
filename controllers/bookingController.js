@@ -2,7 +2,7 @@ const ApiError = require("../utils/apiError");
 const processBooking = require("../utils/processBooking");
 const { Bookings, Booking_Details, Seats } = require("../models");
 const axios = require("axios");
-const { Op } = require("sequelize");
+const crypto = require("crypto");
 
 const createBooking = async (req, res, next) => {
   try {
@@ -25,13 +25,30 @@ const createBooking = async (req, res, next) => {
 
 const updateBookingStatus = async (req, res, next) => {
   try {
-    const { transaction_status, order_id } = req.body;
+    const {
+      transaction_status,
+      order_id,
+      signature_key,
+      status_code,
+      gross_amount,
+    } = req.body;
+
+    // Check signature key
+    const serverKey = process.env.MIDTRANS_SERVER_KEY;
+    const hash = crypto.createHash("sha512");
+    hash.update(order_id + status_code + gross_amount + serverKey);
+    const expectedSignatureKey = hash.digest("hex");
+
+    if (signature_key !== expectedSignatureKey) {
+      return next(new ApiError("Invalid signature key", 403));
+    }
 
     if (transaction_status) {
       if (
         transaction_status === "capture" ||
         transaction_status === "settlement"
       ) {
+        // If status payment is success
         const booking = await Bookings.update(
           {
             booking_status: "issued",
@@ -61,7 +78,7 @@ const updateBookingStatus = async (req, res, next) => {
 
         const seatIds = await bookingDetails.map((detail) => detail.seat_id);
 
-        // Ubah seat jadi unavailbale
+        // Update seat to unavailbale
         await Seats.update(
           {
             seat_status: "unavailable",
@@ -83,6 +100,7 @@ const updateBookingStatus = async (req, res, next) => {
         transaction_status === "expire" ||
         transaction_status === "failure"
       ) {
+        // If status payment is not success
         const booking = await Bookings.update(
           {
             booking_status: "issued",
@@ -112,7 +130,7 @@ const updateBookingStatus = async (req, res, next) => {
 
         const seatIds = await bookingDetails.map((detail) => detail.seat_id);
 
-        // Ubah seat jadi available
+        // Update seat to available
         await Seats.update(
           {
             seat_status: "available",
@@ -128,11 +146,14 @@ const updateBookingStatus = async (req, res, next) => {
           requestAt: req.requestTime,
         });
       } else if (transaction_status === "pending") {
+        // If status payment is pending
+
         res.status(200).json({
           status: "Success",
           message: `Booking for ${order_id} Status is pending`,
         });
       } else {
+        // If status payment is unexpected
         throw new Error("No status");
       }
     }

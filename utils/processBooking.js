@@ -17,9 +17,9 @@ const coreApi = new midtransClient.CoreApi({
 });
 
 const processBooking = async (input, userId) => {
-  const transaction = await sequelize.transaction(); // Mulai transaksi
+  const transaction = await sequelize.transaction();
   try {
-    // 1. Dapatkan informasi penerbangan
+    // Get flight information
     const flight = await Flights.findByPk(input.flight_id);
     if (!flight) {
       throw new Error("Flight not found");
@@ -27,7 +27,7 @@ const processBooking = async (input, userId) => {
 
     const bookingCode = generateBookingCode();
 
-    // 2. Simpan informasi pemesanan di tabel Bookings
+    // Save flight to booking data
     const booking = await Bookings.create(
       {
         booking_code: bookingCode,
@@ -38,7 +38,7 @@ const processBooking = async (input, userId) => {
         ordered_by_last_name: input.ordered_by.last_name,
         ordered_by_phone_number: input.ordered_by.phone_number,
         ordered_by_email: input.ordered_by.email,
-        total_amount: 0, // Akan dihitung kemudian
+        total_amount: 0,
         booking_expired: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 jam dari sekarang
         booking_status: "unpaid",
         user_id: userId,
@@ -46,7 +46,7 @@ const processBooking = async (input, userId) => {
       { transaction }
     );
 
-    // 3. Simpan informasi penumpang dan detail pemesanan di tabel Passengers dan Booking_Details
+    // save passenger data and seat in booking_details
     let totalAmount = 0;
     const itemDetails = [];
 
@@ -81,6 +81,7 @@ const processBooking = async (input, userId) => {
         );
       }
 
+      // Get seat data price
       const seatPrice = parseFloat(getSeatPrice(flight, seat.class));
 
       await Booking_Details.create(
@@ -93,7 +94,7 @@ const processBooking = async (input, userId) => {
         { transaction }
       );
 
-      // Update status kursi menjadi locked
+      // Update seat status to locked
       await seat.update({ seat_status: "locked" }, { transaction });
 
       totalAmount += seatPrice;
@@ -105,7 +106,7 @@ const processBooking = async (input, userId) => {
       });
     }
 
-    // 4. Hitung total amount termasuk diskon
+    // Total amount if there is discount
     if (input.discount_id) {
       const discount = await Discounts.findByPk(input.discount_id, {
         transaction,
@@ -121,7 +122,7 @@ const processBooking = async (input, userId) => {
       }
     }
 
-    // 5. Update total amount di tabel Bookings
+    // Update total amount
     await booking.update({ total_amount: totalAmount }, { transaction });
 
     const customerDetails = {
@@ -138,9 +139,9 @@ const processBooking = async (input, userId) => {
     };
 
     let chargeMidtrans;
-
     const paymentMethod = input.payment_method;
 
+    // Process payment
     if (paymentMethod === "card") {
       const tokenParameter = {
         card_number: input.card_detail.card_number,
@@ -161,7 +162,7 @@ const processBooking = async (input, userId) => {
           order_id: orderId,
         },
         credit_card: {
-          token_id: tokenId, // change with your card token
+          token_id: tokenId,
           authentication: true,
         },
         customer_details: customerDetails,
@@ -237,7 +238,7 @@ const processBooking = async (input, userId) => {
       { payment_id: chargeMidtrans.transaction_id },
       { transaction }
     );
-    // Commit transaksi jika semuanya sukses
+
     await transaction.commit();
 
     const returnData = {
