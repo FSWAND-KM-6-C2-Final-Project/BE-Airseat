@@ -25,6 +25,13 @@ const processBooking = async (input, userId) => {
       throw new Error("Flight not found");
     }
 
+    if (input.return_flight_id) {
+      const returnFlight = await Flights.findByPk(input.return_flight_id);
+      if (!returnFlight) {
+        throw new Error("Return Flight not found");
+      }
+    }
+
     const bookingCode = generateBookingCode();
 
     // Save flight to booking data
@@ -32,6 +39,7 @@ const processBooking = async (input, userId) => {
       {
         booking_code: bookingCode,
         flight_id: input.flight_id,
+        return_flight_id: input.return_flight_id || null,
         payment_method: input.payment_method,
         discount_id: input.discount_id,
         ordered_by_first_name: input.ordered_by.first_name,
@@ -46,64 +54,89 @@ const processBooking = async (input, userId) => {
       { transaction }
     );
 
-    // save passenger data and seat in booking_details
-    let totalAmount = 0;
-    const itemDetails = [];
+    // Start of Booking detail process
+    const processFlightDetails = async (flightId, seatField) => {
+      let totalAmount = 0;
+      const itemDetails = [];
 
-    for (const p of input.passenger) {
-      const passenger = await Passengers.create(
-        {
-          first_name: p.first_name,
-          last_name: p.last_name,
-          dob: p.dob,
-          nationality: p.nationality,
-          identification_type: p.identification_type,
-          identification_number: p.identification_number,
-          identification_country: p.identification_country,
-          identification_expired: p.identification_expired,
-        },
-        { transaction }
-      );
-
-      const seat = await Seats.findOne({
-        where: {
-          seat_row: p.seat.seat_row,
-          seat_column: p.seat.seat_column,
-          flight_id: input.flight_id,
-          seat_status: "available",
-        },
-        transaction,
-      });
-
-      if (!seat) {
-        throw new Error(
-          `Seat ${p.seat.seat_row}${p.seat.seat_column} is not available`
-        );
+      const flight = await Flights.findByPk(flightId);
+      if (!flight) {
+        throw new Error("Flight not found");
       }
 
-      // Get seat data price
-      const seatPrice = parseFloat(getSeatPrice(flight, seat.class));
+      for (const p of input.passenger) {
+        const passenger = await Passengers.create(
+          {
+            first_name: p.first_name,
+            last_name: p.last_name,
+            dob: p.dob,
+            nationality: p.nationality,
+            identification_type: p.identification_type,
+            identification_number: p.identification_number,
+            identification_country: p.identification_country || null,
+            identification_expired: p.identification_expired || null,
+          },
+          { transaction }
+        );
 
-      await Booking_Details.create(
-        {
-          seat_id: seat.id,
-          booking_id: booking.id,
-          passenger_id: passenger.id,
+        const seat = await Seats.findOne({
+          where: {
+            seat_row: p[seatField].seat_row,
+            seat_column: p[seatField].seat_column,
+            flight_id: flightId,
+            seat_status: "available",
+          },
+          transaction,
+        });
+
+        if (!seat) {
+          throw new Error(
+            `Seat ${p[seatField].seat_row}${p[seatField].seat_column} is not available`
+          );
+        }
+
+        const seatPrice = parseFloat(getSeatPrice(flight, seat.class));
+
+        await Booking_Details.create(
+          {
+            seat_id: seat.id,
+            booking_id: booking.id,
+            passenger_id: passenger.id,
+            flight_id: flightId,
+            price: seatPrice,
+          },
+          { transaction }
+        );
+
+        await seat.update({ seat_status: "locked" }, { transaction });
+
+        totalAmount += seatPrice;
+        itemDetails.push({
+          id: bookingCode,
+          name: `Seat ${p[seatField].seat_row}${p[seatField].seat_column} for ${p.first_name} ${p.last_name}`,
           price: seatPrice,
-        },
-        { transaction }
+          quantity: 1,
+        });
+      }
+
+      return { totalAmount, itemDetails };
+    };
+    // End of Booking detail process
+
+    const departureDetails = await processFlightDetails(
+      input.flight_id,
+      "seat_departure"
+    );
+    let totalAmount = departureDetails.totalAmount;
+    let itemDetails = departureDetails.itemDetails;
+
+    if (input.return_flight_id) {
+      const returnDetails = await processFlightDetails(
+        input.return_flight_id,
+        "seat_return"
       );
-
-      // Update seat status to locked
-      await seat.update({ seat_status: "locked" }, { transaction });
-
-      totalAmount += seatPrice;
-      itemDetails.push({
-        id: bookingCode,
-        name: `Seat ${p.seat.seat_row}${p.seat.seat_column} for ${p.first_name} ${p.last_name}`,
-        price: seatPrice,
-        quantity: 1,
-      });
+      totalAmount += returnDetails.totalAmount;
+      itemDetails = itemDetails.concat(returnDetails.itemDetails);
     }
 
     // Total amount if there is discount

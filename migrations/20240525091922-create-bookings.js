@@ -36,6 +36,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      return_flight_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
       ordered_by_first_name: {
         type: Sequelize.STRING,
         allowNull: false,

@@ -61,6 +61,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      return_flight_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       ordered_by_first_name: {
         type: DataTypes.STRING,
         allowNull: false,
