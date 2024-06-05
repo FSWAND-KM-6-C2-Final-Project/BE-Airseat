@@ -97,6 +97,7 @@ const findAvailableSeatsByFlightId = async (req, res, next) => {
         flight_id: flightId,
         seat_status: "available",
       },
+      order: [["id", "ASC"]],
     });
 
     if (!seats) {
@@ -129,6 +130,7 @@ const findBookedSeatsByFlightId = async (req, res, next) => {
     }
 
     const seats = await Seats.findAll({
+      order: [["id", "ASC"]],
       where: {
         flight_id: flightId,
         seat_status: {
