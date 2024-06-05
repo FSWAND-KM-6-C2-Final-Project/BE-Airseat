@@ -1,5 +1,6 @@
-const { Flights } = require("../models");
+const { Flights, Seats } = require("../models");
 const ApiError = require("../utils/apiError");
+const seatGenerator = require("../utils/seatGenerator");
 
 const findFligths = async (req, res, next) => {
   try {
@@ -185,7 +186,6 @@ const createFlight = async (req, res, next) => {
     price_premium_economy,
     price_business,
     price_first_class,
-    seat,
     airline_id,
   } = req.body;
 
@@ -202,9 +202,11 @@ const createFlight = async (req, res, next) => {
       price_premium_economy,
       price_business,
       price_first_class,
-      seat,
       airline_id,
     });
+
+    // Bulk insert seat
+    await Seats.bulkCreate(seatGenerator(newFlight.id));
 
     res.status(200).json({
       status: "Success",
