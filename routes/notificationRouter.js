@@ -1,8 +1,10 @@
 const router = require("express").Router();
 const notifications = require("../controllers/notificationsController");
 
+const authenticate = require("../middlewares/authenticate");
+
 //get all notifications
-router.get("/", notifications.findNotifications);
+router.get("/", authenticate, notifications.findNotifications);
 
 // Create a new notifications
 router.post("/", notifications.createNotifications);

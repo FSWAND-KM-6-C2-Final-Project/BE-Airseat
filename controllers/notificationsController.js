@@ -4,6 +4,8 @@ const ApiError = require("../utils/apiError");
 
 const findNotifications = async (req, res, next) => {
   try {
+    const userId = req.user.id;
+
     const {
       notification_type,
       notification_title,
@@ -13,7 +15,9 @@ const findNotifications = async (req, res, next) => {
       limit,
     } = req.query;
 
-    const condition = {};
+    const condition = {
+      [Op.or]: [{ user_id: null }, { user_id: userId }],
+    };
 
     // Filter by notification_type
     if (notification_type)
@@ -38,6 +42,7 @@ const findNotifications = async (req, res, next) => {
 
     const totalCount = await Notifications.count({ where: condition });
     const notification = await Notifications.findAll({
+      order: [["created_at", "DESC"]],
       where: condition,
       limit: pageSize,
       offset: offset,
@@ -49,19 +54,18 @@ const findNotifications = async (req, res, next) => {
       status: "Success",
       message: "Notification succesfully retrieved",
       requestAt: req.requestTime,
-      data: {
-        notification,
-      },
       pagination: {
         totalData: totalCount,
         totalPages,
         pageNum,
         pageSize,
       },
+      data: {
+        notification,
+      },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
-    return;
+    return next(new ApiError(err.message, 400));
   }
 };
 
@@ -119,8 +123,7 @@ const createNotifications = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
-    return;
+    return next(new ApiError(err.message, 400));
   }
 };
 
@@ -137,8 +140,7 @@ const updateNotifications = async (req, res, next) => {
     let userId = await Notifications.findByPk(user_Id);
 
     if (!userId) {
-      next(new ApiError("Notification not found", 400));
-      return;
+      return next(new ApiError("Notification not found", 404));
     }
 
     userId = await userId.update({
@@ -157,8 +159,7 @@ const updateNotifications = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
-    return;
+    return next(new ApiError(err.message, 400));
   }
 };
 
@@ -169,8 +170,7 @@ const deleteNotifications = async (req, res, next) => {
     const user_id = await Notifications.findByPk(userId);
 
     if (!user_id) {
-      next(new ApiError("Notification not found", 400));
-      return;
+      return next(new ApiError("Notification not found", 404));
     }
 
     await user_id.destroy();
@@ -181,8 +181,7 @@ const deleteNotifications = async (req, res, next) => {
       requestAt: req.requestTime,
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
-    return;
+    return next(new ApiError(err.message, 400));
   }
 };
 
