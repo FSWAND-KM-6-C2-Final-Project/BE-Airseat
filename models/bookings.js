@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "flight_id",
         },
+        as: "flight",
+      });
+      Bookings.belongsTo(models.Flights, {
+        foreignKey: {
+          name: "return_flight_id",
+        },
+        as: "returnFlight",
       });
       Bookings.belongsTo(models.Discounts, {
         foreignKey: {
@@ -29,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "booking_id",
         },
+        as: "bookingDetail",
       });
     }
   }
@@ -49,17 +57,22 @@ module.exports = (sequelize, DataTypes) => {
           "va_cimb",
           "va_mandiri",
           "va_permata",
+          "snap",
         ]),
-        allowNull: false,
-        defaultValue: "card",
+        defaultValue: "snap",
+        allowNull: true,
       },
       payment_id: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       flight_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      return_flight_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
       ordered_by_first_name: {
         type: DataTypes.STRING,

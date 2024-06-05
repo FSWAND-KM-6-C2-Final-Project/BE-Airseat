@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "seat_id",
         },
+        as: "seat",
       });
       Booking_Details.belongsTo(models.Bookings, {
         foreignKey: {
