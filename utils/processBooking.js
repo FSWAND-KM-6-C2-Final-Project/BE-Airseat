@@ -19,6 +19,11 @@ const coreApi = new midtransClient.CoreApi({
   clientKey: process.env.MIDTRANS_CLIENT_KEY,
 });
 
+const snap = new midtransClient.Snap({
+  isProduction: false,
+  serverKey: process.env.MIDTRANS_SERVER_KEY,
+});
+
 const processBooking = async (input, userId) => {
   const transaction = await sequelize.transaction();
   try {
@@ -67,9 +72,6 @@ const processBooking = async (input, userId) => {
         throw new Error("Flight not found");
       }
 
-      console.log("Ini flight");
-      console.log(flight);
-
       for (const p of input.passenger) {
         const passenger = await Passengers.create(
           {
@@ -97,7 +99,7 @@ const processBooking = async (input, userId) => {
 
         if (!seat) {
           throw new Error(
-            `Seat ${p[seatField].seat_row}${p[seatField].seat_column} is not available`
+            `Seat ${p[seatField].seat_row}${p[seatField].seat_column} for flight ${flight.flight_number} is not available`
           );
         }
 
@@ -280,6 +282,19 @@ const processBooking = async (input, userId) => {
       };
 
       chargeMidtrans = await coreApi.charge(parameter);
+    } else if (paymentMethod === "snap") {
+      let parameter = {
+        transaction_details: {
+          order_id: bookingCode,
+          gross_amount: totalAmount,
+        },
+        credit_card: {
+          secure: true,
+        },
+        customer_details: customerDetails,
+      };
+
+      chargeMidtrans = await snap.createTransaction(parameter);
     } else {
       throw new Error("Payment method is not valid");
     }

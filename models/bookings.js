@@ -57,8 +57,9 @@ module.exports = (sequelize, DataTypes) => {
           "va_cimb",
           "va_mandiri",
           "va_permata",
+          "snap",
         ]),
-        defaultValue: "card",
+        defaultValue: "snap",
         allowNull: true,
       },
       payment_id: {

@@ -32,8 +32,6 @@ const getDetailBooking = async (req, res, next) => {
       }
     }
 
-    console.log(condition);
-
     const order = [];
     if (sortByDate) {
       if (sortByDate === "DESC") {
