@@ -23,6 +23,10 @@ module.exports = async (req, res, next) => {
       attributes: ["id", "full_name", "email", "phone_number", "user_status"],
     });
 
+    if (!user) {
+      return next(new ApiError("User not found", 400));
+    }
+
     req.user = user;
     next();
   } catch (err) {
