@@ -67,6 +67,9 @@ const processBooking = async (input, userId) => {
         throw new Error("Flight not found");
       }
 
+      console.log("Ini flight");
+      console.log(flight);
+
       for (const p of input.passenger) {
         const passenger = await Passengers.create(
           {
@@ -114,9 +117,10 @@ const processBooking = async (input, userId) => {
         await seat.update({ seat_status: "locked" }, { transaction });
 
         totalAmount += seatPrice;
+
         itemDetails.push({
           id: bookingCode,
-          name: `Seat ${p[seatField].seat_row}${p[seatField].seat_column} for ${p.first_name} ${p.last_name}`,
+          name: `Flight ${flight.flight_number} - Seat ${p[seatField].seat_row}${p[seatField].seat_column} for ${p.first_name} ${p.last_name}`,
           price: seatPrice,
           quantity: 1,
         });

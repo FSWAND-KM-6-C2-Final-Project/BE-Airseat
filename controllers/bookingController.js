@@ -8,17 +8,56 @@ const {
   Airports,
   Airlines,
 } = require("../models");
-const Sequelize = require("sequelize");
 const axios = require("axios");
+const { Op } = require("sequelize");
 
 const getDetailBooking = async (req, res, next) => {
   try {
     const id = req.user.id;
 
+    if (!id) {
+      return next(new ApiError("Please login to your account", 403));
+    }
+
+    const { flightType, bookingCode, sortByDate, page, limit } = req.query;
+
+    const condition = {};
+    condition.user_id = id;
+    if (bookingCode) condition.booking_code = { [Op.iLike]: `${bookingCode}%` };
+    if (flightType) {
+      if (flightType === "two-way") {
+        condition.return_flight_id = { [Op.not]: null };
+      } else if (flightType === "one-way") {
+        condition.return_flight_id = { [Op.is]: null };
+      }
+    }
+
+    console.log(condition);
+
+    const order = [];
+    if (sortByDate) {
+      if (sortByDate === "DESC") {
+        order.push(["created_at", "DESC"]);
+      } else if (sortByDate === "ASC") {
+        order.push(["created_at", "ASC"]);
+      } else {
+        order.push(["created_at", "DESC"]);
+      }
+    } else {
+      order.push(["created_at", "DESC"]);
+    }
+
+    const pageNum = parseInt(page) || 1;
+    const pageSize = parseInt(limit) || 10;
+    const offset = (pageNum - 1) * pageSize;
+
+    const totalCount = await Bookings.count({ where: condition });
+
     const booking = await Bookings.findAll({
-      where: {
-        user_id: id,
-      },
+      where: condition,
+      limit: pageSize,
+      offset: offset,
+      order: order,
       attributes: [
         "booking_code",
         "payment_method",
@@ -29,12 +68,6 @@ const getDetailBooking = async (req, res, next) => {
         "booking_status",
         "booking_expired",
         "created_at",
-        [
-          Sequelize.literal(
-            'EXTRACT(EPOCH FROM ("flight"."arrival_time" - "flight"."departure_time")) / 60'
-          ),
-          "duration",
-        ],
       ],
 
       include: [
@@ -131,7 +164,6 @@ const getDetailBooking = async (req, res, next) => {
           ],
         },
       ],
-      order: [["created_at", "DESC"]],
     });
 
     if (!booking) {
@@ -147,16 +179,35 @@ const getDetailBooking = async (req, res, next) => {
     });
 
     booking.forEach((bookingItem) => {
-      const classes = bookingItem.bookingDetail
-        .map((detail) => detail.seat.class)
-        .join(", ");
-      bookingItem.dataValues.class = classes;
-    });
+      const flight = bookingItem.flight;
+      if (flight) {
+        const departureTime = new Date(flight.departure_time);
+        const arrivalTime = new Date(flight.arrival_time);
+        const duration = (arrivalTime - departureTime) / 60000; // duration in minutes
+        const jam = Math.floor(duration / 60);
+        const menit = duration % 60;
+        const formattedDurasi = `${jam}h ${menit}m`;
+        bookingItem.dataValues.duration = formattedDurasi;
+      } else {
+        bookingItem.dataValues.duration = "N/A";
+      }
 
+      const uniqueClasses = new Set(
+        bookingItem.bookingDetail.map((detail) => detail.seat.class)
+      );
+      bookingItem.dataValues.classes = Array.from(uniqueClasses).join(", ");
+    });
+    const totalPages = Math.ceil(totalCount / pageSize);
     res.status(200).json({
       status: "Success",
       message: "Booking data is successfully retrieved",
       requestAt: req.requestTime,
+      pagination: {
+        totalData: totalCount,
+        totalPages,
+        pageNum,
+        pageSize,
+      },
       data: {
         booking,
       },
