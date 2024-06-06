@@ -78,6 +78,7 @@ const processBooking = async (input, userId) => {
             first_name: p.first_name,
             last_name: p.last_name,
             dob: p.dob,
+            title: p.title,
             nationality: p.nationality,
             identification_type: p.identification_type,
             identification_number: p.identification_number,
