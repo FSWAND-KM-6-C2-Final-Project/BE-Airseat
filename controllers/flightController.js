@@ -1,17 +1,17 @@
-const { Flights, Seats } = require("../models");
+const { Flights, Seats, Airlines, Airports } = require("../models");
 const ApiError = require("../utils/apiError");
 const seatGenerator = require("../utils/seatGenerator");
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 
 const findFligths = async (req, res, next) => {
   try {
-    const { date, page, limit } = req.query;
+    const { searchDate, page, continent, limit, sortBy, order } = req.query;
 
     const condition = {};
 
     // ?date=dd-mm-yyyy
-    if (date) {
-      const [day, month, year] = date.split("-");
+    if (searchDate) {
+      const [day, month, year] = searchDate.split("-");
       const specificDate = new Date(year, month - 1, day);
       const nextDate = new Date(specificDate);
       nextDate.setDate(specificDate.getDate() + 1);
@@ -22,15 +22,107 @@ const findFligths = async (req, res, next) => {
       };
     }
 
+    if (continent) {
+      condition["$departureAirport.airport_continent$"] = continent;
+    }
+
+    const orderData = [];
+    if (sortBy) {
+      const sortOrder = order === "asc" ? "ASC" : "DESC";
+      if (sortBy === "departureTime") {
+        orderData.push(["departure_time", sortOrder]);
+      }
+    }
+
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
     const offset = (pageNum - 1) * pageSize;
 
-    const totalCount = await Flights.count({ where: condition });
-    const flights = await Flights.findAll({
+    const totalCount = await Flights.count({
+      include: [
+        {
+          model: Airlines,
+          as: "airline",
+          attributes: ["airline_name", "airline_picture"],
+        },
+        {
+          model: Airports,
+          as: "departureAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+        {
+          model: Airports,
+          as: "arrivalAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+      ],
       where: condition,
+    });
+
+    const flights = await Flights.findAll({
       limit: pageSize,
       offset: offset,
+      order: orderData,
+      attributes: [
+        "id",
+        "flight_number",
+        "information",
+        "departure_time",
+        "arrival_time",
+        "departure_airport_id",
+        "departure_terminal",
+        "arrival_airport_id",
+        "price_economy",
+        "price_premium_economy",
+        "price_business",
+        "price_first_class",
+        "airline_id",
+        "created_at",
+        "updated_at",
+      ],
+
+      include: [
+        {
+          model: Airlines,
+          as: "airline",
+          attributes: ["airline_name", "airline_picture"],
+        },
+        {
+          model: Airports,
+          as: "departureAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+        {
+          model: Airports,
+          as: "arrivalAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+      ],
+      where: condition,
     });
 
     const totalPages = Math.ceil(totalCount / pageSize);
