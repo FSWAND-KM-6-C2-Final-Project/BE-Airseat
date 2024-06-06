@@ -1,7 +1,7 @@
 const { Flights, Seats, Airlines, Airports } = require("../models");
 const ApiError = require("../utils/apiError");
 const seatGenerator = require("../utils/seatGenerator");
-const { Op, Sequelize } = require("sequelize");
+const { Op } = require("sequelize");
 
 const findFligths = async (req, res, next) => {
   try {
