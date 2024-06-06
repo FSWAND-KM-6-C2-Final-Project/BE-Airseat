@@ -7,6 +7,7 @@ const {
   Flights,
   Airports,
   Airlines,
+  Notifications,
 } = require("../models");
 const axios = require("axios");
 const { Op } = require("sequelize");
@@ -224,6 +225,26 @@ const createBooking = async (req, res, next) => {
     }
 
     const booking = await processBooking(req.body, userId);
+
+    const bookingCode = booking.booking.booking_code;
+    const bookingStatus = booking.booking.booking_status;
+
+    let message;
+    if (bookingStatus === "unpaid") {
+      message = `Pesanan Anda dengan kode booking ${bookingCode} sedang menunggu pembayaran. Silakan lakukan pembayaran untuk mengonfirmasi pesanan Anda.`;
+    } else if (bookingStatus === "issued") {
+      message = `Pembayaran Anda untuk pesanan dengan kode booking ${bookingCode} telah berhasil. Terima kasih! Periksa detail pesanan Anda di web atau aplikasi.`;
+    } else if (bookingStatus === "cancelled") {
+      message = `Penerbangan Anda dengan kode booking 45GT6 telah dibatalkan. Silakan cek aplikasi untuk detail pengembalian dana.`;
+    }
+
+    await Notifications.create({
+      notification_type: "Notifikasi",
+      notification_title: `Status Pesanan ${bookingCode}`,
+      notification_description: message,
+      user_id: userId,
+    });
+
     res.status(201).json({
       status: "Success",
       message: "Booking is created successfully",
