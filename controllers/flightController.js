@@ -1,24 +1,26 @@
 const { Flights, Seats } = require("../models");
 const ApiError = require("../utils/apiError");
 const seatGenerator = require("../utils/seatGenerator");
+const { Op } = require("sequelize");
 
 const findFligths = async (req, res, next) => {
   try {
-    const { FlightName, createdBy, manufacture, type, page, limit } = req.query;
+    const { date, page, limit } = req.query;
 
     const condition = {};
 
-    // Filter by carName
-    if (FlightName) condition.model = { [Op.iLike]: `%${FlightName}%` };
+    // ?date=dd-mm-yyyy
+    if (date) {
+      const [day, month, year] = date.split("-");
+      const specificDate = new Date(year, month - 1, day);
+      const nextDate = new Date(specificDate);
+      nextDate.setDate(specificDate.getDate() + 1);
 
-    // Filter by createdBy
-    if (createdBy) condition.createdBy = createdBy;
-
-    // Filter by manufacture
-    if (manufacture) condition.manufacture = { [Op.iLike]: `${manufacture}%` };
-
-    // Filter by type
-    if (type) condition.type = { [Op.iLike]: `%${type}%` };
+      condition.departure_time = {
+        [Op.gte]: specificDate,
+        [Op.lt]: nextDate,
+      };
+    }
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
@@ -37,14 +39,14 @@ const findFligths = async (req, res, next) => {
       status: "Success",
       message: "Flights succesfully retrieved",
       requestAt: req.requestTime,
+      pagination: {
+        totalData: totalCount,
+        totalPages,
+        pageNum,
+        pageSize,
+      },
       data: {
         flights,
-        pagination: {
-          totalData: totalCount,
-          totalPages,
-          pageNum,
-          pageSize,
-        },
       },
     });
   } catch (err) {

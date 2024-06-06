@@ -20,7 +20,7 @@ const getDetailBooking = async (req, res, next) => {
       return next(new ApiError("Please login to your account", 403));
     }
 
-    const { flightType, bookingCode, sortByDate, page, limit } = req.query;
+    const { flightType, bookingCode, sortBy, order, page, limit } = req.query;
 
     const condition = {};
     condition.user_id = id;
@@ -33,17 +33,14 @@ const getDetailBooking = async (req, res, next) => {
       }
     }
 
-    const order = [];
-    if (sortByDate) {
-      if (sortByDate === "DESC") {
-        order.push(["created_at", "DESC"]);
-      } else if (sortByDate === "ASC") {
-        order.push(["created_at", "ASC"]);
-      } else {
-        order.push(["created_at", "DESC"]);
+    const orderData = [];
+    if (sortBy) {
+      const sortOrder = order === "asc" ? "ASC" : "DESC";
+      if (sortBy === "transactionDate") {
+        orderData.push(["created_at", sortOrder]);
+      } else if (sortBy === "amount") {
+        orderData.push(["total_amount", sortOrder]);
       }
-    } else {
-      order.push(["created_at", "DESC"]);
     }
 
     const pageNum = parseInt(page) || 1;
@@ -56,7 +53,7 @@ const getDetailBooking = async (req, res, next) => {
       where: condition,
       limit: pageSize,
       offset: offset,
-      order: order,
+      order: orderData,
       attributes: [
         "booking_code",
         "payment_method",
