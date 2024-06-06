@@ -31,6 +31,14 @@ const findFligths = async (req, res, next) => {
       const sortOrder = order === "asc" ? "ASC" : "DESC";
       if (sortBy === "departureTime") {
         orderData.push(["departure_time", sortOrder]);
+      } else if (sortBy === "price_economy") {
+        orderData.push(["price_economy", sortOrder]);
+      } else if (sortBy === "price_premium_economy") {
+        orderData.push(["price_premium_economy", sortOrder]);
+      } else if (sortBy === "price_business") {
+        orderData.push(["price_business", sortOrder]);
+      } else if (sortBy === "price_first_class") {
+        orderData.push(["price_first_class", sortOrder]);
       }
     }
 
