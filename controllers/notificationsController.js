@@ -112,7 +112,7 @@ const createNotifications = async (req, res, next) => {
       notification_description,
       user_id,
     });
-    console.log("newNotification");
+
     res.status(200).json({
       status: "Success",
       message: "Notification successfully created",
@@ -128,7 +128,7 @@ const createNotifications = async (req, res, next) => {
 };
 
 const updateNotifications = async (req, res, next) => {
-  const user_Id = req.params.id;
+  const notificationId = req.params.id;
   const {
     notification_type,
     notification_title,
@@ -137,13 +137,13 @@ const updateNotifications = async (req, res, next) => {
   } = req.body;
 
   try {
-    let userId = await Notifications.findByPk(user_Id);
+    let notification = await Notifications.findByPk(notificationId);
 
-    if (!userId) {
+    if (!notification) {
       return next(new ApiError("Notification not found", 404));
     }
 
-    userId = await userId.update({
+    notification = await notification.update({
       notification_type,
       notification_title,
       notification_description,
@@ -155,7 +155,7 @@ const updateNotifications = async (req, res, next) => {
       message: "Notification Successfully Updated",
       requestAt: req.requestTime,
       data: {
-        updatedNotification: userId,
+        updatedNotification: notification,
       },
     });
   } catch (err) {
@@ -164,16 +164,16 @@ const updateNotifications = async (req, res, next) => {
 };
 
 const deleteNotifications = async (req, res, next) => {
-  const userId = req.params.id;
+  const notificationId = req.params.id;
 
   try {
-    const user_id = await Notifications.findByPk(userId);
+    const notification = await Notifications.findByPk(notificationId);
 
-    if (!user_id) {
+    if (!notification) {
       return next(new ApiError("Notification not found", 404));
     }
 
-    await user_id.destroy();
+    await notification.destroy();
 
     res.status(200).json({
       status: "Success",
