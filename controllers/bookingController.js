@@ -227,21 +227,11 @@ const createBooking = async (req, res, next) => {
     const booking = await processBooking(req.body, userId);
 
     const bookingCode = booking.booking.booking_code;
-    const bookingStatus = booking.booking.booking_status;
-
-    let message;
-    if (bookingStatus === "unpaid") {
-      message = `Pesanan Anda dengan kode booking ${bookingCode} sedang menunggu pembayaran. Silakan lakukan pembayaran untuk mengonfirmasi pesanan Anda.`;
-    } else if (bookingStatus === "issued") {
-      message = `Pembayaran Anda untuk pesanan dengan kode booking ${bookingCode} telah berhasil. Terima kasih! Periksa detail pesanan Anda di web atau aplikasi.`;
-    } else if (bookingStatus === "cancelled") {
-      message = `Penerbangan Anda dengan kode booking 45GT6 telah dibatalkan. Silakan cek aplikasi untuk detail pengembalian dana.`;
-    }
 
     await Notifications.create({
       notification_type: "Notifikasi",
       notification_title: `Status Pesanan ${bookingCode}`,
-      notification_description: message,
+      notification_description: `Pesanan Anda dengan kode booking ${bookingCode} sedang menunggu pembayaran. Silakan lakukan pembayaran untuk mengonfirmasi pesanan Anda.`,
       user_id: userId,
     });
 
@@ -258,6 +248,8 @@ const createBooking = async (req, res, next) => {
 const updateBookingStatus = async (req, res, next) => {
   try {
     const { transaction_status, order_id } = req.body;
+
+    console.log(transaction_status);
 
     if (transaction_status) {
       if (
@@ -303,6 +295,13 @@ const updateBookingStatus = async (req, res, next) => {
             where: { id: seatIds },
           }
         );
+
+        await Notifications.create({
+          notification_type: "Notifikasi",
+          notification_title: `Status Pesanan ${order_id}`,
+          notification_description: `Pesanan Anda dengan kode booking ${order_id} sudah berhasil terbayar. Lihat detail tiket anda di halaman riwayat pesanan.`,
+          user_id: getBookingId.user_id,
+        });
 
         res.status(200).json({
           status: "Success",
@@ -356,6 +355,36 @@ const updateBookingStatus = async (req, res, next) => {
           }
         );
 
+        if (transaction_status === "deny") {
+          await Notifications.create({
+            notification_type: "Notifikasi",
+            notification_title: `Status Pesanan ${order_id}`,
+            notification_description: `Pesanan Anda dengan kode booking ${order_id} pembayarannya ditolak. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            user_id: getBookingId.user_id,
+          });
+        } else if (transaction_status === "expire") {
+          await Notifications.create({
+            notification_type: "Notifikasi",
+            notification_title: `Status Pesanan ${order_id}`,
+            notification_description: `Pesanan Anda dengan kode booking ${order_id} pembayarannya ditolak. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            user_id: getBookingId.user_id,
+          });
+        } else if (transaction_status === "cancel") {
+          await Notifications.create({
+            notification_type: "Notifikasi",
+            notification_title: `Status Pesanan ${order_id}`,
+            notification_description: `Pesanan Anda dengan kode booking ${order_id} dibatalkan. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            user_id: getBookingId.user_id,
+          });
+        } else if (transaction_status === "failure") {
+          await Notifications.create({
+            notification_type: "Notifikasi",
+            notification_title: `Status Pesanan ${order_id}`,
+            notification_description: `Pesanan Anda dengan kode booking ${order_id} gagal. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            user_id: getBookingId.user_id,
+          });
+        }
+
         res.status(200).json({
           status: "Success",
           message: `Booking for ${order_id} Status is successfully canceled`,
@@ -374,6 +403,7 @@ const updateBookingStatus = async (req, res, next) => {
       }
     }
   } catch (err) {
+    console.log(err.message);
     return next(new ApiError(err.message, 400));
   }
 };
