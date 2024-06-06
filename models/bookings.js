@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       payment_method: {
         type: DataTypes.ENUM([
+          "snap_midtrans",
           "card",
           "gopay",
           "va_bni",
@@ -57,9 +58,8 @@ module.exports = (sequelize, DataTypes) => {
           "va_cimb",
           "va_mandiri",
           "va_permata",
-          "snap",
         ]),
-        defaultValue: "snap",
+        defaultValue: "snap_midtrans",
         allowNull: true,
       },
       payment_id: {

@@ -16,6 +16,7 @@ module.exports = {
       },
       payment_method: {
         type: Sequelize.ENUM([
+          "snap",
           "card",
           "gopay",
           "va_bni",
@@ -24,7 +25,6 @@ module.exports = {
           "va_cimb",
           "va_mandiri",
           "va_permata",
-          "snap",
         ]),
         defaultValue: "snap",
         allowNull: true,
