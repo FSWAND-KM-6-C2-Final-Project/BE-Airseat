@@ -1,4 +1,4 @@
-const { Seats } = require("../models");
+const { Seats, Flights } = require("../models");
 const ApiError = require("../utils/apiError");
 const { Op } = require("sequelize");
 const { isInt } = require("validator");
@@ -32,6 +32,22 @@ const findSeats = async (req, res, next) => {
       offset: offset,
     });
 
+    const updatedSeats = seats.map((seat) => {
+      const seatStatusAndroid = seat.seat_status === "available" ? "A" : "U";
+      return {
+        id: seat.id,
+        seat_row: seat.seat_row,
+        seat_column: seat.seat_column,
+        seat_name: seat.seat_name,
+        flight_id: seat.flight_id,
+        class: seat.class,
+        seat_status: seat.seat_status,
+        seat_status_android: seatStatusAndroid,
+        created_at: seat.created_at,
+        updated_at: seat.updated_at,
+      };
+    });
+
     const totalPages = Math.ceil(totalCount / pageSize);
 
     res.status(200).json({
@@ -39,7 +55,7 @@ const findSeats = async (req, res, next) => {
       message: "Seats succesfully retrieved",
       requestAt: req.requestTime,
       data: {
-        seats,
+        seats: updatedSeats,
         pagination: {
           totalData: totalCount,
           totalPages,
@@ -47,6 +63,54 @@ const findSeats = async (req, res, next) => {
           pageSize,
         },
       },
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const findSeatByFlightId = async (req, res, next) => {
+  try {
+    const flightId = req.params.flightId;
+
+    const flight = await Flights.findOne({
+      where: {
+        id: flightId,
+      },
+    });
+
+    if (!flight) {
+      return next(new ApiError("Flight Not found", 404));
+    }
+
+    const seats = await Seats.findAll({
+      where: {
+        flight_id: flight.id,
+      },
+      order: [["id", "ASC"]],
+    });
+
+    const updatedSeats = seats.map((seat) => {
+      const seatStatusAndroid = seat.seat_status === "available" ? "A" : "U";
+      return {
+        id: seat.id,
+        seat_row: seat.seat_row,
+        seat_column: seat.seat_column,
+        seat_name: seat.seat_name,
+        flight_id: seat.flight_id,
+        class: seat.class,
+        seat_status: seat.seat_status,
+        seat_status_android: seatStatusAndroid,
+        created_at: seat.created_at,
+        updated_at: seat.updated_at,
+      };
+    });
+
+    res.status(200).json({
+      status: "Success",
+      message: `Seats data with flight Id '${flightId}' is successfully retrieved`,
+      requestAt: req.requestTime,
+      data: { seats: updatedSeats },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -106,11 +170,27 @@ const findAvailableSeatsByFlightId = async (req, res, next) => {
       );
     }
 
+    const updatedSeats = seats.map((seat) => {
+      const seatStatusAndroid = seat.seat_status === "available" ? "A" : "U";
+      return {
+        id: seat.id,
+        seat_row: seat.seat_row,
+        seat_column: seat.seat_column,
+        seat_name: seat.seat_name,
+        flight_id: seat.flight_id,
+        class: seat.class,
+        seat_status: seat.seat_status,
+        seat_status_android: seatStatusAndroid,
+        created_at: seat.created_at,
+        updated_at: seat.updated_at,
+      };
+    });
+
     res.status(200).json({
       status: "Success",
       message: "Seats is successfully retrieved",
       requestAt: req.requestTime,
-      data: { seats },
+      data: { seats: updatedSeats },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -145,11 +225,27 @@ const findBookedSeatsByFlightId = async (req, res, next) => {
       );
     }
 
+    const updatedSeats = seats.map((seat) => {
+      const seatStatusAndroid = seat.seat_status === "available" ? "A" : "U";
+      return {
+        id: seat.id,
+        seat_row: seat.seat_row,
+        seat_column: seat.seat_column,
+        seat_name: seat.seat_name,
+        flight_id: seat.flight_id,
+        class: seat.class,
+        seat_status: seat.seat_status,
+        seat_status_android: seatStatusAndroid,
+        created_at: seat.created_at,
+        updated_at: seat.updated_at,
+      };
+    });
+
     res.status(200).json({
       status: "Success",
       message: "Seats is successfully retrieved",
       requestAt: req.requestTime,
-      data: { seats },
+      data: { seats: updatedSeats },
     });
   } catch (err) {
     return next(new ApiError(err.message, 400));
@@ -295,4 +391,5 @@ module.exports = {
   createBulkSeats,
   findBookedSeatsByFlightId,
   findAvailableSeatsByFlightId,
+  findSeatByFlightId,
 };
