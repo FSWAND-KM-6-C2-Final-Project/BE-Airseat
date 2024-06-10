@@ -1,0 +1,118 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>AIRLINE</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Airlines</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Airline</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">List Airlines</li>
+                </ol>
+            </nav>
+
+            <% if(message !="" ) { %>
+
+                <div class="alert alert-custom alert-<%= alertType %>-custom text-center" role="alert">
+                    Data successfully <%= message %>
+                </div>
+
+                <% } %>
+
+                    <!-- Dont delete it -->
+
+
+                    <!-- Konten dibawah -->
+
+
+                    <div class="row mb-3">
+                        <div class="col my-auto">
+                            <h3 class="page-title">List Airlines</h3>
+
+
+                        </div>
+                        <div class="col text-end">
+                            <a href="/admin/airline/add" class="btn btn-custom-primary ">+ Add New Airline</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>Airline Name</th>
+                                    <th>Airline Logo</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% airlines.map((airline)=> { %>
+                                    <tr class="align-middle">
+                                        <td>
+                                            <%= airline.airline_name %>
+                                        </td>
+                                        <td>
+
+                                            <img style="width: 100px; height: auto;"
+                                                src="<%= airline.airline_picture %>" alt="<%= airline.airline_name %>">
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-edit text-center mx-1"
+                                                href="/admin/airline/edit/<%= airline.id %>">
+                                                <img src="/assets/img/fi_edit.svg" alt="Edit Icon">
+                                                Edit
+                                            </a>
+                                            <button data-bs-toggle="modal" data-bs-target="#modal<%= airline.id %>"
+                                                class="btn btn-outline-danger btn-outline-delete mx-1 text-center"
+                                                href="">
+                                                <img src="/assets/img/fi_trash.svg" alt="Delete Icon">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal<%= airline.id %>" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+
+                                                <div class="modal-body text-center">
+                                                    <img class="modal-img" src="/assets/img/airplane.png"
+                                                        alt="Modal image">
+                                                    <h4 class="modal-title">Deleting Airline Data</h4>
+                                                    <h5 class="modal-text">Once deleted, airline data with id "<%=
+                                                            airline.id %>" cannot be
+                                                            restored. Are you sure
+                                                            you want
+                                                            to delete?</h5>
+                                                    <div class="d-flex justify-content-center">
+                                                        <form action="/admin/airline/delete/<%= airline.id %>"
+                                                            method="post">
+                                                            <button
+                                                                class="btn btn-custom-primary btn-accept w-auto mx-1">Yes</button>
+                                                        </form>
+                                                        <button data-bs-dismiss="modal"
+                                                            class="btn btn-outline-custom btn-cancel w-auto mx-1">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Of Modal -->
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <%- include('../footer.ejs') %>

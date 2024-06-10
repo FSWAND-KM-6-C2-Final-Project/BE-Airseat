@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> - Airseat Dashboard Admin
+    </title>
+
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.8/datatables.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="main d-flex">
+        <div class="sidebar">
+            <a href="">
+                <img class="logo" src="/assets/img/logo.svg" alt="">
+            </a>
+            <div class="sidebar-item">
+                <ul>
+                    <li>
+                        <a href="/admin/dashboard">
+                            <img class="sidebar-item-icon" src="/assets/img/fi_home.svg" alt="">
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li <%=(title==="Airline" ) ? `class=active ` : false %>>
+                        <a href="/admin/airline/list">
+                            <img class="sidebar-item-icon" src="/assets/img/airline.svg" alt="">
+                            <p>Airline</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/airport/list">
+                            <img class="sidebar-item-icon" src="/assets/img/airport.svg" alt="">
+                            <p>Airport</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/discount/list">
+                            <img class="sidebar-item-icon" src="/assets/img/discount.svg" alt="">
+                            <p>Discount</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/flight/list">
+                            <img class="sidebar-item-icon" src="/assets/img/flight.svg" alt="">
+                            <p>Flight</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/notification/list">
+                            <img class="sidebar-item-icon" src="/assets/img/notification.svg" alt="">
+                            <p>Notification</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content w-100">
+            <nav class="navbar navbar-expand-lg bg-body-white  m-0 p-0">
+                <div class="container-fluid m-0 p-0">
+                    <a class="navbar-brand m-0 p-0" href="#">
+                        <p class="m-3 fw-semibold">Airseat Dashboard Admin</p>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        </ul>
+
+                        <div class="d-flex">
+
+                            <button class="btn profile">
+                                <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
+                                    alt="Profile Picture">
+                                Unis Badri
+                                <img class="arrow-down" src="/assets/img/fi_chevron-down.svg" alt="Chevron Down">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
