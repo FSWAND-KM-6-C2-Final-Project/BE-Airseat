@@ -87,7 +87,7 @@ describe("[API REGISTER AUTH TESTS]", () => {
     expect(response.statusCode).toBe(400);
   });
 
-  test("Failed Register - Password and Confirm Password is not match", async () => {
+  test("Failed Register - Password and confirm password is not match", async () => {
     const credential = {
       full_name: "Test User",
       email: "theslowedchill@gmail.com",
@@ -107,5 +107,26 @@ describe("[API REGISTER AUTH TESTS]", () => {
     );
     expect(response.body.requestAt).not.toBeNull();
     expect(response.body.data).not.toBeNull();
+  });
+
+  test("Failed Register - Password is should be 8 character or more", async () => {
+    const credential = {
+      full_name: "Test User",
+      email: "theslowedchill@gmail.com",
+      phone_number: "085174057230",
+      password: "123",
+      confirm_password: "123",
+    };
+
+    const response = await request(app)
+      .post("/api/v1/auth/register")
+      .send(credential);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.status).toBe("Failed");
+    expect(response.body.message).toBe(
+      "Password is should be 8 or more character!"
+    );
+    expect(response.body.requestAt).not.toBeNull();
   });
 });
