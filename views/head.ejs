@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %> - Car Management Dashboard
+    </title>
+
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+    <div class="main d-flex">
+        <div class="sidebar">
+            <a href="">
+                <img class="logo" src="/assets/img/logo.svg" alt="">
+            </a>
+            <div class="sidebar-item">
+                <ul>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/fi_home.svg" alt="">
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/airline.svg" alt="">
+                            <p>Airline</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/airport.svg" alt="">
+                            <p>Airport</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/discount.svg" alt="">
+                            <p>Discount</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/flight.svg" alt="">
+                            <p>Flight</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <img class="sidebar-item-icon" src="/assets/img/notification.svg" alt="">
+                            <p>Notification</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content w-100">
+            <nav class="navbar navbar-expand-lg bg-body-white  m-0 p-0">
+                <div class="container-fluid m-0 p-0">
+                    <a class="navbar-brand m-0 p-0" href="#">
+                        <img class="logo-inner" src="/assets/img/logo_inner.svg" alt="Logo" width="100" height="34"
+                            class="d-inline-block align-text-top">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <button class="nav-link">
+                                    <img class="menu-icon" src="/assets/img/fi_menu.svg" alt="Menu">
+                                </button>
+                            </li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <div class="search-container">
+                                <form action="/admin/cars/list" method="get">
+                                    <input class="form-control search-input" type="text" name="search" id="search"
+                                        placeholder="Search">
+                                    <button class="btn btn-outline-custom">Search</button>
+                                </form>
+                            </div>
+                        </form>
+
+                        <div class="d-flex">
+
+                            <button class="btn profile">
+                                <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
+                                    alt="Profile Picture">
+                                Unis Badri
+                                <img class="arrow-down" src="/assets/img/fi_chevron-down.svg" alt="Chevron Down">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="row m-0 p-0">
+                <div class="col m-0 p-0 sidebar-inner">
+                    <p>Cars</p>
+                    <ul class="sidebar-inner-item">
+                        <li>
+                            <a href="">List Car</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col container-content">
