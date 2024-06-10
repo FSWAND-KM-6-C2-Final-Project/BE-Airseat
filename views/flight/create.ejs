@@ -1,0 +1,208 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>FLIGHT</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Flights</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Flight</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/flight/list">List Flights</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add New Flight</li>
+                </ol>
+            </nav>
+            <!-- Dont delete it -->
+
+
+            <!-- Konten dibawah -->
+
+            <div class="row">
+                <div class="col my-auto">
+                    <h3 class="page-title">Add New Flight</h3>
+                </div>
+                <div class="col text-end">
+                </div>
+            </div>
+            <div class="container-fluid container-form">
+                <form action="/admin/flight/add" method="post">
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="airline_id">Airline <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <select class="form-select" name="airline_id" id="airline_id" required>
+                                <option>-</option>
+                                <% airlines.map((airline)=> { %>
+                                    <option value="<%= airline.id %>">
+                                        <%= airline.airline_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="flight_number">Flight Number <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="flight_number"
+                                placeholder="JT-554" id="flight_number" required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="information">Information <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <textarea placeholder="Free Baggage 20kg" name="information" class="form-control"
+                                required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="departure_time">Departure Time <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input type="datetime-local" class="form-control" name="departure_time" id="departure_time"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="arrival_time">Arrival Time <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input type="datetime-local" class="form-control" name="arrival_time" id="arrival_time"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="departure_airport_id">Departure Airport <span
+                                    class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <select class="form-select" name="departure_airport_id" id="departure_airport_id" required>
+                                <option>-</option>
+                                <% airports.map((airport)=> { %>
+                                    <option value="<%= airport.id %>">
+                                        <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
+                                                    airport.airport_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="departure_terminal">Departure Airport Terminal <span
+                                    class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" placeholder="Terminal 3"
+                                name="departure_terminal" id="departure_terminal" required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="arrival_airport_id">Arrival Airport <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <select class="form-select" name="arrival_airport_id" id="arrival_airport_id" required>
+                                <option>-</option>
+                                <% airports.map((airport)=> { %>
+                                    <option value="<%= airport.id %>">
+                                        <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
+                                                    airport.airport_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="price_economy">Price Economy <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="number" required name="price_economy" placeholder="200000"
+                                    class="form-control form-money">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="price_premium_economy">Price Premium Economy <span
+                                    class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="number" required name="price_premium_economy" placeholder="200000"
+                                    class="form-control form-money">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="price_business">Price Business <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="number" required name="price_business" placeholder="200000"
+                                    class="form-control form-money">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="price_first_class">Price First Class <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="number" required name="price_first_class" placeholder="200000"
+                                    class="form-control form-money">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
+                </form>
+
+            </div>
+
+            <div class="container-fluid">
+                <div class="row button-group ">
+                    <a href="/admin/flight/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
+                    <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
+                    <div class="spinner-border shadow loading mx-2" id="loading" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <script src="/assets/js/script.js"></script>
+
+            <%- include('../footer.ejs') %>

@@ -17,6 +17,7 @@ const notificationRouter = require("./notificationRouter");
 const bookingRouter = require("./bookingRouter");
 const userRouter = require("./userRouter");
 const adminAirlineRouter = require("./adminAirlineRouter");
+const adminFlightRouter = require("./adminFlightRouter");
 
 /*
     Define other routes here, for example:
@@ -36,6 +37,7 @@ router.use("/api/v1/profile", userRouter);
 
 // Admin Dashboard
 router.use("/admin/airline", adminAirlineRouter);
+router.use("/admin/flight", adminFlightRouter);
 
 // Swagger docs
 router.use("/api-docs", swaggerUI.serve);

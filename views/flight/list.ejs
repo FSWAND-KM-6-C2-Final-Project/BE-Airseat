@@ -1,0 +1,145 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>FLIGHT</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Flights</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Flight</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">List Flights</li>
+                </ol>
+            </nav>
+
+            <% if(message !="" ) { %>
+
+                <div class="alert alert-custom alert-<%= alertType %>-custom text-center" role="alert">
+                    Data successfully <%= message %>
+                </div>
+
+                <% } %>
+
+                    <!-- Dont delete it -->
+
+
+                    <!-- Konten dibawah -->
+
+
+                    <div class="row mb-3">
+                        <div class="col my-auto">
+                            <h3 class="page-title">List Flights</h3>
+
+
+                        </div>
+                        <div class="col text-end">
+                            <a href="/admin/flight/add" class="btn btn-custom-primary ">+ Add New Flights</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Flight Number</th>
+                                    <th>Airline Name</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Departure Time</th>
+                                    <th>Arrival Time</th>
+                                    <th>Price</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% flights.map((flight)=> { %>
+                                    <tr class="align-middle">
+
+                                        <td>
+                                            <img style="width: 50px;" src="<%= flight.airline.airline_picture %>"
+                                                alt="<%= flight.airline.airline_name %>">
+                                        </td>
+                                        <td>
+                                            <%= flight.flight_number %>
+                                        </td>
+
+                                        <td>
+
+                                            <p>
+                                                <%= flight.airline.airline_name %>
+
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <%= flight.departureAirport.airport_name %> (<%=
+                                                    flight.departureAirport.airport_city %>
+                                                    ) (<%= flight.departureAirport.airport_city_code %>)
+                                        </td>
+                                        <td>
+                                            <%= flight.arrivalAirport.airport_name %> (<%=
+                                                    flight.arrivalAirport.airport_city %>
+                                                    ) (<%= flight.arrivalAirport.airport_city_code %>)
+                                        </td>
+                                        <td>
+                                            <%- new Date(flight.departure_time).toLocaleString('en-us', {
+                                                dateStyle: "medium" , timeStyle: "short" , hour12: false }) %>
+                                        </td>
+                                        <td>
+                                            <%- new Date(flight.arrival_time).toLocaleString('en-us', {
+                                                dateStyle: "medium" , timeStyle: "short" , hour12: false }) %>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <b>Economy: </b>
+                                                <br>
+                                                Rp. <%= new Intl.NumberFormat("en-US").format(flight.price_economy); %>
+                                            </p>
+                                            <p>
+                                                <b>Premium Economy:</b>
+                                                <br>
+                                                Rp. <%= new
+                                                    Intl.NumberFormat("en-US").format(flight.price_premium_economy); %>
+
+
+                                            </p>
+                                            <p>
+                                                <b>Business :</b>
+                                                <br>
+                                                Rp. <%= new Intl.NumberFormat("en-US").format(flight.price_business); %>
+                                            </p>
+                                            <p>
+                                                <b>First Class :</b>
+                                                <br>
+                                                Rp. <%= new Intl.NumberFormat("en-US").format(flight.price_first_class);
+                                                    %>
+                                            </p>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-edit text-center my-1"
+                                                href="/admin/flight/edit/<%= flight.id %>">
+                                                <img src="/assets/img/fi_edit.svg" alt="Edit Icon">
+                                                Edit
+                                            </a>
+                                            <button data-bs-toggle="modal" data-bs-target="#modal<%= flight.id %>"
+                                                class="btn btn-outline-danger btn-outline-delete my-1 text-center"
+                                                href="">
+                                                <img src="/assets/img/fi_trash.svg" alt="Delete Icon">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <%- include('../footer.ejs') %>
