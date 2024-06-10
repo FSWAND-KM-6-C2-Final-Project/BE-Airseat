@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
 * {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .main {
@@ -10,7 +10,7 @@
 
 .sidebar {
   text-align: center;
-  background-color: #0d28a6;
+  background-color: #184765;
 }
 
 .sidebar-item {
@@ -22,7 +22,7 @@
 }
 
 .sidebar-item .active {
-  background-color: #5568c1;
+  background-color: #437c9d;
   font-weight: 700;
 }
 
@@ -107,14 +107,14 @@ img.arrow-down {
 }
 
 .btn-outline-custom {
-  border: 1px solid #0d28a6;
+  border: 1px solid #184765;
   border-radius: 2px;
-  color: #0d28a6;
+  color: #184765;
   font-weight: 700;
 }
 
 .btn-outline-custom:hover {
-  background-color: #0d28a6;
+  background-color: #184765;
   color: white;
 }
 .search-icon {
@@ -143,7 +143,13 @@ ul.sidebar-inner-item {
 
 ul.sidebar-inner-item li {
   list-style: none;
-  background-color: #cfd4ed;
+  margin: 0px 0px 8px 0px;
+  padding: 11px 24px;
+}
+
+ul.sidebar-inner-item li.active {
+  list-style: none;
+  background-color: #ddf2fd;
   margin: 0px 0px 8px 0px;
   padding: 11px 24px;
 }
@@ -191,7 +197,7 @@ h3.page-title {
 }
 
 .btn-custom-primary {
-  background-color: #0d28a6;
+  background-color: #184765;
   border-radius: 2px;
   color: white;
   font-weight: 700;
@@ -200,8 +206,8 @@ h3.page-title {
 
 .btn-custom-primary:hover,
 .btn-custom-filter:hover {
-  border: 1px solid #0d28a6;
-  color: #0d28a6;
+  border: 1px solid #184765;
+  color: #184765;
 }
 
 .filter-menu {
@@ -214,10 +220,10 @@ h3.page-title {
 }
 
 .btn-custom-filter.active {
-  border: 1px solid #0d28a6;
+  border: 1px solid #184765;
   background-color: #cfd4ed;
   border-radius: 2px;
-  color: #0d28a6;
+  color: #184765;
   font-weight: 700;
   margin-right: 16px;
   font-size: 14px;
@@ -381,7 +387,7 @@ h3.page-title {
 
 img.modal-img {
   width: 153px;
-  height: 121px;
+  height: 153px;
   margin-bottom: 24px;
 }
 
@@ -427,13 +433,13 @@ h5.modal-text {
 }
 
 .alert-primary-custom {
-  background-color: #0d28a6;
+  background-color: #184765;
   color: white;
 }
 
 .loading {
   display: none;
-  color: #0d28a6;
+  color: #184765;
   background-color: white;
 }
 
