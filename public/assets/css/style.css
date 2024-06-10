@@ -483,3 +483,8 @@ small.form-detail {
   line-height: 14px;
   text-align: left;
 }
+
+li.dt-paging-button.page-item.active a.page-link {
+  background-color: #184765 !important;
+  border: 1px solid #184765;
+}
