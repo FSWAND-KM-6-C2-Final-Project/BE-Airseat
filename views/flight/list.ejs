@@ -135,6 +135,37 @@
                                             </button>
                                         </td>
                                     </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal<%= flight.id %>" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+
+                                                <div class="modal-body text-center">
+                                                    <img class="modal-img" src="/assets/img/airplane.png"
+                                                        alt="Modal image">
+                                                    <h4 class="modal-title">Deleting Flight Data</h4>
+                                                    <h5 class="modal-text">Once deleted, flight data with flight number
+                                                        "<%= flight.flight_number %>" cannot be
+                                                            restored. Are you sure
+                                                            you want
+                                                            to delete?</h5>
+                                                    <div class="d-flex justify-content-center">
+                                                        <form action="/admin/flight/delete/<%= flight.id %>"
+                                                            method="post">
+                                                            <button
+                                                                class="btn btn-custom-primary btn-accept w-auto mx-1">Yes</button>
+                                                        </form>
+                                                        <button data-bs-dismiss="modal"
+                                                            class="btn btn-outline-custom btn-cancel w-auto mx-1">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Of Modal -->
                                     <% }) %>
                             </tbody>
                         </table>

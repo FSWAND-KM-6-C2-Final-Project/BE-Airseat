@@ -1,5 +1,11 @@
 const { Flights, Airlines, Airports, Seats } = require("../models");
 const seatGenerator = require("../utils/seatGenerator");
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const listFlight = async (req, res, next) => {
   try {
@@ -121,8 +127,160 @@ const insertFlight = async (req, res, next) => {
   }
 };
 
+const deleteFlight = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const flight = await Flights.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!flight) {
+      return new Error("Not found flight data");
+    }
+
+    // Delete flight data
+    await Flights.destroy({
+      where: {
+        id: id,
+      },
+    });
+
+    // Delete seat by flight_id
+    await Seats.destroy({
+      where: {
+        flight_id: id,
+      },
+    });
+
+    req.flash("message", "Deleted");
+    req.flash("alertType", "dark");
+    res.redirect("/admin/flight/list");
+  } catch (err) {
+    res.render("error", {
+      title: "Error",
+      message: err.message,
+    });
+  }
+};
+
+const editFlightPage = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const flight = await Flights.findOne({
+      where: {
+        id,
+      },
+    });
+
+    const formattedDepartureTime = dayjs(flight.departure_time)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DDTHH:mm");
+
+    const formattedArrivalTime = dayjs(flight.arrival_time)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DDTHH:mm");
+
+    if (!flight) {
+      return new Error("Not found flight data");
+    }
+
+    const airline = await Airlines.findAll({
+      order: [["airline_name", "ASC"]],
+    });
+
+    const airport = await Airports.findAll({
+      order: [["airport_name", "ASC"]],
+    });
+
+    res.render("flight/edit", {
+      title: "Flight",
+      flight: {
+        ...flight.dataValues,
+        formattedDepartureTime,
+        formattedArrivalTime,
+      },
+      airlines: airline,
+      airports: airport,
+    });
+  } catch (err) {
+    res.render("error", {
+      title: "Error",
+      message: err.message,
+    });
+  }
+};
+
+const updateFlight = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    const {
+      airline_id,
+      flight_number,
+      information,
+      departure_airport_id,
+      departure_terminal,
+      arrival_airport_id,
+      departure_time,
+      arrival_time,
+      price_economy,
+      price_premium_economy,
+      price_business,
+      price_first_class,
+    } = req.body;
+
+    const flight = await Flights.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!flight) {
+      return new Error("Not found flight data");
+    }
+
+    await Flights.update(
+      {
+        airline_id,
+        flight_number,
+        information,
+        departure_airport_id,
+        departure_terminal,
+        arrival_airport_id,
+        departure_time,
+        arrival_time,
+        price_economy,
+        price_premium_economy,
+        price_business,
+        price_first_class,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    req.flash("message", "Updated");
+    req.flash("alertType", "primary");
+    res.redirect("/admin/flight/list");
+  } catch (err) {
+    res.render("error", {
+      title: "Error",
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   listFlight,
   createFlightPage,
   insertFlight,
+  deleteFlight,
+  editFlightPage,
+  updateFlight,
 };

@@ -15,23 +15,24 @@
                 <ol class="breadcrumb ">
                     <li class="breadcrumb-item"><a href="#">Flight</a></li>
                     <li class="breadcrumb-item"><a href="/admin/flight/list">List Flights</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Add New Flight</li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Airline</li>
                 </ol>
             </nav>
             <!-- Dont delete it -->
 
 
             <!-- Konten dibawah -->
-
             <div class="row">
                 <div class="col my-auto">
-                    <h3 class="page-title">Add New Flight</h3>
+                    <h3 class="page-title">Edit Flight</h3>
                 </div>
                 <div class="col text-end">
+                    <a href="/admin/flight/list" class="btn btn-custom-primary ">
+                        Back To Flight Data</a>
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/flight/add" method="post">
+                <form action="/admin/flight/update/<%= flight.id %>" method="post">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="airline_id">Airline <span class="text-danger">*</span></label>
@@ -40,8 +41,9 @@
                             <select class="form-select" name="airline_id" id="airline_id" required>
                                 <option>-</option>
                                 <% airlines.map((airline)=> { %>
-                                    <option value="<%= airline.id %>">
-                                        <%= airline.airline_name %>
+                                    <option <%=airline.id===flight.airline_id ? "selected" : false %> value="<%=
+                                            airline.id %>">
+                                            <%= airline.airline_name %>
                                     </option>
                                     <% }) %>
                             </select>
@@ -54,7 +56,7 @@
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" name="flight_number"
-                                placeholder="JT-554" id="flight_number" required>
+                                value="<%= flight.flight_number %>" placeholder="JT-554" id="flight_number" required>
                         </div>
                     </div>
 
@@ -64,7 +66,7 @@
                         </div>
                         <div class="col-lg-4 ">
                             <textarea placeholder="Free Baggage 20kg" name="information" class="form-control"
-                                required></textarea>
+                                required><%= flight.information %></textarea>
                         </div>
                     </div>
 
@@ -73,8 +75,8 @@
                             <label for="departure_time">Departure Time <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
-                            <input type="datetime-local" class="form-control" name="departure_time" id="departure_time"
-                                required>
+                            <input type="datetime-local" value="<%= flight.formattedDepartureTime  %>"
+                                class="form-control" name="departure_time" id="departure_time" required>
                         </div>
                     </div>
 
@@ -83,8 +85,8 @@
                             <label for="arrival_time">Arrival Time <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
-                            <input type="datetime-local" class="form-control" name="arrival_time" id="arrival_time"
-                                required>
+                            <input type="datetime-local" value="<%= flight.formattedArrivalTime  %>"
+                                class="form-control" name="arrival_time" id="arrival_time" required>
                         </div>
                     </div>
 
@@ -97,9 +99,10 @@
                             <select class="form-select" name="departure_airport_id" id="departure_airport_id" required>
                                 <option>-</option>
                                 <% airports.map((airport)=> { %>
-                                    <option value="<%= airport.id %>">
-                                        <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
-                                                    airport.airport_name %>
+                                    <option <%=airport.id===flight.departure_airport_id ? "selected" : false %> value="
+                                        <%= airport.id %>">
+                                            <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
+                                                        airport.airport_name %>
                                     </option>
                                     <% }) %>
                             </select>
@@ -113,7 +116,8 @@
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" placeholder="Terminal 3"
-                                name="departure_terminal" id="departure_terminal" required>
+                                name="departure_terminal" value="<%= flight.departure_terminal %>"
+                                id="departure_terminal" required>
                         </div>
                     </div>
 
@@ -125,9 +129,10 @@
                             <select class="form-select" name="arrival_airport_id" id="arrival_airport_id" required>
                                 <option>-</option>
                                 <% airports.map((airport)=> { %>
-                                    <option value="<%= airport.id %>">
-                                        <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
-                                                    airport.airport_name %>
+                                    <option <%=airport.id===flight.arrival_airport_id ? "selected" : false %> value="
+                                        <%= airport.id %>">
+                                            <%= airport.airport_city_code %> - <%= airport.airport_city %> - <%=
+                                                        airport.airport_name %>
                                     </option>
                                     <% }) %>
                             </select>
@@ -141,8 +146,8 @@
                         <div class="col-lg-4 ">
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" required name="price_economy" placeholder="200000"
-                                    class="form-control form-money">
+                                <input type="number" value="<%=flight.price_economy %>" required name="price_economy"
+                                    placeholder="200000" class="form-control form-money">
                             </div>
                         </div>
                     </div>
@@ -155,8 +160,8 @@
                         <div class="col-lg-4 ">
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" required name="price_premium_economy" placeholder="200000"
-                                    class="form-control form-money">
+                                <input type="number" value="<%=flight.price_premium_economy %>" required
+                                    name="price_premium_economy" placeholder="200000" class="form-control form-money">
                             </div>
                         </div>
                     </div>
@@ -168,8 +173,8 @@
                         <div class="col-lg-4 ">
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" required name="price_business" placeholder="200000"
-                                    class="form-control form-money">
+                                <input type="number" value="<%=flight.price_business %>" required name="price_business"
+                                    placeholder="200000" class="form-control form-money">
                             </div>
                         </div>
                     </div>
@@ -181,8 +186,8 @@
                         <div class="col-lg-4 ">
                             <div class="input-group">
                                 <span class="input-group-text">Rp.</span>
-                                <input type="number" required name="price_first_class" placeholder="200000"
-                                    class="form-control form-money">
+                                <input type="number" value="<%=flight.price_first_class %>" required
+                                    name="price_first_class" placeholder="200000" class="form-control form-money">
                             </div>
                         </div>
                     </div>
@@ -200,6 +205,9 @@
 
                 </div>
             </div>
+
+
+
 
 
             <script src="/assets/js/script.js"></script>
