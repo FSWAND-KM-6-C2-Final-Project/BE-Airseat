@@ -11,9 +11,8 @@ const listNotification = async (req, res, next) => {
           attributes: ["full_name"],
         },
       ],
+      order: [["created_at", "desc"]],
     });
-
-    console.log(notifications[0]);
 
     res.render("notification/list", {
       title: "Notification",
@@ -167,19 +166,34 @@ const updateNotification = async (req, res, next) => {
       return new Error("Not found notification data");
     }
 
-    await Notifications.update(
-      {
-        notification_type,
-        notification_title,
-        notification_description,
-        user_id,
-      },
-      {
-        where: {
-          id,
+    if (user_id === "-") {
+      await Notifications.update(
+        {
+          notification_type,
+          notification_title,
+          notification_description,
         },
-      }
-    );
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    } else {
+      await Notifications.update(
+        {
+          notification_type,
+          notification_title,
+          notification_description,
+          user_id,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
 
     req.flash("message", "Updated");
     req.flash("alertType", "primary");
