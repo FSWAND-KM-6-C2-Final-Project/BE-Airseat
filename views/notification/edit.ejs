@@ -39,10 +39,10 @@
                         </div>
                         <div class="col-lg-4 ">
                             <select class="form-select" name="user_id" id="user_id" required>
-                                <option>1</option>
+                                <option>-</option>
                                 <% users.map((user)=> { %>
-                                    <option <%=user.id===notification.user_id ? "selected" : false %> value="<%=
-                                            user.id %>">
+                                    <option <%=user.id===notification.user_id ? "selected" : false %> value="<%= user.id
+                                            %>">
                                             <%= user.full_name %>
                                     </option>
                                     <% }) %>
@@ -56,7 +56,8 @@
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" name="notification_type"
-                                value="<%= notification.notification_type %>" placeholder="Notification" id="notification_type" required>
+                                value="<%= notification.notification_type %>" placeholder="Notification"
+                                id="notification_type" required>
                         </div>
                     </div>
 
@@ -66,13 +67,15 @@
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" name="notification_title"
-                                value="<%= notification.notification_title %>" placeholder="Title" id="notification_title" required>
+                                value="<%= notification.notification_title %>" placeholder="Title"
+                                id="notification_title" required>
                         </div>
                     </div>
 
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
-                            <label for="notification_description">Notification Dscription <span class="text-danger">*</span></label>
+                            <label for="notification_description">Notification Dscription <span
+                                    class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
                             <textarea placeholder="Information" name="notification_description" class="form-control"
@@ -84,7 +87,7 @@
 
             <div class="container-fluid">
                 <div class="row button-group ">
-                    <a href="/admin/notificationlist" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
+                    <a href="/admin/notification/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
                     <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
                     <div class="spinner-border shadow loading mx-2" id="loading" role="status">
                         <span class="visually-hidden">Loading...</span>

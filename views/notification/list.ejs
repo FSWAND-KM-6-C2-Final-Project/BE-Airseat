@@ -67,7 +67,7 @@
                                             <%= notification.notification_description %>
                                         </td>
                                         <td>
-                                            <%= notification.User.full_name%>
+                                            <%= (notification.User) ? notification.User.full_name : "For All User" %>
                                         </td>
                                         <td class="text-center">
                                             <a class="btn btn-success btn-edit text-center mx-1"

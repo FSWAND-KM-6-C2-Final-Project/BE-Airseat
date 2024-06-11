@@ -9,8 +9,11 @@ const listNotification = async (req, res, next) => {
           model: Users,
           as: "User",
           attributes: ["full_name"],
-        }]
+        },
+      ],
     });
+
+    console.log(notifications[0]);
 
     res.render("notification/list", {
       title: "Notification",
@@ -34,7 +37,7 @@ const createNotificationPage = async (req, res, next) => {
 
     res.render("notification/create", {
       title: "Notification",
-      users: userId
+      users: userId,
     });
   } catch (err) {
     res.render("error", {
@@ -46,22 +49,27 @@ const createNotificationPage = async (req, res, next) => {
 
 const insertNotification = async (req, res, next) => {
   try {
-    const { notification_type, notification_title, notification_description, user_id } = req.body;
-    if ( user_id !== "0") {
+    const {
+      notification_type,
+      notification_title,
+      notification_description,
+      user_id,
+    } = req.body;
+
+    if (user_id === "-") {
       await Notifications.create({
         notification_type,
         notification_title,
         notification_description,
-        user_id
       });
     } else {
       await Notifications.create({
         notification_type,
         notification_title,
-        notification_description
+        notification_description,
+        user_id,
       });
     }
-    
 
     req.flash("message", "Saved");
     req.flash("alertType", "success");
@@ -123,10 +131,12 @@ const editNotificationPage = async (req, res, next) => {
       order: [["full_name", "ASC"]],
     });
 
+    console.log(notification);
+
     res.render("notification/edit", {
       title: "Notification",
       notification,
-      users: userId
+      users: userId,
     });
   } catch (err) {
     res.render("error", {
@@ -140,7 +150,12 @@ const updateNotification = async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const { notification_type, notification_title, notification_description, user_id } = req.body;
+    const {
+      notification_type,
+      notification_title,
+      notification_description,
+      user_id,
+    } = req.body;
 
     const notificatin = await Notifications.findOne({
       where: {
@@ -157,7 +172,7 @@ const updateNotification = async (req, res, next) => {
         notification_type,
         notification_title,
         notification_description,
-        user_id
+        user_id,
       },
       {
         where: {
