@@ -333,9 +333,43 @@ h3.page-title {
   font-size: 12px;
 }
 
+textarea.form-control {
+  border-radius: 2px;
+  height: 100px;
+  font-size: 12px;
+}
+
+textarea.form-control::placeholder {
+  font-size: 12px;
+  font-weight: 300;
+  color: #999999;
+}
+
+input[type="datetime-local"] {
+  border-radius: 2px;
+  height: 36px;
+  font-size: 12px;
+}
+
+input[type="datetime-local"]::placeholder {
+  font-size: 12px;
+  font-weight: 300;
+  color: #999999;
+}
+
+.form-money {
+  border-radius: 2px;
+  height: 36px;
+  font-size: 12px;
+}
+
+span.input-group-text {
+  font-size: 12px;
+  border-radius: 2px;
+}
+
 .container-form .form-custom::placeholder {
   font-size: 12px;
-  color: blue;
   font-weight: 300;
   color: #999999;
 }
@@ -448,4 +482,9 @@ small.form-detail {
   font-weight: 300;
   line-height: 14px;
   text-align: left;
+}
+
+li.dt-paging-button.page-item.active a.page-link {
+  background-color: #184765 !important;
+  border: 1px solid #184765;
 }

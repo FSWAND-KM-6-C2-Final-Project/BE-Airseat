@@ -3,7 +3,9 @@ const imagekit = require("../utils/imageKit");
 
 const listAirline = async (req, res, next) => {
   try {
-    const airlines = await Airlines.findAll();
+    const airlines = await Airlines.findAll({
+      order: [["created_at", "DESC"]],
+    });
 
     res.render("airline/list", {
       title: "Airline",
