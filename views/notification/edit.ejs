@@ -43,7 +43,7 @@
                                 <% users.map((user)=> { %>
                                     <option <%=user.id===notification.user_id ? "selected" : false %> value="<%= user.id
                                             %>">
-                                            <%= user.full_name %>
+                                            <%= user.full_name %> - <%= user.id %>
                                     </option>
                                     <% }) %>
                             </select>

@@ -41,7 +41,7 @@
                                 <option>-</option>
                                 <% users.map((user)=> { %>
                                     <option value="<%= user.id %>">
-                                        <%= user.full_name %>
+                                        <%= user.full_name %> - <%= user.id %>
                                     </option>
                                     <% }) %>
                             </select>
