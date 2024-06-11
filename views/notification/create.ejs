@@ -1,0 +1,97 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>NOTIFICATION</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Notification</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Notification</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/notification/list">List Notification</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add New Notification</li>
+                </ol>
+            </nav>
+            <!-- Dont delete it -->
+
+
+            <!-- Konten dibawah -->
+
+            <div class="row">
+                <div class="col my-auto">
+                    <h3 class="page-title">Add New Notification</h3>
+                </div>
+                <div class="col text-end">
+                </div>
+            </div>
+            <div class="container-fluid container-form">
+                <form action="/admin/notification/add" method="post">
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="user_id">User <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <select class="form-select" name="user_id" id="user_id" required>
+                                <option>-</option>
+                                <% users.map((user)=> { %>
+                                    <option value="<%= user.id %>">
+                                        <%= user.full_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="notification_type">Notification Type <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="notification_type"
+                                placeholder="Notification" id="notification_type" required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="notification_title">Notif Title <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="notification_title"
+                                placeholder="Title" id="notification_title" required>
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="notification_description">Notif Descrip <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <textarea placeholder="Information" name="notification_description" class="form-control"
+                                required></textarea>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="container-fluid">
+                <div class="row button-group ">
+                    <a href="/admin/notification/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
+                    <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
+                    <div class="spinner-border shadow loading mx-2" id="loading" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+
+
+            <script src="/assets/js/script.js"></script>
+
+            <%- include('../footer.ejs') %>
