@@ -255,7 +255,9 @@ const cancelBooking = async (req, res, next) => {
 
     // Cek apakah booking id  ada?
     const bookingData = await Bookings.findOne({
-      booking_code: booking_code,
+      where: {
+        booking_code: booking_code,
+      },
     });
 
     if (!bookingData) {
