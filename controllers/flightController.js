@@ -5,7 +5,16 @@ const { Op } = require("sequelize");
 
 const findFligths = async (req, res, next) => {
   try {
-    const { searchDate, page, continent, limit, sortBy, order } = req.query;
+    const {
+      searchDate,
+      page,
+      continent,
+      deptAirport,
+      arrAirport,
+      limit,
+      sortBy,
+      order,
+    } = req.query;
 
     const condition = {};
 
@@ -20,6 +29,14 @@ const findFligths = async (req, res, next) => {
         [Op.gte]: specificDate,
         [Op.lt]: nextDate,
       };
+    }
+
+    if (deptAirport) {
+      condition.departure_airport_id = deptAirport;
+    }
+
+    if (arrAirport) {
+      condition.arrival_airport_id = arrAirport;
     }
 
     if (continent) {
