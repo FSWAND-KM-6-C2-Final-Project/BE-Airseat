@@ -1,6 +1,7 @@
 const { Airports } = require("../models");
 const ApiError = require("../utils/apiError");
 const ImageKit = require("../utils/imageKit");
+const { Op } = require("sequelize");
 
 const uploadImage = async (file) => {
   try {
@@ -24,22 +25,14 @@ const uploadImage = async (file) => {
 
 const findAirport = async (req, res, next) => {
   try {
-    const { AirportName, createdBy, manufacture, type, page, limit } =
-      req.query;
+    const { name, cityName, page, limit } = req.query;
 
     const condition = {};
 
-    // Filter by carName
-    if (AirportName) condition.model = { [Op.iLike]: `%${AirportName}%` };
+    // Filter by airport Name
+    if (name) condition.airport_name = { [Op.iLike]: `%${name}%` };
 
-    // Filter by createdBy
-    if (createdBy) condition.createdBy = createdBy;
-
-    // Filter by manufacture
-    if (manufacture) condition.manufacture = { [Op.iLike]: `${manufacture}%` };
-
-    // Filter by type
-    if (type) condition.type = { [Op.iLike]: `%${type}%` };
+    if (cityName) condition.airport_city = { [Op.iLike]: `%${cityName}%` };
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
@@ -58,14 +51,14 @@ const findAirport = async (req, res, next) => {
       status: "Success",
       message: "Airports succesfully retrieved",
       requestAt: req.requestTime,
+      pagination: {
+        totalData: totalCount,
+        totalPages,
+        pageNum,
+        pageSize,
+      },
       data: {
         airports,
-        pagination: {
-          totalData: totalCount,
-          totalPages,
-          pageNum,
-          pageSize,
-        },
       },
     });
   } catch (err) {
