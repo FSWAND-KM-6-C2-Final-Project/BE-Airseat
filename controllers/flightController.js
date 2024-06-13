@@ -161,6 +161,35 @@ const findFlightById = async (req, res, next) => {
       where: {
         id,
       },
+      include: [
+        {
+          model: Airlines,
+          as: "airline",
+          attributes: ["airline_name", "airline_picture"],
+        },
+        {
+          model: Airports,
+          as: "departureAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+        {
+          model: Airports,
+          as: "arrivalAirport",
+          attributes: [
+            "airport_name",
+            "airport_city",
+            "airport_city_code",
+            "airport_picture",
+            "airport_continent",
+          ],
+        },
+      ],
     });
 
     if (!flight) {
