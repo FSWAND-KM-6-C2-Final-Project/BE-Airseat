@@ -95,7 +95,7 @@ describe("[API DELETE DISCOUNT TESTS]", () => {
     expect(response.body.message).toBe(`Discount with id '883 is not found`);
   });
 
-  test("Success - Not Found Discount", async () => {
+  test("Success - Delete Discount", async () => {
     const discountData = await Discounts.findOne();
 
     const response = await request(app).delete(
