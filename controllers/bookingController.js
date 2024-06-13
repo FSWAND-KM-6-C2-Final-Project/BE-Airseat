@@ -8,6 +8,7 @@ const {
   Airports,
   Airlines,
   Notifications,
+  Passengers,
 } = require("../models");
 const axios = require("axios");
 const { Op } = require("sequelize");
@@ -156,6 +157,10 @@ const getDetailBooking = async (req, res, next) => {
               model: Seats,
               as: "seat",
               attributes: ["class", "seat_name"],
+            },
+            {
+              model: Passengers,
+              as: "passenger",
             },
           ],
         },
