@@ -3,9 +3,8 @@ dotenv.config();
 
 const request = require("supertest");
 const app = require("../app");
-const { Users } = require("../models/");
 
-describe("[ROUTE ERROR HANDLER TEST]", () => {
+describe("[API ERROR HANDLER TESTS]", () => {
   test("Not found routes", async () => {
     const response = await request(app).post("/api/v1/tesesattt");
 
