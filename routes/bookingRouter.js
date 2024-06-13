@@ -10,6 +10,11 @@ router.post(
   checkSignatureKey,
   bookingController.updateBookingStatus
 );
+router.post(
+  "/cancel/:bookingCode",
+  authenticate,
+  bookingController.cancelBooking
+);
 router.get(
   "/pay/status/:bookingCode",
   authenticate,
