@@ -58,6 +58,7 @@ const getDetailBooking = async (req, res, next) => {
       attributes: [
         "booking_code",
         "payment_method",
+        "payment_id",
         "ordered_by_first_name",
         "ordered_by_last_name",
         "ordered_by_phone_number",
@@ -247,11 +248,87 @@ const createBooking = async (req, res, next) => {
   }
 };
 
+const cancelBooking = async (req, res, next) => {
+  try {
+    const user_id = req.user.id;
+    const booking_code = req.params.bookingCode;
+
+    // Cek apakah booking id  ada?
+    const bookingData = await Bookings.findOne({
+      booking_code: booking_code,
+    });
+
+    if (!bookingData) {
+      return next(new ApiError("Booking not found", 404));
+    }
+
+    // Kalo token tidak sesuai dengan user id yang berada di booking code maka gagal
+    if (bookingData.user_id !== user_id) {
+      return next(
+        new ApiError("Cannot cancel booking, this is not your booking", 400)
+      );
+    }
+
+    // Kalo status bukan unpaid maka gagal
+    if (bookingData.booking_status !== "unpaid") {
+      return next(
+        new ApiError(`Booking is already ${bookingData.booking_status}`, 400)
+      );
+    }
+
+    // If status payment is not success
+    const booking = await Bookings.update(
+      {
+        booking_status: "cancelled",
+      },
+      {
+        where: {
+          booking_code: booking_code,
+        },
+      }
+    );
+
+    if (!booking) {
+      return next(new ApiError("Booking not found", 404));
+    }
+
+    const getBookingId = await Bookings.findOne({
+      where: {
+        booking_code: booking_code,
+      },
+    });
+
+    const bookingDetails = await Booking_Details.findAll({
+      where: {
+        booking_id: getBookingId.id,
+      },
+    });
+
+    const seatIds = await bookingDetails.map((detail) => detail.seat_id);
+
+    // Update seat to available
+    await Seats.update(
+      {
+        seat_status: "available",
+      },
+      {
+        where: { id: seatIds },
+      }
+    );
+
+    res.status(200).json({
+      status: "Success",
+      message: "Booking is succesfully cancelled",
+      requestAt: req.requestTime,
+    });
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
 const updateBookingStatus = async (req, res, next) => {
   try {
-    const { transaction_status, order_id } = req.body;
-
-    console.log(transaction_status);
+    const { transaction_status, order_id, transaction_id } = req.body;
 
     if (transaction_status) {
       if (
@@ -309,6 +386,37 @@ const updateBookingStatus = async (req, res, next) => {
           status: "Success",
           message: `Booking for ${order_id} Status is successfully issued`,
           requestAt: req.requestTime,
+        });
+      } else if (transaction_status === "pending") {
+        // If status payment is pending
+        const booking = await Bookings.findOne({
+          booking_code: order_id,
+        });
+
+        if (!booking) {
+          return next(new ApiError("Booking not found", 404));
+        }
+
+        const bookingUpdate = await Bookings.update(
+          {
+            payment_id: transaction_id,
+          },
+          {
+            where: {
+              booking_code: order_id,
+            },
+          }
+        );
+
+        if (!bookingUpdate) {
+          return next(
+            new ApiError("Unexpected error, status not updated", 400)
+          );
+        }
+
+        res.status(200).json({
+          status: "Success",
+          message: `Booking for ${order_id} Status is pending`,
         });
       } else if (
         transaction_status === "deny" ||
@@ -392,20 +500,12 @@ const updateBookingStatus = async (req, res, next) => {
           message: `Booking for ${order_id} Status is successfully canceled`,
           requestAt: req.requestTime,
         });
-      } else if (transaction_status === "pending") {
-        // If status payment is pending
-
-        res.status(200).json({
-          status: "Success",
-          message: `Booking for ${order_id} Status is pending`,
-        });
       } else {
         // If status payment is unexpected
         throw new Error("No status");
       }
     }
   } catch (err) {
-    console.log(err.message);
     return next(new ApiError(err.message, 400));
   }
 };
@@ -457,4 +557,5 @@ module.exports = {
   getPaymentStatus,
   updateBookingStatus,
   getDetailBooking,
+  cancelBooking,
 };
