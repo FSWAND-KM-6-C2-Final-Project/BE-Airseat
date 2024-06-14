@@ -8,7 +8,6 @@ module.exports = {
     "<rootDir>/controllers/adminFlightController.js",
     "<rootDir>/controllers/adminNotificationController.js",
     "<rootDir>/controllers/bookingController.js",
-    "<rootDir>/controllers/flightController.js",
     "<rootDir>/controllers/resetPasswordController.js",
     "<rootDir>/controllers/seatsController.js",
     "<rootDir>/controllers/userActivationController.js",
