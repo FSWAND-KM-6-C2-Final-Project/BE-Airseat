@@ -166,7 +166,7 @@ describe("[API UPDATE AIRLINE TESTS]", () => {
 
 describe("[API DELETE AIRLINE TESTS]", () => {
   test("Failed - Not Found Airline", async () => {
-    const response = await request(app).patch(`/api/v1/airline/883`);
+    const response = await request(app).delete(`/api/v1/airline/883`);
 
     expect(response.statusCode).toBe(404);
     expect(response.body.status).toBe("Failed");
