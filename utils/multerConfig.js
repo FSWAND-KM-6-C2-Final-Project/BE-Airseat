@@ -1,4 +1,5 @@
 const multer = require("multer");
+const ApiError = require("../utils/apiError");
 
 const multerFiltering = (req, file, cb) => {
   if (
@@ -8,9 +9,7 @@ const multerFiltering = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    return cb(
-      new ApiError("hanya menerima format gambar .jpg, .jpeg, dan .png", 400)
-    );
+    return cb(new ApiError("File should be .png or .jpg or .jpeg", 400), false);
   }
 };
 

@@ -2,8 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const request = require("supertest");
-const app = require("../app");
-const { Airlines } = require("../models");
+const app = require("../../app");
+const { Airlines } = require("../../models");
 const path = require("path");
 
 describe("[API GET ALL AIRLINE TESTS]", () => {
@@ -85,7 +85,7 @@ describe("[API CREATE AIRLINE TESTS]", () => {
       airline_name: "Airseat Air",
     };
 
-    const filePath = path.resolve(__dirname, "../docs/img/db-diagram.png");
+    const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
 
     const response = await request(app)
       .post(`/api/v1/airline`)
@@ -131,7 +131,7 @@ describe("[API UPDATE AIRLINE TESTS]", () => {
       airline_name: "Airseat Air",
     };
 
-    const filePath = path.resolve(__dirname, "../docs/img/db-diagram.png");
+    const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
 
     const airlineData = await Airlines.findOne();
 

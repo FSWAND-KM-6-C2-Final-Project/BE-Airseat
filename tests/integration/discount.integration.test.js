@@ -2,8 +2,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const request = require("supertest");
-const app = require("../app");
-const { Discounts } = require("../models");
+const app = require("../../app");
+const { Discounts } = require("../../models");
 
 describe("[API GET ALL DISCOUNT TESTS]", () => {
   test("Success - Get All Discount Data", async () => {

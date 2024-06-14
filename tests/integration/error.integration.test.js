@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const request = require("supertest");
-const app = require("../app");
+const app = require("../../app");
 
 describe("[API ERROR HANDLER TESTS]", () => {
   test("Not found routes", async () => {
