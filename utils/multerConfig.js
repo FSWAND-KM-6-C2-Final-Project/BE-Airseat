@@ -2,8 +2,6 @@ const multer = require("multer");
 const ApiError = require("../utils/apiError");
 
 const multerFiltering = (req, file, cb) => {
-  console.log("Mime");
-  console.log(file.mimetype);
   if (
     file.mimetype == "image/png" ||
     file.mimetype == "image/jpg" ||

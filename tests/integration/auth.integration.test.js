@@ -4,6 +4,7 @@ dotenv.config();
 const request = require("supertest");
 const app = require("../../app");
 const { Users } = require("../../models");
+const createToken = require("../../utils/createToken");
 
 let token;
 
@@ -407,5 +408,61 @@ describe("[API CHECK USER TESTS]", () => {
     expect(response.body.message).toBe("User data successfully retrieved");
     expect(response.body.requestAt).not.toBeNull();
     expect(response.body.data).not.toBeNull();
+  });
+});
+
+describe("[UPDATE USER PROFILE AUTH TESTING]", () => {});
+
+describe("[DELETE & UPDATE USER PROFILE AUTH TESTING]", () => {
+  test("Failed - Update No Token Provided", async () => {
+    const response = await request(app)
+      .patch("/api/v1/profile")
+      .send({ full_name: "Akbar Ganteng" });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body.status).toBe("Failed");
+    expect(response.body.message).toBe("Token not found!");
+  });
+  test("Failed - Update Error Unexpected Error", async () => {
+    const response = await request(app)
+      .patch("/api/v1/profile")
+      .set("Authorization", `Bearer ${token}`)
+      .send({ kocak: "Akbar Ganteng" });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.status).toBe("Failed");
+    expect(response.body.message).not.toBeNull();
+  });
+  test("Success - Update Profile", async () => {
+    try {
+      const response = await request(app)
+        .patch("/api/v1/profile")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ full_name: "Akbar Ganteng" });
+
+      expect(response.statusCode).toBe(200);
+      expect(response.body.status).toBe("Success");
+      expect(response.body.message).toBe("Profile successfully updated");
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  test("Failed - Delete No Token Provided", async () => {
+    const response = await request(app).delete("/api/v1/profile");
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body.status).toBe("Failed");
+    expect(response.body.message).toBe("Token not found!");
+  });
+
+  test("Success - Delete Profile", async () => {
+    const response = await request(app)
+      .delete("/api/v1/profile")
+      .set("Authorization", `Bearer ${token}`);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.status).toBe("Success");
+    expect(response.body.message).toBe("Profile successfully deleted");
   });
 });
