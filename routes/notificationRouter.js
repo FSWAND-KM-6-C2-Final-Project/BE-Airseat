@@ -9,9 +9,6 @@ router.get("/", authenticate, notifications.findNotifications);
 // Create a new notifications
 router.post("/", notifications.createNotifications);
 
-//get notifications by ID
-router.get("/:id", notifications.findByIdNotifications);
-
 //get Update an existing notifications
 router.patch("/:id", notifications.updateNotifications);
 

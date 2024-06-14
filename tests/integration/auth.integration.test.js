@@ -4,7 +4,6 @@ dotenv.config();
 const request = require("supertest");
 const app = require("../../app");
 const { Users } = require("../../models");
-const createToken = require("../../utils/createToken");
 
 let token;
 
