@@ -29,6 +29,7 @@ jobs:
       APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIREDIN: ${{ secrets.JWT_EXPIRES }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
       PORT: 3000
       BASE_URL: localhost:3000
       NODE_ENV: test
