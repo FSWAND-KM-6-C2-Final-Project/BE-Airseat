@@ -1,12 +1,15 @@
 name: Lint and Test When There's Push in Main
+
 on:
   workflow_dispatch:
   push:
     types: [opened, edited, synchronize]
     branches:
       - main
+
 jobs:
   test:
+    name: Run Tests
     environment: test
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -30,56 +33,72 @@ jobs:
       BASE_URL: localhost:3000
       NODE_ENV: test
     steps:
-      - name: Get code
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
+
+      - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            node-modules-
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - name: Set NODE_ENV to test
-        run: echo "NODE_ENV=test" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: npm install
+
       - name: Undo migrate DB
         run: npm run db-undo-migrate
+
       - name: Migrate DB
         run: npm run db-migrate
+
       - name: Seed database
         run: npm run db-seed
-      - name: Test code
+
+      - name: Run tests
         id: run-tests
         run: npm run test
+
   lint:
+    name: Lint Code
     needs: test
     environment: test
     runs-on: ubuntu-latest
     steps:
-      - name: Get code
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
+
+      - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            node-modules-
+
       - name: Install dependencies
         run: npm install
+
       - name: Lint code
         run: npm run fixlint
+
   merge:
+    name: Merge Code
     needs: [test, lint]
     environment: test
     runs-on: ubuntu-latest
     steps:
       - name: Merge
-        run: echo "Can Be Merge..."
+        run: echo "Ready to merge..."
+
   report:
+    name: Report Issues
     needs: merge
     if: failure()
     runs-on: ubuntu-latest
