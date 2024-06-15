@@ -6,7 +6,11 @@ on:
       - main
 
 jobs:
-  lint_and_test:
+  test:
+   environment: test
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
     name: Lint and Test
     runs-on: ubuntu-latest
 
@@ -33,3 +37,19 @@ jobs:
 
       - name: Run tests
         run: npm run test
+  merge:
+      needs: [test]
+      environment: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Merge
+          run: echo "Can Be Merge..."
+    report:
+      needs: merge
+      if: failure()
+      runs-on: ubuntu-latest
+      steps:
+        - name: Output information
+          run: |
+            echo "Something went wrong"
+            echo "${{ toJSON(github) }}"
