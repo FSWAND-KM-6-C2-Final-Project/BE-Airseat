@@ -1,7 +1,6 @@
 name: Lint and Test When There's Push in Main
 
 on:
-  workflow_dispatch:
   push:
     types: [opened, edited, synchronize]
     branches:
