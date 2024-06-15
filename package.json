@@ -11,7 +11,7 @@
     "db-undo-migrate": "sequelize db:migrate:undo:all",
     "db-seed": "sequelize db:seed:all",
     "db-undo-seed": "sequelize db:seed:undo:all",
-    "db-clean": "npm run db-undo-migrate && sequelize db:migrate",
+    "db-clean": "npm run db-undo-migrate && npm run db-migrate",
     "test": "jest --setupFiles dotenv/config --coverage --colors --verbose --detectOpenHandles --forceExit",
     "lint": "npx eslint .",
     "fixlint": "npx eslint . --fix"
