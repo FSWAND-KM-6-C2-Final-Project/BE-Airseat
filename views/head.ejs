@@ -24,8 +24,8 @@
             </a>
             <div class="sidebar-item">
                 <ul>
-                    <li>
-                        <a href="/admin/dashboard">
+                    <li <%=(title==="Dashboard" ) ? `class=active ` : false %>>
+                        <a href="/admin">
                             <img class="sidebar-item-icon" src="/assets/img/fi_home.svg" alt="">
                             <p>Dashboard</p>
                         </a>
@@ -81,12 +81,20 @@
 
                         <div class="d-flex">
 
-                            <button class="btn profile">
-                                <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
-                                    alt="Profile Picture">
-                                Unis Badri
-                                <img class="arrow-down" src="/assets/img/fi_chevron-down.svg" alt="Chevron Down">
-                            </button>
+                            <div class="dropdown">
+                                <button class="btn profile" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
+                                        alt="Profile Picture">
+                                    <%= name %>
+                                        <img class="arrow-down" src="/assets/img/fi_chevron-down.svg"
+                                            alt="Chevron Down">
+                                </button>
+                                <ul class="dropdown-menu ">
+                                    <li><a class="dropdown-item" href="/admin/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="/admin/auth/logout">Logout</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

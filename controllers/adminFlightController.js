@@ -45,6 +45,7 @@ const listFlight = async (req, res, next) => {
     res.render("flight/list", {
       title: "Flight",
       flights: flight,
+      name: req.session.name,
       message: req.flash("message", ""),
       alertType: req.flash("alertType", ""),
     });
@@ -52,6 +53,7 @@ const listFlight = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -70,11 +72,13 @@ const createFlightPage = async (req, res, next) => {
       title: "Flight",
       airlines: airline,
       airports: airport,
+      name: req.session.name,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -123,6 +127,7 @@ const insertFlight = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -162,6 +167,7 @@ const deleteFlight = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -203,6 +209,7 @@ const editFlightPage = async (req, res, next) => {
         formattedDepartureTime,
         formattedArrivalTime,
       },
+      name: req.session.name,
       airlines: airline,
       airports: airport,
     });
@@ -210,6 +217,7 @@ const editFlightPage = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -272,6 +280,7 @@ const updateFlight = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };

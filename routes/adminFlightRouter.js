@@ -2,16 +2,26 @@ const router = require("express").Router();
 
 const adminFlightController = require("../controllers/adminFlightController");
 
-router.route("/list").get(adminFlightController.listFlight);
+const authenticateAdmin = require("../middlewares/authenticateAdmin");
+
+router
+  .route("/list")
+  .get(authenticateAdmin.isLogin, adminFlightController.listFlight);
 router
   .route("/add")
-  .get(adminFlightController.createFlightPage)
-  .post(adminFlightController.insertFlight);
+  .get(authenticateAdmin.isLogin, adminFlightController.createFlightPage)
+  .post(authenticateAdmin.isLogin, adminFlightController.insertFlight);
 
-router.route("/delete/:id").post(adminFlightController.deleteFlight);
+router
+  .route("/delete/:id")
+  .post(authenticateAdmin.isLogin, adminFlightController.deleteFlight);
 
-router.route("/edit/:id").get(adminFlightController.editFlightPage);
+router
+  .route("/edit/:id")
+  .get(authenticateAdmin.isLogin, adminFlightController.editFlightPage);
 
-router.route("/update/:id").post(adminFlightController.updateFlight);
+router
+  .route("/update/:id")
+  .post(authenticateAdmin.isLogin, adminFlightController.updateFlight);
 
 module.exports = router;
