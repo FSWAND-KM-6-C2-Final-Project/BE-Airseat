@@ -1,84 +1,35 @@
-name: Lint and Test When There's Push in Main
+name: CI Checks
+
 on:
-  workflow_dispatch:
-  push:
-    types: [opened, edited, synchronize]
+  pull_request:
     branches:
       - main
+
 jobs:
-  test:
-    environment: test
+  lint_and_test:
+    name: Lint and Test
     runs-on: ubuntu-latest
-    continue-on-error: true
-    env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      IMAGEKIT_PUBLIC_KEY: ${{ secrets.IMAGEKIT_PUBLIC_KEY }}
-      IMAGEKIT_PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
-      IMAGEKIT_URL: ${{ secrets.IMAGEKIT_URL }}
-      MIDTRANS_MERCHANT_ID: ${{ secrets.MIDTRANS_MERCHANT_ID }}
-      MIDTRANS_CLIENT_KEY: ${{ secrets.MIDTRANS_CLIENT_KEY }}
-      MIDTRANS_SERVER_KEY: ${{ secrets.MIDTRANS_SERVER_KEY }}
-      APP_EMAIL_ADDRESS: ${{ secrets.APP_EMAIL_ADDRESS }}
-      APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      JWT_EXPIREDIN: ${{ secrets.JWT_EXPIRES }}
-      PORT: 3000
-      BASE_URL: localhost:3000
-      NODE_ENV: test
+
     steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Set NODE_ENV to test
-        run: echo "NODE_ENV=test" >> $GITHUB_ENV
+          node-version: "18.17.1"
+
       - name: Install dependencies
         run: npm install
-      - name: Migration database
-        run: npm run db-migrate
-      - name: Seed database
+
+      - name: DB Cleaning
+        run: npm run db-clean
+
+      - name: DB Seeding
         run: npm run db-seed
-      - name: Test code
-        id: run-tests
+
+      - name: Run linter
+        run: npm run fixlint && npm run lint
+
+      - name: Run tests
         run: npm run test
-  lint:
-    needs: test
-    environment: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        run: npm install
-      - name: Lint code
-        run: npm run lint
-  merge:
-    needs: [test, lint]
-    environment: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merge
-        run: echo "Can Be Merge..."
-  report:
-    needs: merge
-    if: failure()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Output information
-        run: |
-          echo "Something went wrong"
-          echo "${{ toJSON(github) }}"
