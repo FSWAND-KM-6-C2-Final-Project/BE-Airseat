@@ -26,13 +26,28 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.use(
   session({
+    name: "adminDashboard",
     secret: SESSION_SECRET,
-    saveUninitialized: true,
-    resave: true,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: true,
+      maxAge: 7200000,
+      secure: process.env.NODE_ENV === "production",
+    },
   })
 );
 
 app.use(flash());
+
+app.use((req, res, next) => {
+  res.setHeader(
+    "Cache-Control",
+    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+  );
+  res.setHeader("Pragma", "no-cache");
+  next();
+});
 
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "ejs");

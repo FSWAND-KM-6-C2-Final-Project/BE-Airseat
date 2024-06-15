@@ -16,6 +16,7 @@ const listNotification = async (req, res, next) => {
 
     res.render("notification/list", {
       title: "Notification",
+      name: req.session.name,
       notifications: notifications,
       message: req.flash("message", ""),
       alertType: req.flash("alertType", ""),
@@ -23,6 +24,8 @@ const listNotification = async (req, res, next) => {
   } catch (err) {
     res.render("error", {
       title: "Error",
+      name: req.session.name,
+
       message: err.message,
     });
   }
@@ -37,11 +40,13 @@ const createNotificationPage = async (req, res, next) => {
     res.render("notification/create", {
       title: "Notification",
       users: userId,
+      name: req.session.name,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -76,6 +81,8 @@ const insertNotification = async (req, res, next) => {
   } catch (err) {
     res.render("error", {
       title: "Error",
+      name: req.session.name,
+
       message: err.message,
     });
   }
@@ -136,10 +143,13 @@ const editNotificationPage = async (req, res, next) => {
       title: "Notification",
       notification,
       users: userId,
+      name: req.session.name,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
+      name: req.session.name,
+
       message: err.message,
     });
   }
@@ -202,6 +212,7 @@ const updateNotification = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };

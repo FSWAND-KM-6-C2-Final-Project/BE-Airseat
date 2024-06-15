@@ -9,6 +9,7 @@ const listDiscount = async (req, res, next) => {
     res.render("discount/list", {
       title: "Discount",
       discounts: discounts,
+      name: req.session.name,
       message: req.flash("message", ""),
       alertType: req.flash("alertType", ""),
     });
@@ -16,6 +17,7 @@ const listDiscount = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -24,11 +26,13 @@ const createDiscountPage = async (req, res, next) => {
   try {
     res.render("discount/create", {
       title: "Discount",
+      name: req.session.name,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -48,6 +52,7 @@ const insertDiscount = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -100,11 +105,13 @@ const editDiscountPage = async (req, res, next) => {
     res.render("discount/edit", {
       title: "Discount",
       discount: discount,
+      name: req.session.name,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -142,6 +149,7 @@ const updateDiscount = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };

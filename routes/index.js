@@ -20,6 +20,8 @@ const adminAirlineRouter = require("./adminAirlineRouter");
 const adminFlightRouter = require("./adminFlightRouter");
 const adminNotification = require("./adminNotificationRouter");
 const adminDiscountRouter = require("./adminDiscountRouter");
+const adminDashboardRouter = require("./adminDashboardRouter");
+const adminAuthRouter = require("./adminAuthRouter");
 
 /*
     Define other routes here, for example:
@@ -38,6 +40,8 @@ router.use("/api/v1/booking", bookingRouter);
 router.use("/api/v1/profile", userRouter);
 
 // Admin Dashboard
+router.use("/admin/", adminDashboardRouter);
+router.use("/admin/auth", adminAuthRouter);
 router.use("/admin/airline", adminAirlineRouter);
 router.use("/admin/flight", adminFlightRouter);
 router.use("/admin/notification", adminNotification);
