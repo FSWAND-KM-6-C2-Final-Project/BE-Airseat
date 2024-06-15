@@ -12,7 +12,7 @@
     "db-seed": "sequelize db:seed:all",
     "db-undo-seed": "sequelize db:seed:undo:all",
     "db-clean": "sequelize db:drop && sequelize db:create && sequelize db:migrate",
-    "test": "npm run db-clean && npm run db-seed && jest --setupFiles dotenv/config --coverage --colors --verbose --detectOpenHandles --forceExit",
+    "test": "jest --setupFiles dotenv/config --coverage --colors --verbose --detectOpenHandles --forceExit",
     "lint": "npx eslint .",
     "fixlint": "npx eslint . --fix"
   },

@@ -1,0 +1,86 @@
+name: Lint and Test When There's Push in Main
+on:
+  workflow_dispatch:
+  push:
+    types: [opened, edited, synchronize]
+    branches:
+      - main
+jobs:
+  test:
+    environment: test
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      PUBLIC_KEY: ${{ secrets.IMAGEKIT_PUBLIC_KEY }}
+      PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
+      URL_ENDPOINT: ${{ secrets.IMAGEKIT_URL }}
+      USER_EMAIL: ${{ secrets.APP_EMAIL_ADDRESS }}
+      APP_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+      PORT: 3000
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIREDIN: ${{ secrets.JWT_EXPIRES }}
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      BASE_URL: localhost:3000
+      NODE_ENV: test
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Set NODE_ENV to test
+        run: echo "NODE_ENV=test" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: npm install
+      - name: drop existing DB
+        run: npm run db:drop
+      - name: Create DB
+        run: npm run db:create
+      - name: Migration database
+        run: npm run db:migrate
+      - name: Seed database
+        run: npm run db:seed
+      - name: Test code
+        id: run-tests
+        run: npm run test
+  lint:
+    needs: test
+    environment: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Lint code
+        run: npm run lint
+  merge:
+    needs: [test, lint]
+    environment: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge
+        run: echo "Can Be Merge..."
+  report:
+    needs: merge
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |
+          echo "Something went wrong"
+          echo "${{ toJSON(github) }}"
