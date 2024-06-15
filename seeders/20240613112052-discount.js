@@ -34,13 +34,17 @@ module.exports = {
 
       const discounts = generateDiscount(10);
 
-      return await queryInterface.bulkInsert("Discounts", discounts);
+      if (process.env.NODE_ENV === "test") {
+        return await queryInterface.bulkInsert("Discounts", discounts);
+      }
     } catch (err) {
       console.log(err.message);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Discounts", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Discounts", null, {});
+    }
   },
 };

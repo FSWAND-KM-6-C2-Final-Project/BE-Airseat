@@ -30,16 +30,20 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       }));
-      await queryInterface.bulkInsert("Seats", newSeats);
-      await queryInterface.bulkInsert("Seats", newSeats2);
-      await queryInterface.bulkInsert("Seats", newSeats3);
-      return await queryInterface.bulkInsert("Seats", newSeats4);
+      if (process.env.NODE_ENV === "test") {
+        await queryInterface.bulkInsert("Seats", newSeats);
+        await queryInterface.bulkInsert("Seats", newSeats2);
+        await queryInterface.bulkInsert("Seats", newSeats3);
+        return await queryInterface.bulkInsert("Seats", newSeats4);
+      }
     } catch (err) {
       console.log(err.message);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Seats", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Seats", null, {});
+    }
   },
 };

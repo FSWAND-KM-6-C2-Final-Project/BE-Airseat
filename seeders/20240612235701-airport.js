@@ -42,13 +42,17 @@ module.exports = {
 
       const airports = generateAirports(50);
 
-      return await queryInterface.bulkInsert("Airports", airports);
+      if (process.env.NODE_ENV === "test") {
+        return await queryInterface.bulkInsert("Airports", airports);
+      }
     } catch (err) {
       console.log(err.message);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Airports", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Airports", null, {});
+    }
   },
 };
