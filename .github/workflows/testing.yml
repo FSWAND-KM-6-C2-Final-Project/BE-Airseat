@@ -10,6 +10,25 @@ jobs:
     environment: test
     runs-on: ubuntu-latest
     continue-on-error: true
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      IMAGEKIT_PUBLIC_KEY: ${{ secrets.IMAGEKIT_PUBLIC_KEY }}
+      IMAGEKIT_PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
+      IMAGEKIT_URL: ${{ secrets.IMAGEKIT_URL }}
+      MIDTRANS_MERCHANT_ID: ${{ secrets.MIDTRANS_MERCHANT_ID }}
+      MIDTRANS_CLIENT_KEY: ${{ secrets.MIDTRANS_CLIENT_KEY }}
+      MIDTRANS_SERVER_KEY: ${{ secrets.MIDTRANS_SERVER_KEY }}
+      APP_EMAIL_ADDRESS: ${{ secrets.APP_EMAIL_ADDRESS }}
+      APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIREDIN: ${{ secrets.JWT_EXPIRES }}
+      PORT: 3000
+      BASE_URL: localhost:3000
+      NODE_ENV: test
     steps:
       - name: Get code
         uses: actions/checkout@v3
