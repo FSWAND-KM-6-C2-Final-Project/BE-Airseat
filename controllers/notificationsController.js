@@ -6,35 +6,11 @@ const findNotifications = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const {
-      notification_type,
-      notification_title,
-      notification_description,
-      user_id,
-      page,
-      limit,
-    } = req.query;
+    const { page, limit } = req.query;
 
     const condition = {
       [Op.or]: [{ user_id: null }, { user_id: userId }],
     };
-
-    // Filter by notification_type
-    if (notification_type)
-      condition.notification_type = { [Op.iLike]: `%${notification_type}% ` };
-
-    // Filter by notification_title
-    if (notification_title)
-      condition.notification_title = { [Op.iLike]: `%${notification_title}%` };
-
-    // Filter by notification_description
-    if (notification_description)
-      condition.notification_description = {
-        [Op.iLike]: `%${notification_description}%`,
-      };
-
-    // Filter by user_id
-    if (user_id) condition.user_id = { [Op.iLike]: `%${user_id}%` };
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
@@ -60,34 +36,6 @@ const findNotifications = async (req, res, next) => {
         pageNum,
         pageSize,
       },
-      data: {
-        notification,
-      },
-    });
-  } catch (err) {
-    return next(new ApiError(err.message, 400));
-  }
-};
-
-const findByIdNotifications = async (req, res, next) => {
-  try {
-    const user_id = req.params.id;
-
-    const notification = await Notifications.findOne({
-      where: {
-        id: user_id,
-      },
-    });
-
-    if (!notification) {
-      return next(
-        new ApiError(`Notifications with id '${user_id}' is not found`, 404)
-      );
-    }
-    res.status(200).json({
-      status: "Success",
-      message: "Notifications succesfully retrieved",
-      requestAt: req.requestTime,
       data: {
         notification,
       },
@@ -187,7 +135,6 @@ const deleteNotifications = async (req, res, next) => {
 
 module.exports = {
   findNotifications,
-  findByIdNotifications,
   updateNotifications,
   createNotifications,
   deleteNotifications,

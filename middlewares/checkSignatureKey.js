@@ -17,7 +17,6 @@ module.exports = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err.message);
     return next(new ApiError(err.message, 400));
   }
 };

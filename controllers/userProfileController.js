@@ -8,17 +8,11 @@ const updateProfile = async (req, res, next) => {
 
     // Phone number and Email is future development, need discuss with FE & Android
 
-    const user = await Users.findOne({
-      where: {
-        id: userId,
-      },
-    });
-
-    if (!user) {
-      return next(new ApiError("Not Found User", 404));
+    if (!full_name || full_name === null || full_name === "") {
+      throw new Error("full_name cannot be null");
     }
 
-    const updateUser = await Users.update(
+    await Users.update(
       {
         full_name,
       },
@@ -28,10 +22,6 @@ const updateProfile = async (req, res, next) => {
         },
       }
     );
-
-    if (!updateUser) {
-      return next(new ApiError("Unexpected error, data not updated", 400));
-    }
 
     res.status(200).json({
       status: "Success",
@@ -45,16 +35,6 @@ const updateProfile = async (req, res, next) => {
 const deleteProfile = async (req, res, next) => {
   try {
     const userId = req.user.id;
-
-    const user = await Users.findOne({
-      where: {
-        id: userId,
-      },
-    });
-
-    if (!user) {
-      return next(new ApiError("Not Found User", 404));
-    }
 
     const deleteUser = await Users.destroy({
       where: {
