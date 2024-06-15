@@ -1,134 +1,113 @@
 <%- include('../head.ejs') %>
-<!-- Dont delete it -->
-<div class="row m-0 p-0">
-  <div class="col m-0 p-0 sidebar-inner">
-    <p>DISCOUNT</p>
-    <ul class="sidebar-inner-item">
-      <li class="active">
-        <a href="">List DISCOUNT</a>
-      </li>
-    </ul>
-  </div>
-  <div class="col container-content">
-    <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Discount</a></li>
-        <li class="breadcrumb-item active" aria-current="page">
-          List Discount
+  <!-- Dont delete it -->
+  <div class="row m-0 p-0">
+    <div class="col m-0 p-0 sidebar-inner">
+      <p>DISCOUNT</p>
+      <ul class="sidebar-inner-item">
+        <li class="active">
+          <a href="">List Discount</a>
         </li>
-      </ol>
-    </nav>
-
-    <% if(message !="" ) { %>
-
-    <div
-      class="alert alert-custom alert-<%= alertType %>-custom text-center"
-      role="alert"
-    >
-      Data successfully <%= message %>
+      </ul>
     </div>
+    <div class="col container-content">
+      <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Discount</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            List Discount
+          </li>
+        </ol>
+      </nav>
 
-    <% } %>
+      <% if(message !="" ) { %>
 
-    <!-- Dont delete it -->
+        <div class="alert alert-custom alert-<%= alertType %>-custom text-center" role="alert">
+          Data successfully <%= message %>
+        </div>
 
-    <!-- Konten dibawah -->
+        <% } %>
 
-    <div class="row mb-3">
-      <div class="col my-auto">
-        <h3 class="page-title">List Discount</h3>
-      </div>
-      <div class="col text-end">
-        <a href="/admin/discount/add" class="btn btn-custom-primary"
-          >+ Add New Discount</a
-        >
-      </div>
-    </div>
+          <!-- Dont delete it -->
 
-    <div class="row">
-      <table class="table" id="myTable">
-        <thead>
-          <tr>
-            <th>Discount Amount</th>
-            <th>Minimum Order</th>
-            <th>Discount Expired</th>
-            <th class="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% discounts.map((discount)=> { %>
-          <tr class="align-middle">
-            <td><%= discount.discount_amount %></td>
-            <td><%= discount.minimum_order %></td>
-            <td><%= discount.discount_expired %></td>
-            <td class="text-center">
-              <a
-                class="btn btn-success btn-edit text-center mx-1"
-                href="/admin/discount/edit/<%= discount.id %>"
-              >
-                <img src="/assets/img/fi_edit.svg" alt="Edit Icon" />
-                Edit
-              </a>
-              <button
-                data-bs-toggle="modal"
-                data-bs-target="#modal<%=discount.id %>"
-                class="btn btn-outline-danger btn-outline-delete mx-1 text-center"
-                href=""
-              >
-                <img src="/assets/img/fi_trash.svg" alt="Delete Icon" />
-                Delete
-              </button>
-            </td>
-          </tr>
-          <!-- Modal -->
-          <div
-            class="modal fade"
-            id="modal<%= discount.id %>"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-body text-center">
-                  <img
-                    class="modal-img"
-                    src="/assets/img/airplane.png"
-                    alt="Modal image"
-                  />
-                  <h4 class="modal-title">Deleting Discount Data</h4>
-                  <h5 class="modal-text">
-                    Once deleted, discount data with id "<%= discount.id %>"
-                    cannot be restored. Are you sure you want to delete?
-                  </h5>
-                  <div class="d-flex justify-content-center">
-                    <form
-                      action="/admin/discount/delete/<%= discount.id %>"
-                      method="post"
-                    >
-                      <button
-                        class="btn btn-custom-primary btn-accept w-auto mx-1"
-                      >
-                        Yes
-                      </button>
-                    </form>
-                    <button
-                      data-bs-dismiss="modal"
-                      class="btn btn-outline-custom btn-cancel w-auto mx-1"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
+          <!-- Konten dibawah -->
+
+          <div class="row mb-3">
+            <div class="col my-auto">
+              <h3 class="page-title">List Discount</h3>
+            </div>
+            <div class="col text-end">
+              <a href="/admin/discount/add" class="btn btn-custom-primary">+ Add New Discount</a>
             </div>
           </div>
-          <!-- End Of Modal -->
-          <% }) %>
-        </tbody>
-      </table>
-    </div>
 
-    <%- include('../footer.ejs') %>
+          <div class="row">
+            <table class="table" id="myTable">
+              <thead>
+                <tr>
+                  <th>Discount Amount</th>
+                  <th>Minimum Order</th>
+                  <th>Discount Expired</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% discounts.map((discount)=> { %>
+                  <tr class="align-middle">
+                    <td>
+                      <%= discount.discount_amount %>
+                    </td>
+                    <td>
+                      Rp. <%= new Intl.NumberFormat("en-US").format(discount.minimum_order); %>
+                    </td>
+                    <td>
+                      <%- new Date(discount.discount_expired).toLocaleString('en-us', { dateStyle: "medium" ,
+                        timeStyle: "short" , hour12: false }) %>
+                    </td>
+                    <td class="text-center">
+                      <a class="btn btn-success btn-edit text-center mx-1"
+                        href="/admin/discount/edit/<%= discount.id %>">
+                        <img src="/assets/img/fi_edit.svg" alt="Edit Icon" />
+                        Edit
+                      </a>
+                      <button data-bs-toggle="modal" data-bs-target="#modal<%=discount.id %>"
+                        class="btn btn-outline-danger btn-outline-delete mx-1 text-center" href="">
+                        <img src="/assets/img/fi_trash.svg" alt="Delete Icon" />
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- Modal -->
+                  <div class="modal fade" id="modal<%= discount.id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-body text-center">
+                          <img class="modal-img" src="/assets/img/airplane.png" alt="Modal image" />
+                          <h4 class="modal-title">Deleting Discount Data</h4>
+                          <h5 class="modal-text">
+                            Once deleted, discount data with id "<%= discount.id %>"
+                              cannot be restored. Are you sure you want to delete?
+                          </h5>
+                          <div class="d-flex justify-content-center">
+                            <form action="/admin/discount/delete/<%= discount.id %>" method="post">
+                              <button class="btn btn-custom-primary btn-accept w-auto mx-1">
+                                Yes
+                              </button>
+                            </form>
+                            <button data-bs-dismiss="modal" class="btn btn-outline-custom btn-cancel w-auto mx-1">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Of Modal -->
+                  <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <%- include('../footer.ejs') %>
+    </div>
   </div>
-</div>

@@ -1,72 +1,76 @@
 <%- include('../head.ejs') %>
-<!-- Dont delete it -->
-<div class="row m-0 p-0">
-    <div class="col m-0 p-0 sidebar-inner">
-        <p>DISCOUNT</p>
-        <ul class="sidebar-inner-item">
-            <li class="active">
-                <a href="">List Discounts</a>
-            </li>
-        </ul>
-    </div>
-    <div class="col container-content">
-        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-            <ol class="breadcrumb ">
-                <li class="breadcrumb-item"><a href="#">Discount</a></li>
-                <li class="breadcrumb-item"><a href="/admin/discount/list">List Discounts</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit Discount</li>
-            </ol>
-        </nav>
-        <!-- Dont delete it -->
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>DISCOUNT</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Discounts</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Discount</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/discount/list">List Discounts</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Discount</li>
+                </ol>
+            </nav>
+            <!-- Dont delete it -->
 
-        <!-- Konten dibawah -->
-        <div class="row">
-            <div class="col my-auto">
-                <h3 class="page-title">Edit Discount</h3>
+            <!-- Konten dibawah -->
+            <div class="row">
+                <div class="col my-auto">
+                    <h3 class="page-title">Edit Discount</h3>
+                </div>
+                <div class="col text-end">
+                    <a href="/admin/discount/list" class="btn btn-custom-primary">Back To Discount Data</a>
+                </div>
             </div>
-            <div class="col text-end">
-                <a href="/admin/discount/list" class="btn btn-custom-primary">Back To Discount Data</a>
+            <div class="container-fluid container-form">
+                <form action="/admin/discount/update/<%= discount.id %>" method="post">
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="discount_amount">Discount Amount<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input class="form-control form-custom" type="number" name="discount_amount"
+                                value="<%= discount.discount_amount %>" placeholder="10%" id="discount_amount" required>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="minimum_order">Minimum Order<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input class="form-control form-custom" type="number" name="minimum_order"
+                                value="<%= discount.minimum_order %>" placeholder="0" id="minimum_order" required>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="discount_expired">Discount Expired<span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input class="form-control form-custom" type="datetime-local" name="discount_expired"
+                                id="discount_expired"
+                                value="<%= discount.discount_expired.toISOString().substring(0, 16) %>" required>
+                        </div>
+                    </div>
             </div>
-        </div>
-        <div class="container-fluid container-form">
-            <form action="/admin/discount/update/<%= discount.id %>" method="post" enctype="multipart/form-data">
-                <div class="row row-form">
-                    <div class="col-lg-2 my-auto">
-                        <label for="discount_amount">Discount Amount<span class="text-danger">*</span></label>
+            <div class="container-fluid">
+                <div class="row button-group ">
+                    <a href="/admin/discount/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
+                    <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
+                    <div class="spinner-border shadow loading mx-2" id="loading" role="status">
+                        <span class="visually-hidden">Loading...</span>
                     </div>
-                    <div class="col-lg-4">
-                        <input class="form-control form-custom" type="number" name="discount_amount"  value="<%= discount.discount_amount %>" placeholder="10%" id="discount_amount" required>
-                    </div>
-                </div>
-                <div class="row row-form">
-                    <div class="col-lg-2 my-auto">
-                        <label for="minimum_order">Minimum Order<span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-lg-4">
-                        <input class="form-control form-custom" type="number" name="minimum_order"  value="<%= discount.minimum_order %>" placeholder="0" id="minimum_order" required>
-                    </div>
-                </div>
-                <div class="row row-form">
-                    <div class="col-lg-2 my-auto">
-                        <label for="discount_expired">Discount Expired<span class="text-danger">*</span></label>
-                    </div>
-                    <div class="col-lg-4">
-                        <input class="form-control form-custom" type="datetime-local" name="discount_expired" id="discount_expired" value="<%= discount.discount_expired.toISOString().substring(0, 16) %>" required>
-                    </div>
-                </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row button-group ">
-                <a href="/admin/discount/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
-                <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
-                <div class="spinner-border shadow loading mx-2" id="loading" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                </form>
+                    </form>
 
+                </div>
             </div>
+            <script src="/assets/js/script.js"></script>
+            <%- include('../footer.ejs') %>
         </div>
-        <script src="/assets/js/script.js"></script>
-        <%- include('../footer.ejs') %>
     </div>
-</div>

@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/discount/add" method="post" enctype="multipart/form-data">
+                <form action="/admin/discount/add" method="post">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="discount_amount">Discount Amount<span class="text-danger">*</span></label>
@@ -55,8 +55,9 @@
                             <label for="discount_expired">Discount Expired<span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
-                        <input class="form-control form-custom" type="date" name="discount_expired" id="discount_expired" required>
-                    </div>
+                            <input class="form-control form-custom" type="date" name="discount_expired"
+                                id="discount_expired" required>
+                        </div>
                     </div>
             </div>
 
