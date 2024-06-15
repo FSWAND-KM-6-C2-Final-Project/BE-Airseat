@@ -344,6 +344,8 @@ describe("[API LOGIN AUTH TESTS]", () => {
       .post("/api/v1/auth/login")
       .send(credential);
 
+    console.log(response);
+
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe("Success");
     expect(response.body.message).toBe("Successfully logged in");
