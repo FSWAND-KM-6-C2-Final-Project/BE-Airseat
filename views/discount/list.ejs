@@ -44,6 +44,7 @@
             <table class="table" id="myTable">
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Discount Amount</th>
                   <th>Minimum Order</th>
                   <th>Discount Expired</th>
@@ -53,6 +54,9 @@
               <tbody>
                 <% discounts.map((discount)=> { %>
                   <tr class="align-middle">
+                    <td>
+                      <%= discount.id %>
+                    </td>
                     <td>
                       <%= discount.discount_amount %>
                     </td>

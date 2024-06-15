@@ -36,7 +36,6 @@ const createDiscountPage = async (req, res, next) => {
 const insertDiscount = async (req, res, next) => {
   try {
     const { discount_amount, minimum_order, discount_expired } = req.body;
-    console.log(req.body);
     await Discounts.create({
       discount_amount,
       minimum_order,
@@ -114,7 +113,6 @@ const updateDiscount = async (req, res, next) => {
   try {
     const id = req.params.id;
     const { discount_amount, minimum_order, discount_expired } = req.body;
-    console.log(req.body);
     const discount = await Discounts.findOne({
       where: {
         id,
@@ -136,7 +134,6 @@ const updateDiscount = async (req, res, next) => {
         },
       }
     );
-    console.log();
 
     req.flash("message", "Updated");
     req.flash("alertType", "primary");
