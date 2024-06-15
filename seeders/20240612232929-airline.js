@@ -29,13 +29,17 @@ module.exports = {
 
       const airlines = generateAirlines(50);
 
-      return await queryInterface.bulkInsert("Airlines", airlines);
+      if (process.env.NODE_ENV === "test") {
+        return await queryInterface.bulkInsert("Airlines", airlines);
+      }
     } catch (err) {
       console.log(err.message);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Airlines", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Airlines", null, {});
+    }
   },
 };

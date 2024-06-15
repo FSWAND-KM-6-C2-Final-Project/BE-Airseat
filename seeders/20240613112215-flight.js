@@ -74,10 +74,14 @@ module.exports = {
       },
     ];
 
-    return await queryInterface.bulkInsert("Flights", flightData);
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkInsert("Flights", flightData);
+    }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Flights", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Flights", null, {});
+    }
   },
 };

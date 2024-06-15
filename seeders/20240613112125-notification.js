@@ -43,13 +43,17 @@ module.exports = {
 
       const notification = generateNotification(50);
 
-      return await queryInterface.bulkInsert("Notifications", notification);
+      if (process.env.NODE_ENV === "test") {
+        return await queryInterface.bulkInsert("Notifications", notification);
+      }
     } catch (err) {
       console.log(err.message);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    return await queryInterface.bulkDelete("Notifications", null, {});
+    if (process.env.NODE_ENV === "test") {
+      return await queryInterface.bulkDelete("Notifications", null, {});
+    }
   },
 };
