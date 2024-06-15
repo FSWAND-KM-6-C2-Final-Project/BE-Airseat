@@ -1,8 +1,8 @@
-name: Lint and Test When There's Push in Main
+name: Lint and Test When There's Pull Request to Main
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     types: [opened, edited, synchronize]
     branches:
       - main
