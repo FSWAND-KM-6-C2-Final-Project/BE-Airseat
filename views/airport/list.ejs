@@ -2,26 +2,92 @@
     <!-- Dont delete it -->
     <div class="row m-0 p-0">
         <div class="col m-0 p-0 sidebar-inner">
-            <p>DASHBOARD</p>
+            <p>AIRPORT</p>
             <ul class="sidebar-inner-item">
                 <li class="active">
-                    <a href="">Dashboard</a>
+                    <a href="">List Airport</a>
                 </li>
-
             </ul>
         </div>
         <div class="col container-content">
-            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                <ol class="breadcrumb ">
-                    <li class="breadcrumb-item active"><a href="#">Dashboard</a></li>
+            <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Airport</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        List Airports
+                    </li>
                 </ol>
             </nav>
-            <!-- Dont delete it -->
 
+            <% if(message !="" ) { %>
 
-            <!-- Konten dibawah -->
+                <div class="alert alert-custom alert-<%= alertType %>-custom text-center" role="alert">
+                    Data successfully <%= message %>
+                </div>
 
+                <% } %>
 
-            <script src="/assets/js/script.js"></script>
+                    <!-- Dont delete it -->
 
-            <%- include('../footer.ejs') %>
+                    <!-- Konten dibawah -->
+
+                    <div class="row mb-3">
+                        <div class="col my-auto">
+                            <h3 class="page-title">List Airport</h3>
+                        </div>
+                        <div class="col text-end">
+                            <a href="/admin/airport/add" class="btn btn-custom-primary">+ Add New Airport</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>Airport Name</th>
+                                    <th>Airport City</th>
+                                    <th>Airport City Code</th>
+                                    <th>Airport Picture</th>
+                                    <th>Airport Continent</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% airports.map((airport) => { %>
+                                    <tr class="align-middle">
+                                        <td>
+                                            <%= airport.airport_name %>
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_city %>
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_city_code %>
+                                        </td>
+                                        <td>
+                                            <img style="width: 100px; height: auto;" src="<%= airport.airport_picture %>" alt="<%= airport.airport_name %>">
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_continent %>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-edit text-center mx-1" href="/admin/airport/edit/<%= airport.id %>">
+                                                <img src="/assets/img/fi_edit.svg" alt="Edit Icon">
+                                                Edit
+                                            </a>
+                                            <button data-bs-toggle="modal" data-bs-target="#modal <%= airport.id %>"
+                                                class="btn btn-outline-danger btn-outline-delete mx-1 text-center" href="">
+                                                <img src="/assets/img/fi_trash.svg" alt="Delete Icon">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <%- include('../footer.ejs') %>
+        </div>
+    </div>

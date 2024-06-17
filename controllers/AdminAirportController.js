@@ -7,11 +7,10 @@ const listAirport = async (req, res, next) => {
     const airports = await Airports.findAll({
       order: [["created_at", "DESC"]],
     });
-    console.log(airports)
     res.render( "airport/list",
       {
         title: "Airport",
-        airport: airports,
+        airports: airports,
         message: req.flash("message", ""),
         alertType: req.flash("alertType", ""),
         name: req.session.name,
@@ -49,7 +48,7 @@ const insertAirports = async (req, res, next) => {
       const split = file.originalname.split(".");
       const extension = split[split.length - 1];
 
-      const img = await imageit.upload({
+      const img = await imageKit.upload({
         file: file.buffer,
         fileName: `IMG-${Date.now()}.${extension}`,
       });
@@ -64,6 +63,9 @@ const insertAirports = async (req, res, next) => {
     } else {
       await Airports.create({
         airport_name,
+        airport_city,
+        airport_city_code,
+        airport_continent,
       });
     }
     req.flash("message", "Saved");
