@@ -17,6 +17,7 @@ const notificationRouter = require("./notificationRouter");
 const bookingRouter = require("./bookingRouter");
 const userRouter = require("./userRouter");
 const adminAirlineRouter = require("./adminAirlineRouter");
+const adminAirportRouter = require("./adminAirportRouter")
 const adminFlightRouter = require("./adminFlightRouter");
 const adminNotification = require("./adminNotificationRouter");
 const adminDiscountRouter = require("./adminDiscountRouter");
@@ -34,6 +35,7 @@ router.use("/api/v1/auth", authRouter);
 router.use("/api/v1/seat", seatRouter);
 router.use("/api/v1/passenger", passengerRouter);
 router.use("/api/v1/airline", airlineRouter);
+router.use("/api/v1/airport",airportRouter)
 router.use("/api/v1/discount", discountRouter);
 router.use("/api/v1/notification", notificationRouter);
 router.use("/api/v1/booking", bookingRouter);
@@ -43,6 +45,7 @@ router.use("/api/v1/profile", userRouter);
 router.use("/admin/", adminDashboardRouter);
 router.use("/admin/auth", adminAuthRouter);
 router.use("/admin/airline", adminAirlineRouter);
+router.use("/admin/airport", adminAirportRouter)
 router.use("/admin/flight", adminFlightRouter);
 router.use("/admin/notification", adminNotification);
 router.use("/admin/discount", adminDiscountRouter);
