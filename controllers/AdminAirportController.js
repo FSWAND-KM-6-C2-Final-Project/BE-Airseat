@@ -1,22 +1,20 @@
 const { where } = require("sequelize");
 const { Airports } = require("../models");
 const imageKit = require("../utils/imageKit");
+const { updateAirline } = require("./adminAirlineController");
 
 const listAirport = async (req, res, next) => {
   try {
     const airports = await Airports.findAll({
       order: [["created_at", "DESC"]],
     });
-    res.render( "airport/list",
-      {
-        title: "Airport",
-        airports: airports,
-        message: req.flash("message", ""),
-        alertType: req.flash("alertType", ""),
-        name: req.session.name,
-
-      }
-    );
+    res.render("airport/list", {
+      title: "Airport",
+      airports: airports,
+      message: req.flash("message", ""),
+      alertType: req.flash("alertType", ""),
+      name: req.session.name,
+    });
   } catch (err) {
     res.render("error", {
       title: "Error",
@@ -98,7 +96,7 @@ const editAirportPage = async (req, res, next) => {
       name: req.session.name,
     });
   } catch (err) {
-    res.render("Error", {
+    res.render("error", {
       title: "Error",
       message: err.message,
       name: req.session.name,
@@ -144,29 +142,53 @@ const updateAirport = async (req, res, next) => {
         id,
       },
     });
+
     if (!airport) {
       return new Error("No found Airport data");
     }
+    const file = req.file || "";
 
-    await Airports.update({
-      airport_name,
-      airport_city,
-      airport_city_code,
-      airport_continent,
-      airport_picture:img.url,
-    },
-    {
-      where:{
-        id,
+    let updateAirport;
+
+    if (file !== "") {
+      const split = file.originalname.split(".");
+      const extension = split [split.length - 1];
+
+      const img = await imageKit.upload({
+        file: file.buffer,
+        fileName: `IMG-${Date.now()}.${extension}`,
+      });
+
+      updateAirport = await Airports.update(
+        {
+          airport_name,
+          airport_city,
+          airport_city_code,
+          airport_continent,
+          airport_picture: img.url,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }else{
+      updateAirline = await Airports.update({
+        airport_name:airport_name,
+      },{
+        where: {
+          id,
+        },
       }
-    },
-  );
+    );
+    }
 
-  req.flash("message","Updated");
-  req.flash("alertType", "primary");
-  res.redirect("/admin/airport/list")
+    req.flash("message", "Updated");
+    req.flash("alertType", "primary");
+    res.redirect("/admin/airport/list");
   } catch (err) {
-    res.render("error",{
+    res.render("error", {
       title: "Error",
       message: err.message,
       name: req.session.name,
@@ -181,5 +203,4 @@ module.exports = {
   deleteAirport,
   createAirportPage,
   editAirportPage,
-
 };
