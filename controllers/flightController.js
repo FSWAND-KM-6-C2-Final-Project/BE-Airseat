@@ -18,7 +18,7 @@ const findFligths = async (req, res, next) => {
 
     const condition = {};
 
-    // ?date=dd-mm-yyyy
+    // ?searchDate=dd-mm-yyyy
     if (searchDate) {
       const [day, month, year] = searchDate.split("-");
       const specificDate = new Date(year, month - 1, day);
@@ -56,6 +56,10 @@ const findFligths = async (req, res, next) => {
         orderData.push(["price_business", sortOrder]);
       } else if (sortBy === "price_first_class") {
         orderData.push(["price_first_class", sortOrder]);
+      } else if (sortBy === "departure_time") {
+        orderData.push(["departure_time", sortOrder]);
+      } else if (sortBy === "arrival_time") {
+        orderData.push(["arrival_time", sortOrder]);
       }
     }
 

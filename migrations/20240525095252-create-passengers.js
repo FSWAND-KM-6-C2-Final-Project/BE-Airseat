@@ -48,6 +48,11 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      passenger_type: {
+        type: Sequelize.STRING,
+        defaultValue: "adult",
+        allowNull: false,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
