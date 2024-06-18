@@ -1,7 +1,5 @@
-const { where } = require("sequelize");
 const { Airports } = require("../models");
 const imageKit = require("../utils/imageKit");
-const { updateAirline } = require("./adminAirlineController");
 
 const listAirport = async (req, res, next) => {
   try {
