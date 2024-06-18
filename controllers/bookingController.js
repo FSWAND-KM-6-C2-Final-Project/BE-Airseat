@@ -199,6 +199,7 @@ const getDetailBooking = async (req, res, next) => {
       );
       bookingItem.dataValues.classes = Array.from(uniqueClasses).join(", ");
     });
+
     const totalPages = Math.ceil(totalCount / pageSize);
     res.status(200).json({
       status: "Success",

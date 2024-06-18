@@ -152,6 +152,20 @@ const findFligths = async (req, res, next) => {
 
     const totalPages = Math.ceil(totalCount / pageSize);
 
+    flights.forEach((flight) => {
+      if (flight) {
+        const deptTime = new Date(flight.departure_time);
+        const arrTime = new Date(flight.arrival_time);
+        const duration = (arrTime - deptTime) / 60000;
+        const jam = Math.floor(duration / 60);
+        const menit = duration % 60;
+        const formattedDurasi = `${jam}h ${menit}m`;
+        flight.dataValues.duration = formattedDurasi;
+      } else {
+        flight.dataValues.duration = "N/A";
+      }
+    });
+
     res.status(200).json({
       status: "Success",
       message: "Flights succesfully retrieved",
