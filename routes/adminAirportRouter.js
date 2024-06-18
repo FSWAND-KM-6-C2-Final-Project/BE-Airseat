@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const upload = require("../utils/multerConfig");
-const adminAirportController = require("../controllers/AdminAirportController");
+const adminAirportController = require("../controllers/adminAirportController");
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
@@ -18,15 +18,11 @@ router
 
 router
   .route("/delete/:id")
-  .post(
-    authenticateAdmin.isLogin,
-    adminAirportController.deleteAirport);
+  .post(authenticateAdmin.isLogin, adminAirportController.deleteAirport);
 
 router
   .route("/edit/:id")
-  .get(authenticateAdmin.isLogin,
-    adminAirportController.editAirportPage
-);
+  .get(authenticateAdmin.isLogin, adminAirportController.editAirportPage);
 router
   .route("/update/:id")
   .post(
