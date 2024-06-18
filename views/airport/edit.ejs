@@ -1,0 +1,128 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>AIRPORT</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Airports</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb ">
+                    <li class="breadcrumb-item"><a href="#">Airport</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/airport/list">List Airports</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Airport</li>
+                </ol>
+            </nav>
+            <!-- Dont delete it -->
+
+
+            <!-- Konten dibawah -->
+
+            <div class="row">
+                <div class="col my-auto">
+                    <h3 class="page-title">Edit Airport</h3>
+                </div>
+                <div class="col text-end">
+                    <a href="/admin/airport/list" class="btn btn-custom-primary ">
+                        Back To Airport Data</a>
+                </div>
+            </div>
+            <div class="container-fluid container-form">
+                <form action="/admin/airport/update/<%= airport.id %>" method="post" enctype="multipart/form-data">
+                    <div class="row row-form">
+                        <div class="col-lg-2 my-auto">
+                            <label for="airport_name">Airport Name <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="airport_name"
+                                placeholder="Lion Air" id="airport_name" value="<%= airport.airport_name %>" required>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2">
+                            <label for="airport_city">Airport City <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="airport_city"
+                                placeholder="Yogyakarta" id="airport_city" value="<%=airport.airport_city %>" required>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2">
+                            <label for="airport_city_code">Airport City Code <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input class="form-control form-custom" type="text" name="airport_city_code"
+                                placeholder="YIA" id="airport_code" value="<%=airport.airport_city_code %>" required>
+                        </div>
+                    </div>
+                    <div class="row row-form">
+                        <div class="col-lg-2 ">
+                            <label for="airport_picture">Logo <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <input name="airport_picture" class="form-control form-file" type="file"
+                                id="airport_picture">
+                            <small class="form-detail">File size max. 2MB</small>
+                            <br>
+                            <div class="card mt-2" style="width: 200px;">
+                                <div class="card-header">
+                                    <label class="fw-bold">Preview</label>
+
+                                </div>
+                                <div class="card-body">
+                                    <img class="w-100" src="<%=airport.airport_picture %>"
+                                        alt="<%= airport.airport_name %>">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row row-form">
+                        <div class="col-lg-2">
+                            <label for="airport_continent">Airport Continent <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-lg-4 ">
+                            <select class="form-select" name="airport_continent" id="airport_continent" required>
+                                <option>-</option>
+                                <option <%=(airport.airport_continent==="asia" )? "selected" :false %> value="asia">Asia
+                                </option>
+                                <option <%=(airport.airport_continent==="europe" )? "selected" :false %>
+                                    value="europe">Europe</option>
+                                <option <%=(airport.airport_continent==="america" )? "selected" :false %>
+                                    value="america">America</option>
+                                <option <%=(airport.airport_continent==="africa" )? "selected" :false %>
+                                    value="africa">Africa</option>
+                                <option <%=(airport.airport_continent==="australia" )? "selected" :false %>
+                                    value="australia">Australia</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+            </div>
+
+            <div class="container-fluid">
+                <div class="row button-group ">
+                    <a href="/admin/airport/list" class="btn btn-outline-custom btn-cancel w-auto">Cancel</a>
+                    <button class="btn btn-custom-primary w-auto" onclick="isLoading()">Save</button>
+                    <div class="spinner-border shadow loading mx-2" id="loading" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                </div>
+                </form>
+            </div>
+
+
+            <script src="/assets/js/script.js"></script>
+
+            <%- include('../footer.ejs') %>

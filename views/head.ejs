@@ -36,7 +36,7 @@
                             <p>Airline</p>
                         </a>
                     </li>
-                    <li>
+                    <li <%=(title==="Airport" ) ? `class=active ` : false %>>
                         <a href="/admin/airport/list">
                             <img class="sidebar-item-icon" src="/assets/img/airport.svg" alt="">
                             <p>Airport</p>
@@ -86,7 +86,7 @@
                                     aria-expanded="false">
                                     <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
                                         alt="Profile Picture">
-                                    <%= name %>
+                                    <%= (name) ? name : "-" %>
                                         <img class="arrow-down" src="/assets/img/fi_chevron-down.svg"
                                             alt="Chevron Down">
                                 </button>

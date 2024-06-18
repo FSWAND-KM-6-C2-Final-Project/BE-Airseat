@@ -1,0 +1,126 @@
+<%- include('../head.ejs') %>
+    <!-- Dont delete it -->
+    <div class="row m-0 p-0">
+        <div class="col m-0 p-0 sidebar-inner">
+            <p>AIRPORT</p>
+            <ul class="sidebar-inner-item">
+                <li class="active">
+                    <a href="">List Airport</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col container-content">
+            <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Airport</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        List Airports
+                    </li>
+                </ol>
+            </nav>
+
+            <% if(message !="" ) { %>
+
+                <div class="alert alert-custom alert-<%= alertType %>-custom text-center" role="alert">
+                    Data successfully <%= message %>
+                </div>
+
+                <% } %>
+
+                    <!-- Dont delete it -->
+
+                    <!-- Konten dibawah -->
+
+                    <div class="row mb-3">
+                        <div class="col my-auto">
+                            <h3 class="page-title">List Airport</h3>
+                        </div>
+                        <div class="col text-end">
+                            <a href="/admin/airport/add" class="btn btn-custom-primary">+ Add New Airport</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <table class="table" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>Airport Name</th>
+                                    <th>Airport City</th>
+                                    <th>Airport City Code</th>
+                                    <th>Airport Picture</th>
+                                    <th>Airport Continent</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% airports.map((airport)=> { %>
+                                    <tr class="align-middle">
+                                        <td>
+                                            <%= airport.airport_name %>
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_city %>
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_city_code %>
+                                        </td>
+                                        <td>
+                                            <img style="width: 100px; height: auto;"
+                                                src="<%= airport.airport_picture %>" alt="<%= airport.airport_name %>">
+                                        </td>
+                                        <td>
+                                            <%= airport.airport_continent %>
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="btn btn-success btn-edit text-center mx-1" href="/admin/airport/edit/<%= airport.id %>">
+                                                <img src="/assets/img/fi_edit.svg" alt="Edit Icon">
+                                                Edit
+                                            </a>
+                                            <button data-bs-toggle="modal" data-bs-target="#modal<%= airport.id %>"
+                                                class="btn btn-outline-danger btn-outline-delete mx-1 text-center" href="">
+                                                <img src="/assets/img/fi_trash.svg" alt="Delete Icon">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal<%= airport.id %>" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+
+                                                <div class="modal-body text-center">
+                                                    <img class="modal-img" src="/assets/img/airplane.png"
+                                                        alt="Modal image">
+                                                    <h4 class="modal-title">Deleting airport Data</h4>
+                                                    <h5 class="modal-text">Once deleted, airport data with id "<%=
+                                                            airport.id %>" cannot be
+                                                            restored. Are you sure
+                                                            you want
+                                                            to delete?</h5>
+                                                    <div class="d-flex justify-content-center">
+                                                        <form action="/admin/airport/delete/<%= airport.id %>"
+                                                            method="post">
+                                                            <button
+                                                                class="btn btn-custom-primary btn-accept w-auto mx-1">Yes</button>
+                                                        </form>
+                                                        <button data-bs-dismiss="modal"
+                                                            class="btn btn-outline-custom btn-cancel w-auto mx-1">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Of Modal -->
+                                    <% }) %>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <%- include('../footer.ejs') %>
+        </div>
+    </div>
