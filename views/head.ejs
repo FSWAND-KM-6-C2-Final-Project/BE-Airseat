@@ -86,7 +86,9 @@
                                     aria-expanded="false">
                                     <img class="profile-picture rounded-circle" src="/assets/img/profile_picture.jpg"
                                         alt="Profile Picture">
-                                    <img class="arrow-down" src="/assets/img/fi_chevron-down.svg" alt="Chevron Down">
+                                    <%= (name) ? name : "-" %>
+                                        <img class="arrow-down" src="/assets/img/fi_chevron-down.svg"
+                                            alt="Chevron Down">
                                 </button>
                                 <ul class="dropdown-menu ">
                                     <li><a class="dropdown-item" href="/admin/auth/logout">Logout</a></li>

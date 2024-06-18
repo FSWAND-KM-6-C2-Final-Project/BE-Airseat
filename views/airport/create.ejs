@@ -74,8 +74,15 @@
                             <label for="airport_continent">Airport Continent <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
-                            <input class="form-control form-custom" type="text" name="airport_continent"
-                                placeholder="asia" id="airport_continent" required>
+                            <select class="form-select" name="airport_continent" id="airport_continent" required>
+                                <option>-</option>
+                                <option value="asia">Asia</option>
+                                <option value="europe">Europe</option>
+                                <option value="america">America</option>
+                                <option value="africa">Africa</option>
+                                <option value="australia">Australia</option>
+                            </select>
+
                         </div>
                     </div>
 

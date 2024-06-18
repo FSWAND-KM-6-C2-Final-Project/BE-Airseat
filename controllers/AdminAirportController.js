@@ -19,6 +19,7 @@ const listAirport = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
+      name: req.session.name,
     });
   }
 };
@@ -152,7 +153,7 @@ const updateAirport = async (req, res, next) => {
 
     if (file !== "") {
       const split = file.originalname.split(".");
-      const extension = split [split.length - 1];
+      const extension = split[split.length - 1];
 
       const img = await imageKit.upload({
         file: file.buffer,
@@ -173,15 +174,17 @@ const updateAirport = async (req, res, next) => {
           },
         }
       );
-    }else{
-      updateAirline = await Airports.update({
-        airport_name:airport_name,
-      },{
-        where: {
-          id,
+    } else {
+      updateAirport = await Airports.update(
+        {
+          airport_name: airport_name,
         },
-      }
-    );
+        {
+          where: {
+            id,
+          },
+        }
+      );
     }
 
     req.flash("message", "Updated");

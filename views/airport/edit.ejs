@@ -43,13 +43,13 @@
                                 placeholder="Lion Air" id="airport_name" value="<%= airport.airport_name %>" required>
                         </div>
                     </div>
-                                        <div class="row row-form">
+                    <div class="row row-form">
                         <div class="col-lg-2">
                             <label for="airport_city">Airport City <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" name="airport_city"
-                                placeholder="Yogyakarta" id="airport_city" required>
+                                placeholder="Yogyakarta" id="airport_city" value="<%=airport.airport_city %>" required>
                         </div>
                     </div>
                     <div class="row row-form">
@@ -58,7 +58,7 @@
                         </div>
                         <div class="col-lg-4 ">
                             <input class="form-control form-custom" type="text" name="airport_city_code"
-                                placeholder="YIA" id="airport_code" required>
+                                placeholder="YIA" id="airport_code" value="<%=airport.airport_city_code %>" required>
                         </div>
                     </div>
                     <div class="row row-form">
@@ -76,7 +76,7 @@
 
                                 </div>
                                 <div class="card-body">
-                                    <img class="w-100" src=" <%=airport.airport_picture %>"
+                                    <img class="w-100" src="<%=airport.airport_picture %>"
                                         alt="<%= airport.airport_name %>">
                                 </div>
 
@@ -90,8 +90,20 @@
                             <label for="airport_continent">Airport Continent <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-lg-4 ">
-                            <input class="form-control form-custom" type="text" name="airport_continent"
-                                placeholder="asia" id="airport_continent" required>
+                            <select class="form-select" name="airport_continent" id="airport_continent" required>
+                                <option>-</option>
+                                <option <%=(airport.airport_continent==="asia" )? "selected" :false %> value="asia">Asia
+                                </option>
+                                <option <%=(airport.airport_continent==="europe" )? "selected" :false %>
+                                    value="europe">Europe</option>
+                                <option <%=(airport.airport_continent==="america" )? "selected" :false %>
+                                    value="america">America</option>
+                                <option <%=(airport.airport_continent==="africa" )? "selected" :false %>
+                                    value="africa">Africa</option>
+                                <option <%=(airport.airport_continent==="australia" )? "selected" :false %>
+                                    value="australia">Australia</option>
+                            </select>
+
                         </div>
                     </div>
 
