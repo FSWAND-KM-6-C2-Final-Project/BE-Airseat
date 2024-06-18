@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const upload = require("../utils/multerConfig");
-const adminAirportController = require("../controllers/adminAirportController");
+const adminAirportController = require("../controllers/adminAirportsController");
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
