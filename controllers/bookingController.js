@@ -172,14 +172,6 @@ const getDetailBooking = async (req, res, next) => {
       return next(new ApiError("Booking not found", 404));
     }
 
-    // booking.forEach((bookingItem) => {
-    //   const durasi = bookingItem.dataValues.duration;
-    //   const jam = Math.floor(durasi / 60);
-    //   const menit = durasi % 60;
-    //   const formattedDurasi = `${jam}h ${menit}m`;
-    //   bookingItem.dataValues.duration = formattedDurasi;
-    // });
-
     booking.forEach((bookingItem) => {
       const flight = bookingItem.flight;
       if (flight) {

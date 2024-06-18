@@ -84,6 +84,7 @@ const processBooking = async (input, userId) => {
             identification_number: p.identification_number,
             identification_country: p.identification_country || null,
             identification_expired: p.identification_expired || null,
+            passenger_type: p.passenger_type || "adult",
           },
           { transaction }
         );
