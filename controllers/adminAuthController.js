@@ -55,6 +55,8 @@ const login = async (req, res, next) => {
       req.session.userid = user.id;
       req.session.email = user.email;
       req.session.name = user.name;
+
+      console.log(req.session);
       res.redirect("/admin");
     } else {
       req.flash("message", "Invalid Credentials");

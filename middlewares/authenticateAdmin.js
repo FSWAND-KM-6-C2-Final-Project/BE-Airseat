@@ -12,6 +12,6 @@ module.exports = {
     if (req.session.loggedin !== true) {
       return next();
     }
-    res.redirect("/");
+    res.redirect("/admin");
   },
 };
