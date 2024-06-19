@@ -1,7 +1,6 @@
 const seatGenerator = (flight_id) => {
   const seats = [];
 
-  // Generate seats for First Class
   const firstClassRows = ["A", "B"];
   const firstClassColumns = [1, 2];
   firstClassColumns.forEach((column) => {
@@ -17,7 +16,6 @@ const seatGenerator = (flight_id) => {
     });
   });
 
-  // Generate seats for Business Class
   const businessClassRows = ["A", "B", "C", "D"];
   const businessClassColumns = [3, 4, 5, 6, 7];
   businessClassColumns.forEach((column) => {
@@ -33,7 +31,6 @@ const seatGenerator = (flight_id) => {
     });
   });
 
-  // Generate seats for Premium Economy
   const premiumEconomyRows = ["A", "B", "C", "D"];
   const premiumEconomyColumns = [8, 9, 10, 11, 12, 13];
   premiumEconomyColumns.forEach((column) => {
@@ -49,7 +46,6 @@ const seatGenerator = (flight_id) => {
     });
   });
 
-  // Generate seats for Economy Class
   const economyRows = ["A", "B", "C", "D", "E", "F"];
   const economyColumns = Array.from({ length: 12 }, (_, i) => i + 12);
   economyColumns.forEach((column) => {
@@ -67,3 +63,5 @@ const seatGenerator = (flight_id) => {
 
   return seats;
 };
+
+module.exports = seatGenerator;
