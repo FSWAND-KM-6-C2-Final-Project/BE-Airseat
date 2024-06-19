@@ -24,7 +24,6 @@ const logout = async (req, res, next) => {
           message: err.message,
         });
       }
-      res.clearCookie("adminDashboard");
       res.redirect("/admin/auth/login");
     });
   } catch (err) {
