@@ -25,11 +25,12 @@
                     <h3 class="page-title">Edit Discount</h3>
                 </div>
                 <div class="col text-end">
-                    <a href="/admin/discount/list" class="btn btn-custom-primary">Back To Discount Data</a>
+                    <a href="<%= process.env.BASE_URL %>/admin/discount/list" class="btn btn-custom-primary">Back To
+                        Discount Data</a>
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/discount/update/<%= discount.id %>" method="post">
+                <form action="<%= process.env.BASE_URL %>/admin/discount/update/<%= discount.id %>" method="post">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="discount_amount">Discount Amount<span class="text-danger">*</span></label>

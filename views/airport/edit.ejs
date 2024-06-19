@@ -33,7 +33,8 @@
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/airport/update/<%= airport.id %>" method="post" enctype="multipart/form-data">
+                <form action="<%= process.env.BASE_URL %>/admin/airport/update/<%= airport.id %>" method="post"
+                    enctype="multipart/form-data">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="airport_name">Airport Name <span class="text-danger">*</span></label>

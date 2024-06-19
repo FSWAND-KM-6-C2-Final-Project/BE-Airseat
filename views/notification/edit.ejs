@@ -32,7 +32,8 @@
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/notification/update/<%= notification.id %>" method="post">
+                <form action="<%= process.env.BASE_URL %>/admin/notification/update/<%= notification.id %>"
+                    method="post">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="user_id">User <span class="text-danger">*</span></label>

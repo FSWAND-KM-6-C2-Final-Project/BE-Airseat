@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="container-fluid container-form">
-                <form action="/admin/discount/add" method="post">
+                <form action="<%= process.env.BASE_URL %>/admin/discount/add" method="post">
                     <div class="row row-form">
                         <div class="col-lg-2 my-auto">
                             <label for="discount_amount">Discount Amount<span class="text-danger">*</span></label>

@@ -93,7 +93,8 @@
                               cannot be restored. Are you sure you want to delete?
                           </h5>
                           <div class="d-flex justify-content-center">
-                            <form action="/admin/discount/delete/<%= discount.id %>" method="post">
+                            <form action="<%= process.env.BASE_URL %>/admin/discount/delete/<%= discount.id %>"
+                              method="post">
                               <button class="btn btn-custom-primary btn-accept w-auto mx-1">
                                 Yes
                               </button>
