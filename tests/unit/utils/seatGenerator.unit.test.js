@@ -5,7 +5,7 @@ describe("[SEAT GENERATOR UNIT TESTS]", () => {
 
   test("should generate the correct number of seats", () => {
     const seats = seatGenerator(flight_id);
-    expect(seats.length).toBe(120); // 2*2 first class + 5*4 business + 6*4 premium economy + 12*6 economy
+    expect(seats.length).toBe(120);
   });
 
   test("should generate the correct seats for first class", () => {
@@ -76,7 +76,6 @@ describe("[SEAT GENERATOR UNIT TESTS]", () => {
           class: "business",
           seat_status: "available",
         },
-        // add more assertions as needed
       ])
     );
   });
@@ -105,7 +104,6 @@ describe("[SEAT GENERATOR UNIT TESTS]", () => {
           class: "premium_economy",
           seat_status: "available",
         },
-        // add more assertions as needed
       ])
     );
   });
@@ -113,7 +111,7 @@ describe("[SEAT GENERATOR UNIT TESTS]", () => {
   test("should generate the correct seats for economy class", () => {
     const seats = seatGenerator(flight_id);
     const economySeats = seats.filter((seat) => seat.class === "economy");
-    expect(economySeats.length).toBe(84);
+    expect(economySeats.length).toBe(72);
     expect(economySeats).toEqual(
       expect.arrayContaining([
         {
@@ -132,7 +130,6 @@ describe("[SEAT GENERATOR UNIT TESTS]", () => {
           class: "economy",
           seat_status: "available",
         },
-        // add more assertions as needed
       ])
     );
   });
