@@ -21,7 +21,16 @@ const getDetailBooking = async (req, res, next) => {
       return next(new ApiError("Please login to your account", 403));
     }
 
-    const { flightType, bookingCode, sortBy, order, page, limit } = req.query;
+    const {
+      flightType,
+      bookingCode,
+      sortBy,
+      order,
+      page,
+      limit,
+      start_date,
+      end_date,
+    } = req.query;
 
     const condition = {};
     condition.user_id = id;
@@ -34,6 +43,22 @@ const getDetailBooking = async (req, res, next) => {
       }
     }
 
+    if (start_date && end_date) {
+      const [startDay, startMonth, startYear] = start_date.split("-");
+      const startSpecificDate = new Date(startYear, startMonth - 1, startDay);
+
+      const [endDay, endMonth, endYear] = end_date.split("-");
+      const endSpecificDate = new Date(endYear, endMonth - 1, endDay);
+
+      const nextEndDate = new Date(endSpecificDate);
+      nextEndDate.setDate(endSpecificDate.getDate() + 1);
+
+      condition.created_at = {
+        [Op.gte]: startSpecificDate,
+        [Op.lt]: nextEndDate,
+      };
+    }
+
     const orderData = [];
     if (sortBy) {
       const sortOrder = order === "asc" ? "ASC" : "DESC";
@@ -43,6 +68,8 @@ const getDetailBooking = async (req, res, next) => {
         orderData.push(["total_amount", sortOrder]);
       }
     }
+
+    console.log(condition);
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
@@ -173,14 +200,6 @@ const getDetailBooking = async (req, res, next) => {
     }
 
     booking.forEach((bookingItem) => {
-      const durasi = bookingItem.dataValues.duration;
-      const jam = Math.floor(durasi / 60);
-      const menit = durasi % 60;
-      const formattedDurasi = `${jam}h ${menit}m`;
-      bookingItem.dataValues.duration = formattedDurasi;
-    });
-
-    booking.forEach((bookingItem) => {
       const flight = bookingItem.flight;
       if (flight) {
         const departureTime = new Date(flight.departure_time);
@@ -199,6 +218,7 @@ const getDetailBooking = async (req, res, next) => {
       );
       bookingItem.dataValues.classes = Array.from(uniqueClasses).join(", ");
     });
+
     const totalPages = Math.ceil(totalCount / pageSize);
     res.status(200).json({
       status: "Success",

@@ -57,6 +57,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: true,
       },
+      passenger_type: {
+        type: DataTypes.STRING,
+        defaultValue: "adult",
+        allowNull: false,
+      },
     },
     {
       sequelize,

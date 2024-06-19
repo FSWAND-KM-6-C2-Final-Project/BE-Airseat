@@ -18,7 +18,7 @@ const findFligths = async (req, res, next) => {
 
     const condition = {};
 
-    // ?date=dd-mm-yyyy
+    // ?searchDate=dd-mm-yyyy
     if (searchDate) {
       const [day, month, year] = searchDate.split("-");
       const specificDate = new Date(year, month - 1, day);
@@ -56,6 +56,10 @@ const findFligths = async (req, res, next) => {
         orderData.push(["price_business", sortOrder]);
       } else if (sortBy === "price_first_class") {
         orderData.push(["price_first_class", sortOrder]);
+      } else if (sortBy === "departure_time") {
+        orderData.push(["departure_time", sortOrder]);
+      } else if (sortBy === "arrival_time") {
+        orderData.push(["arrival_time", sortOrder]);
       }
     }
 
@@ -151,6 +155,20 @@ const findFligths = async (req, res, next) => {
     });
 
     const totalPages = Math.ceil(totalCount / pageSize);
+
+    flights.forEach((flight) => {
+      if (flight) {
+        const deptTime = new Date(flight.departure_time);
+        const arrTime = new Date(flight.arrival_time);
+        const duration = (arrTime - deptTime) / 60000;
+        const jam = Math.floor(duration / 60);
+        const menit = duration % 60;
+        const formattedDurasi = `${jam}h ${menit}m`;
+        flight.dataValues.duration = formattedDurasi;
+      } else {
+        flight.dataValues.duration = "N/A";
+      }
+    });
 
     res.status(200).json({
       status: "Success",

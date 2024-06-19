@@ -12,9 +12,14 @@ const updateProfile = async (req, res, next) => {
       throw new Error("full_name cannot be null");
     }
 
+    if (!phone_number || phone_number === null || phone_number === "") {
+      throw new Error("phone_number cannot be null");
+    }
+
     await Users.update(
       {
         full_name,
+        phone_number,
       },
       {
         where: {

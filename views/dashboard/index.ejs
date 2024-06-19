@@ -21,7 +21,94 @@
 
             <!-- Konten dibawah -->
 
+            <div class="row">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
 
+                            <p>
+                                <span class="fw-bold">Issued Transactions</span>
+                            </p>
+                            <h3>
+                                <%= issuedTransaction %>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <p>
+                                <span class="fw-bold">Total Transactions</span> <small>(Issued, Unpaid,
+                                    Cancelled)</small>
+                            </p>
+
+                            <h3>
+                                <%= transaction %>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>
+                                <span class="fw-bold">Total Verified User</span>
+                            </p>
+                            <h3>
+                                <%= userVerified %>
+                            </h3>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>
+                                <span class="fw-bold">Total Revenue</span>
+                            </p>
+                            <h3>
+                                <%= new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
+                                    maximumFractionDigits: 0, }).format(revenue) %>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-3 mt-3">
+                <div class="row">
+                    <h3 class="mx-3 mb-3 page-title">Latest Transaction</h3>
+                    <table class="table" id="myTable">
+                        <thead>
+                            <tr>
+                                <th>Booking Code</th>
+                                <th>Amount</th>
+                                <th>Booked At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% transactionData.map((transaction)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= transaction.booking_code %>
+                                    </td>
+                                    <td>
+                                        <%= new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
+                                            maximumFractionDigits: 0, }).format(transaction.total_amount) %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(transaction.created_at).toLocaleString('en-us', {
+                                            dateStyle: "medium" , timeStyle: "short" , hour12: false }) %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
 
             <script src="/assets/js/script.js"></script>
