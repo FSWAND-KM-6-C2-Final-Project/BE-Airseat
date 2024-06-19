@@ -146,7 +146,7 @@ const register = async (req, res, next) => {
                                 </p>
                                 <p style="margin-top: 30px; text-align: center;"><b>Your OTP :</b></p>
                                 <p
-                                    style="margin: 0px auto 30px auto; background-color: #164765; text-align: center;  max-width: 200px; font-size: 16px; line-height: 1.5; color: white; padding: 20px;">
+                                    style="margin: 0px auto 30px auto; background-color: #164765; text-align: center;  max-width: 200px; font-size: 32px; line-height: 1.5; color: white; padding: 20px;">
                                     <b>
                                         ${token}
                                     </b>
