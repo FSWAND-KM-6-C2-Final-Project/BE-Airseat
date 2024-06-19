@@ -70,8 +70,8 @@
                                 <span class="fw-bold">Total Revenue</span>
                             </p>
                             <h3>
-                                <%= new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
-                                    maximumFractionDigits: 0, }).format(revenue) %>
+                                <%= (revenue) ? new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
+                                    maximumFractionDigits: 0, }).format(revenue) : "0" %>
                             </h3>
                         </div>
                     </div>
@@ -96,8 +96,9 @@
                                         <%= transaction.booking_code %>
                                     </td>
                                     <td>
-                                        <%= new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
-                                            maximumFractionDigits: 0, }).format(transaction.total_amount) %>
+                                        <%= (transaction.total_amount) ? new Intl.NumberFormat("id", { style: "currency"
+                                            , currency: "IDR" , maximumFractionDigits: 0,
+                                            }).format(transaction.total_amount) : "0" %>
                                     </td>
                                     <td>
                                         <%= new Date(transaction.created_at).toLocaleString('en-us', {

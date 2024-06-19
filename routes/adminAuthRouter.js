@@ -8,9 +8,7 @@ router
   .route("/login")
   .get(authenticateAdmin.isLogout, adminAuthController.createLoginPage);
 
-router
-  .route("/login")
-  .post(authenticateAdmin.isLogout, adminAuthController.login);
+router.route("/login").post(adminAuthController.login);
 
 router
   .route("/logout")

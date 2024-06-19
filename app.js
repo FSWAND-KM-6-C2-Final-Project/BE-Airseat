@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const dayjs = require("dayjs");
 const flash = require("connect-flash");
 const session = require("express-session");
+const MemoryStore = require("memorystore")(session);
 
 const errorController = require("./controllers/errorController");
 const router = require("./routes");
@@ -10,6 +11,7 @@ const cors = require("cors");
 
 const app = express();
 
+app.set("trust proxy", 1);
 // Using middleware
 app.use(cors());
 app.use(express.json());
@@ -29,12 +31,15 @@ app.use(
     name: "adminDashboard",
     secret: SESSION_SECRET,
     resave: false,
+    proxy: true,
     saveUninitialized: false,
     cookie: {
-      sameSite: true,
       maxAge: 7200000,
       secure: process.env.NODE_ENV === "production",
     },
+    store: new MemoryStore({
+      checkPeriod: 7200000,
+    }),
   })
 );
 
