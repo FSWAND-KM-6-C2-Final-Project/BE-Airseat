@@ -11,7 +11,6 @@ const cors = require("cors");
 
 const app = express();
 
-app.set("trust proxy", 1);
 // Using middleware
 app.use(cors());
 app.use(express.json());
@@ -26,14 +25,15 @@ app.use((req, res, next) => {
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
+app.set("trust proxy", 1);
+
 app.use(
   session({
-    name: "adminDashboard",
     secret: SESSION_SECRET,
     resave: false,
-    proxy: true,
     saveUninitialized: false,
     cookie: {
+      sameSite: "strict",
       maxAge: 7200000,
       secure: process.env.NODE_ENV === "production",
     },

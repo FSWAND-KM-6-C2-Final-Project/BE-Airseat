@@ -1,18 +1,16 @@
 module.exports = {
   isLogin(req, res, next) {
     if (req.session.loggedin === true) {
-      next();
-      return;
+      return next();
     } else {
       req.session.destroy(function (err) {
-        res.redirect("/login");
+        res.redirect("/admin/auth/login");
       });
     }
   },
   isLogout(req, res, next) {
     if (req.session.loggedin !== true) {
-      next();
-      return;
+      return next();
     }
     res.redirect("/");
   },
