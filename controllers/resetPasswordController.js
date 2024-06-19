@@ -79,17 +79,70 @@ const createResetPassword = async (req, res, next) => {
     const recipient_name = `${user.first_name} ${user.last_name}`;
     const subject = "[No Reply] - Reset Password OTP";
     const html_text = `
-    <p>Hello ${recipient_name},</p>
-    <p>We received a request to reset the password for your account. If you did not request this, please ignore this email.</p>
-    <p>
-        Your OTP :
-        <b>${token}</b>
-    </p>
-    <p>For the security of your account, please ensure that your new password is strong and unique, and different from your previous password.</p>
-    <p>Thank you for your attention.</p>
-    <p>Best regards,</p>
-    <br>
-    <p>Airseat</p>
+    <!DOCTYPE html>
+    <html lang="en">
+
+
+    <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 20px;">
+            <tr>
+                <td>
+                    <table width="600" cellpadding="0" cellspacing="0" border="0" align="center"
+                        style="background-color: #ffffff; padding: 20px; border: 1px solid #dddddd;">
+                        <tr>
+                            <td style="text-align: center; padding: 20px 0;">
+                                <h1 style="margin: 0; color:black;">Airseat</h1>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px; text-align: center; background-color: #164765; color: #ffffff;">
+                                <h1 style="margin: 0;">Reset Password</h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 20px;">
+                                <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #333333;">
+                                    Dear ${recipient_name},
+                                </p>
+                                <p style="margin: 16px 0 0 0; font-size: 16px; line-height: 1.5; color: #333333;">
+                                    We received a request to reset the password for your account. If you did not request this, please ignore this email.
+                                </p>
+                                <p style="margin-top: 30px; text-align: center;"><b>Your OTP :</b></p>
+                                <p
+                                    style="margin: 0px auto 30px auto; background-color: #164765; text-align: center;  max-width: 200px; font-size: 16px; line-height: 1.5; color: white; padding: 20px;">
+                                    <b>
+                                        ${token}
+                                    </b>
+                                </p>
+                                <p style="margin: 0 0 0 0; font-size: 16px; line-height: 1.5; color: #333333;">
+                                    For the security of your account, please ensure that your new password is strong and unique, and different from your previous password.
+                                    <br>
+                                    Thank you for your attention.
+                                    <br>
+                                    <br>
+                                    Best regards,
+                                    <br>
+                                    <br>
+                                    <br>
+                                    Airseat
+                                </p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 20px; text-align: center; background-color: #f4f4f4; color: #777777;">
+                                <p style="margin: 0; font-size: 12px;">&copy; 2024 Airseat. All rights reserved.</p>
+                                <p style="margin: 10px 0 0 0; font-size: 12px;">Airseat Email System</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+
+    </html>
     `;
     const plain_text = `
         Hello ${recipient_name},
