@@ -47,7 +47,7 @@ const seatGenerator = (flight_id) => {
   });
 
   const economyRows = ["A", "B", "C", "D", "E", "F"];
-  const economyColumns = Array.from({ length: 12 }, (_, i) => i + 12);
+  const economyColumns = Array.from({ length: 12 }, (_, i) => i + 14);
   economyColumns.forEach((column) => {
     economyRows.forEach((row) => {
       seats.push({
@@ -63,5 +63,4 @@ const seatGenerator = (flight_id) => {
 
   return seats;
 };
-
 module.exports = seatGenerator;
