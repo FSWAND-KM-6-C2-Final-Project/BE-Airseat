@@ -70,8 +70,8 @@
                                 <span class="fw-bold">Total Revenue</span>
                             </p>
                             <h3>
-                                <%= (revenue) ? new Intl.NumberFormat("id", { style: "currency" , currency: "IDR" ,
-                                    maximumFractionDigits: 0, }).format(revenue) : "0" %>
+                                <%= (revenue !==undefined && revenue !==null) ? new Intl.NumberFormat("id", {
+                                    style: "currency" , currency: "IDR" }).format(revenue) : "0" %>
                             </h3>
                         </div>
                     </div>
