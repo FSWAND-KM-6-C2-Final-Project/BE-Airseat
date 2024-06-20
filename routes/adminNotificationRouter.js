@@ -6,37 +6,22 @@ const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
   .route("/list")
-  .get(authenticateAdmin.isLogin, adminNotificationController.listNotification);
+  .get(authenticateAdmin, adminNotificationController.listNotification);
 router
   .route("/add")
-  .get(
-    authenticateAdmin.isLogin,
-    adminNotificationController.createNotificationPage
-  )
-  .post(
-    authenticateAdmin.isLogin,
-    adminNotificationController.insertNotification
-  );
+  .get(authenticateAdmin, adminNotificationController.createNotificationPage)
+  .post(authenticateAdmin, adminNotificationController.insertNotification);
 
 router
   .route("/delete/:id")
-  .post(
-    authenticateAdmin.isLogin,
-    adminNotificationController.deleteNotification
-  );
+  .post(authenticateAdmin, adminNotificationController.deleteNotification);
 
 router
   .route("/edit/:id")
-  .get(
-    authenticateAdmin.isLogin,
-    adminNotificationController.editNotificationPage
-  );
+  .get(authenticateAdmin, adminNotificationController.editNotificationPage);
 
 router
   .route("/update/:id")
-  .post(
-    authenticateAdmin.isLogin,
-    adminNotificationController.updateNotification
-  );
+  .post(authenticateAdmin, adminNotificationController.updateNotification);
 
 module.exports = router;

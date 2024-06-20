@@ -6,22 +6,22 @@ const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
   .route("/list")
-  .get(authenticateAdmin.isLogin, adminDiscountController.listDiscount);
+  .get(authenticateAdmin, adminDiscountController.listDiscount);
 router
   .route("/add")
-  .get(authenticateAdmin.isLogin, adminDiscountController.createDiscountPage)
-  .post(authenticateAdmin.isLogin, adminDiscountController.insertDiscount);
+  .get(authenticateAdmin, adminDiscountController.createDiscountPage)
+  .post(authenticateAdmin, adminDiscountController.insertDiscount);
 
 router
   .route("/delete/:id")
-  .post(authenticateAdmin.isLogin, adminDiscountController.deleteDiscount);
+  .post(authenticateAdmin, adminDiscountController.deleteDiscount);
 
 router
   .route("/edit/:id")
-  .get(authenticateAdmin.isLogin, adminDiscountController.editDiscountPage);
+  .get(authenticateAdmin, adminDiscountController.editDiscountPage);
 
 router
   .route("/update/:id")
-  .post(authenticateAdmin.isLogin, adminDiscountController.updateDiscount);
+  .post(authenticateAdmin, adminDiscountController.updateDiscount);
 
 module.exports = router;

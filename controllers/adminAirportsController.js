@@ -11,13 +11,13 @@ const listAirport = async (req, res, next) => {
       airports: airports,
       message: req.flash("message", ""),
       alertType: req.flash("alertType", ""),
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -25,13 +25,13 @@ const createAirportPage = async (req, res, next) => {
   try {
     res.render("airport/create", {
       title: "Airport",
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -72,7 +72,7 @@ const insertAirports = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: error.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -92,13 +92,13 @@ const editAirportPage = async (req, res, next) => {
     res.render("airport/edit", {
       title: "Airport",
       airport,
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -126,7 +126,7 @@ const deleteAirport = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -192,7 +192,7 @@ const updateAirport = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };

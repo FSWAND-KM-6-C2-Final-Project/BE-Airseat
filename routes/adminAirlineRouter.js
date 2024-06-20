@@ -8,28 +8,28 @@ const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
   .route("/list")
-  .get(authenticateAdmin.isLogin, adminAirlineController.listAirline);
+  .get(authenticateAdmin, adminAirlineController.listAirline);
 router
   .route("/add")
-  .get(authenticateAdmin.isLogin, adminAirlineController.createAirlinePage)
+  .get(authenticateAdmin, adminAirlineController.createAirlinePage)
   .post(
-    authenticateAdmin.isLogin,
+    authenticateAdmin,
     upload.single("airline_picture"),
     adminAirlineController.insertAirlines
   );
 
 router
   .route("/delete/:id")
-  .post(authenticateAdmin.isLogin, adminAirlineController.deleteAirline);
+  .post(authenticateAdmin, adminAirlineController.deleteAirline);
 
 router
   .route("/edit/:id")
-  .get(authenticateAdmin.isLogin, adminAirlineController.editAirlinePage);
+  .get(authenticateAdmin, adminAirlineController.editAirlinePage);
 
 router
   .route("/update/:id")
   .post(
-    authenticateAdmin.isLogin,
+    authenticateAdmin,
     upload.single("airline_picture"),
     adminAirlineController.updateAirline
   );

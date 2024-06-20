@@ -3,30 +3,28 @@ const upload = require("../utils/multerConfig");
 const adminAirportController = require("../controllers/adminAirportsController");
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
-router
-  .route("/list")
-  .get(authenticateAdmin.isLogin, adminAirportController.listAirport);
+router.route("/list").get(adminAirportController.listAirport);
 
 router
   .route("/add")
-  .get(authenticateAdmin.isLogin, adminAirportController.createAirportPage)
+  .get(authenticateAdmin, adminAirportController.createAirportPage)
   .post(
-    authenticateAdmin.isLogin,
+    authenticateAdmin,
     upload.single("airport_picture"),
     adminAirportController.insertAirports
   );
 
 router
   .route("/delete/:id")
-  .post(authenticateAdmin.isLogin, adminAirportController.deleteAirport);
+  .post(authenticateAdmin, adminAirportController.deleteAirport);
 
 router
   .route("/edit/:id")
-  .get(authenticateAdmin.isLogin, adminAirportController.editAirportPage);
+  .get(authenticateAdmin, adminAirportController.editAirportPage);
 router
   .route("/update/:id")
   .post(
-    authenticateAdmin.isLogin,
+    authenticateAdmin,
     upload.single("airport_picture"),
     adminAirportController.updateAirport
   );

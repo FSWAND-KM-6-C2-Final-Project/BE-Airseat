@@ -28,7 +28,7 @@ const createDashboardPage = async (req, res, next) => {
 
     res.render("dashboard/index", {
       title: "Dashboard",
-      name: req.session.name,
+      name: req.session.userName,
       revenue: revenue || 0,
       userVerified: userVerified || 0,
       transaction: transaction || 0,

@@ -6,6 +6,6 @@ const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
 router
   .route("/")
-  .get(authenticateAdmin.isLogin, adminDashboardController.createDashboardPage);
+  .get(authenticateAdmin, adminDashboardController.createDashboardPage);
 
 module.exports = router;

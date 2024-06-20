@@ -1,11 +1,12 @@
 const bcrypt = require("bcrypt");
 const { Admins } = require("../models");
+
 const createLoginPage = async (req, res, next) => {
   try {
     res.render("auth/login", {
       title: "Login",
-      message: req.flash("message", ""),
-      alertType: req.flash("alertType", ""),
+      message: res.locals.message[0] || "",
+      alertType: res.locals.alertType[0] || "",
     });
   } catch (err) {
     res.render("error", {
@@ -19,12 +20,12 @@ const logout = async (req, res, next) => {
   try {
     req.session.destroy((err) => {
       if (err) {
-        res.render("error", {
+        return res.render("error", {
           title: "Error",
           message: err.message,
         });
       }
-      res.redirect("/admin/auth/login");
+      return res.redirect("/admin/auth/login");
     });
   } catch (err) {
     res.render("error", {
@@ -38,39 +39,29 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    console.log("START LOGIN");
-
     const user = await Admins.findOne({
-      where: {
-        email,
-      },
+      where: { email },
     });
 
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
       req.flash("message", "Invalid Credentials");
       req.flash("alertType", "danger");
-      res.redirect("/admin/auth/login");
+      return req.session.save((err) => {
+        if (err) return next(err);
+        return res.redirect("/admin/auth/login");
+      });
     }
 
-    if (user && bcrypt.compareSync(password, user.password)) {
-      console.log("FAILED SUCCESS");
+    req.session.isLogin = true;
+    req.session.userId = user.id;
+    req.session.userName = user.name;
 
-      req.session.loggedin = true;
-      req.session.userid = user.id;
-      req.session.email = user.email;
-      req.session.name = user.name;
-
-      console.log(req.session);
-      res.redirect("/admin");
-    } else {
-      console.log("FAILED LOGIN");
-
-      req.flash("message", "Invalid Credentials");
-      req.flash("alertType", "danger");
-      res.redirect("/admin/auth/login");
-    }
+    req.session.save((err) => {
+      if (err) return next(err);
+      return res.redirect("/admin");
+    });
   } catch (err) {
-    res.render("error", {
+    return res.render("error", {
       title: "Error",
       message: err.message,
     });

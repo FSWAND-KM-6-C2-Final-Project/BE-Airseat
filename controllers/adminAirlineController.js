@@ -12,7 +12,7 @@ const listAirline = async (req, res, next) => {
       airlines: airlines,
       message: req.flash("message", ""),
       alertType: req.flash("alertType", ""),
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
@@ -26,13 +26,13 @@ const createAirlinePage = async (req, res, next) => {
   try {
     res.render("airline/create", {
       title: "Airline",
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -68,7 +68,7 @@ const insertAirlines = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -100,7 +100,7 @@ const deleteAirline = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -122,13 +122,13 @@ const editAirlinePage = async (req, res, next) => {
     res.render("airline/edit", {
       title: "Airline",
       airline,
-      name: req.session.name,
+      name: req.session.userName,
     });
   } catch (err) {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
@@ -193,7 +193,7 @@ const updateAirline = async (req, res, next) => {
     res.render("error", {
       title: "Error",
       message: err.message,
-      name: req.session.name,
+      name: req.session.userName,
     });
   }
 };
