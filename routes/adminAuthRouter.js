@@ -2,9 +2,6 @@ const router = require("express").Router();
 
 const adminAuthController = require("../controllers/adminAuthController");
 
-const authenticateAdmin = require("../middlewares/authenticateAdmin");
-const asyncFlash = require("../middlewares/asyncFlash");
-
 router.use((req, res, next) => {
   res.locals.message = req.flash("message");
   res.locals.alertType = req.flash("alertType");
