@@ -1,17 +1,14 @@
-module.exports = {
-  isLogin(req, res, next) {
-    if (req.session.loggedin === true) {
-      return next();
+const authenticateAdmin = (req, res, next) => {
+  try {
+    const isLogin = req.session.isLogin;
+    if (isLogin === true) {
+      next();
     } else {
-      req.session.destroy(function (err) {
-        res.redirect("/admin/auth/login");
-      });
+      return res.redirect("/admin/auth/login");
     }
-  },
-  isLogout(req, res, next) {
-    if (req.session.loggedin !== true) {
-      return next();
-    }
-    res.redirect("/admin");
-  },
+  } catch (err) {
+    console.log(err);
+  }
 };
+
+module.exports = authenticateAdmin;

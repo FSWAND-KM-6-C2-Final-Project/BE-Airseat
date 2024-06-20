@@ -4,24 +4,22 @@ const adminFlightController = require("../controllers/adminFlightController");
 
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
-router
-  .route("/list")
-  .get(authenticateAdmin.isLogin, adminFlightController.listFlight);
+router.route("/list").get(adminFlightController.listFlight);
 router
   .route("/add")
-  .get(authenticateAdmin.isLogin, adminFlightController.createFlightPage)
-  .post(authenticateAdmin.isLogin, adminFlightController.insertFlight);
+  .get(authenticateAdmin, adminFlightController.createFlightPage)
+  .post(authenticateAdmin, adminFlightController.insertFlight);
 
 router
   .route("/delete/:id")
-  .post(authenticateAdmin.isLogin, adminFlightController.deleteFlight);
+  .post(authenticateAdmin, adminFlightController.deleteFlight);
 
 router
   .route("/edit/:id")
-  .get(authenticateAdmin.isLogin, adminFlightController.editFlightPage);
+  .get(authenticateAdmin, adminFlightController.editFlightPage);
 
 router
   .route("/update/:id")
-  .post(authenticateAdmin.isLogin, adminFlightController.updateFlight);
+  .post(authenticateAdmin, adminFlightController.updateFlight);
 
 module.exports = router;
