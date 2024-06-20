@@ -1,5 +1,6 @@
 module.exports = {
   isLogin(req, res, next) {
+    console.log(req.session);
     if (req.session.loggedin === true) {
       return next();
     } else {
@@ -9,6 +10,7 @@ module.exports = {
     }
   },
   isLogout(req, res, next) {
+    console.log(req.session);
     if (req.session.loggedin !== true) {
       return next();
     }

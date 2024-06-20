@@ -38,6 +38,8 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
+    console.log("START LOGIN");
+
     const user = await Admins.findOne({
       where: {
         email,
@@ -51,6 +53,8 @@ const login = async (req, res, next) => {
     }
 
     if (user && bcrypt.compareSync(password, user.password)) {
+      console.log("FAILED SUCCESS");
+
       req.session.loggedin = true;
       req.session.userid = user.id;
       req.session.email = user.email;
@@ -59,6 +63,8 @@ const login = async (req, res, next) => {
       console.log(req.session);
       res.redirect("/admin");
     } else {
+      console.log("FAILED LOGIN");
+
       req.flash("message", "Invalid Credentials");
       req.flash("alertType", "danger");
       res.redirect("/admin/auth/login");

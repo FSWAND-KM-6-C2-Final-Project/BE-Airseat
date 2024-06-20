@@ -3,7 +3,22 @@ const morgan = require("morgan");
 const dayjs = require("dayjs");
 const flash = require("connect-flash");
 const session = require("express-session");
-const MemoryStore = require("memorystore")(session);
+const env = process.env.NODE_ENV || "development";
+const Sequelize = require("sequelize");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const config = require(__dirname + "/config/database.js")[env];
+
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
 
 const errorController = require("./controllers/errorController");
 const router = require("./routes");
@@ -27,21 +42,20 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.set("trust proxy", 1);
 
+var myStore = new SequelizeStore({
+  db: sequelize,
+});
+
 app.use(
   session({
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-      sameSite: "strict",
-      maxAge: 7200000,
-      secure: process.env.NODE_ENV === "production",
-    },
-    store: new MemoryStore({
-      checkPeriod: 7200000,
-    }),
+    store: myStore,
+    proxy: true,
   })
 );
+
+myStore.sync();
 
 app.use(flash());
 
