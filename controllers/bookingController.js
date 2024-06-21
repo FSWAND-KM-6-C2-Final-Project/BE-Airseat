@@ -69,8 +69,6 @@ const getDetailBooking = async (req, res, next) => {
       }
     }
 
-    console.log(condition);
-
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
     const offset = (pageNum - 1) * pageSize;
