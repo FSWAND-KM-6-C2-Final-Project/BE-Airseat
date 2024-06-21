@@ -19,7 +19,7 @@ describe("Multer Upload Middleware", () => {
   it("Success upload file", async () => {
     const filePath = path.resolve(
       __dirname,
-      "../../../docs/img/db-diagram.png"
+      "../../../docs/img/db-diagram-update.png"
     );
 
     const response = await request(app)

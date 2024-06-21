@@ -65,7 +65,10 @@ describe("[API CREATE AIRPORT TESTS]", () => {
       airport_continent: "asia",
     };
 
-    const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
+    const filePath = path.resolve(
+      __dirname,
+      "../../docs/img/db-diagram-update.png"
+    );
 
     const response = await request(app)
       .post(`/api/v1/airport`)
@@ -98,7 +101,10 @@ describe("[API UPDATE AIRPORT TESTS]", () => {
         airport_city_code: "MKL",
       };
 
-      const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
+      const filePath = path.resolve(
+        __dirname,
+        "../../docs/img/db-diagram-update.png"
+      );
 
       const airportData = await Airports.findOne();
 

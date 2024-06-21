@@ -23,7 +23,7 @@ Airseat is an android and web-based application that has features to be able to 
 ## DB Structure
 
 <p align="center" width="100%">
-    <img width="100%" src="./docs/img/db-diagram.png"> 
+    <img width="100%" src="./docs/img/db-diagram-update.png"> 
 </p>
 
 ## Environment Variable
@@ -46,3 +46,11 @@ Airseat is an android and web-based application that has features to be able to 
 | IMAGEKIT_URL         | Imagekit URL Key                             |
 | APP_EMAIL_ADDRESS    | Email address for sending email              |
 | APP_EMAIL_PASSWORD   | Email password for sending email             |
+
+## Dashboard Admin
+
+[Dashboard Admin URL](https://plucky-agent-424606-s3.et.r.appspot.com/admin)
+
+We have a comprehensive admin dashboard designed for efficient data management. This dashboard provides tools and features that facilitate effective data handling, monitoring, and analysis.
+
+#### Preview
