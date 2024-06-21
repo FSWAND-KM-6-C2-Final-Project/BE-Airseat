@@ -54,3 +54,11 @@ Airseat is an android and web-based application that has features to be able to 
 We have a comprehensive admin dashboard designed for efficient data management. This dashboard provides tools and features that facilitate effective data handling, monitoring, and analysis.
 
 #### Preview
+![image](https://github.com/FSWAND-KM-6-C2-Final-Project/BE-Airseat/assets/88664674/706d25d4-f410-4f06-97e9-a64c902cec58)
+![image](https://github.com/FSWAND-KM-6-C2-Final-Project/BE-Airseat/assets/88664674/f52ad6f3-2b1e-45de-adef-684ccc6fe87c)
+![image](https://github.com/FSWAND-KM-6-C2-Final-Project/BE-Airseat/assets/88664674/5f9addcb-6c48-4c62-8446-7851ea3ad93d)
+![image](https://github.com/FSWAND-KM-6-C2-Final-Project/BE-Airseat/assets/88664674/2e51ffda-7ea1-4567-a673-d35fdc197609)
+
+
+
+
