@@ -344,8 +344,6 @@ describe("[API LOGIN AUTH TESTS]", () => {
       .post("/api/v1/auth/login")
       .send(credential);
 
-    console.log(response);
-
     expect(response.statusCode).toBe(200);
     expect(response.body.status).toBe("Success");
     expect(response.body.message).toBe("Successfully logged in");
@@ -418,7 +416,7 @@ describe("[DELETE & UPDATE USER PROFILE AUTH TESTING]", () => {
   test("Failed - Update No Token Provided", async () => {
     const response = await request(app)
       .patch("/api/v1/profile")
-      .send({ full_name: "Akbar Ganteng" });
+      .send({ full_name: "Akbar Ganteng", phone_number: "08888888888888" });
 
     expect(response.statusCode).toBe(401);
     expect(response.body.status).toBe("Failed");
@@ -428,7 +426,7 @@ describe("[DELETE & UPDATE USER PROFILE AUTH TESTING]", () => {
     const response = await request(app)
       .patch("/api/v1/profile")
       .set("Authorization", `Bearer ${token}`)
-      .send({ kocak: "Akbar Ganteng" });
+      .send({ kocak: "Akbar Ganteng", phone_number: "08888888888888" });
 
     expect(response.statusCode).toBe(400);
     expect(response.body.status).toBe("Failed");
@@ -439,7 +437,7 @@ describe("[DELETE & UPDATE USER PROFILE AUTH TESTING]", () => {
       const response = await request(app)
         .patch("/api/v1/profile")
         .set("Authorization", `Bearer ${token}`)
-        .send({ full_name: "Akbar Ganteng" });
+        .send({ full_name: "Akbar Ganteng", phone_number: "08888888888888" });
 
       expect(response.statusCode).toBe(200);
       expect(response.body.status).toBe("Success");

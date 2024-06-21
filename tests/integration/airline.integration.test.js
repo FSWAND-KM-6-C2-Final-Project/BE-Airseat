@@ -85,7 +85,10 @@ describe("[API CREATE AIRLINE TESTS]", () => {
       airline_name: "Airseat Air",
     };
 
-    const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
+    const filePath = path.resolve(
+      __dirname,
+      "../../docs/img/db-diagram-update.png"
+    );
 
     const response = await request(app)
       .post(`/api/v1/airline`)
@@ -131,7 +134,10 @@ describe("[API UPDATE AIRLINE TESTS]", () => {
       airline_name: "Airseat Air",
     };
 
-    const filePath = path.resolve(__dirname, "../../docs/img/db-diagram.png");
+    const filePath = path.resolve(
+      __dirname,
+      "../../docs/img/db-diagram-update.png"
+    );
 
     const airlineData = await Airlines.findOne();
 
@@ -175,9 +181,7 @@ describe("[API DELETE AIRLINE TESTS]", () => {
   });
 
   test("Success - Delete Airline", async () => {
-    const airlineData = await Airlines.findOne();
-
-    console.log(airlineData);
+    const airlineData = await Airlines.findOne({});
 
     const response = await request(app).delete(
       `/api/v1/airline/${airlineData.id}`

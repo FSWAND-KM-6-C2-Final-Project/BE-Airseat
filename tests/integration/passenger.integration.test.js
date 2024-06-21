@@ -46,8 +46,6 @@ describe("[API GET ALL PASSENGER BY ID TESTS]", () => {
   test("Success - Get Passenger Data By ID", async () => {
     const passenger = await Passengers.findOne();
 
-    console.log(passenger);
-
     const response = await request(app).get(
       `/api/v1/passenger/${passenger.id}`
     );
