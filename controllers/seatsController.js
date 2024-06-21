@@ -5,21 +5,9 @@ const { isInt } = require("validator");
 
 const findSeats = async (req, res, next) => {
   try {
-    const { SeatName, createdBy, manufacture, type, page, limit } = req.query;
+    const { page, limit } = req.query;
 
     const condition = {};
-
-    // Filter by carName
-    if (SeatName) condition.model = { [Op.iLike]: `%${SeatName}%` };
-
-    // Filter by createdBy
-    if (createdBy) condition.createdBy = createdBy;
-
-    // Filter by manufacture
-    if (manufacture) condition.manufacture = { [Op.iLike]: `${manufacture}%` };
-
-    // Filter by type
-    if (type) condition.type = { [Op.iLike]: `%${type}%` };
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
@@ -72,6 +60,13 @@ const findSeats = async (req, res, next) => {
 const findSeatByFlightId = async (req, res, next) => {
   try {
     const flightId = req.params.flightId;
+    const { seatClass } = req.query;
+
+    const condition = {};
+
+    condition.flight_id = flightId;
+
+    if (seatClass) condition.class = seatClass;
 
     const flight = await Flights.findOne({
       where: {
@@ -84,9 +79,7 @@ const findSeatByFlightId = async (req, res, next) => {
     }
 
     const seats = await Seats.findAll({
-      where: {
-        flight_id: flight.id,
-      },
+      where: condition,
       order: [["id", "ASC"]],
     });
 
