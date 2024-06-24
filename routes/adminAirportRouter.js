@@ -3,7 +3,9 @@ const upload = require("../utils/multerConfig");
 const adminAirportController = require("../controllers/adminAirportsController");
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
-router.route("/list").get(adminAirportController.listAirport);
+router
+  .route("/list")
+  .get(authenticateAdmin, adminAirportController.listAirport);
 
 router
   .route("/add")

@@ -4,7 +4,7 @@ const adminFlightController = require("../controllers/adminFlightController");
 
 const authenticateAdmin = require("../middlewares/authenticateAdmin");
 
-router.route("/list").get(adminFlightController.listFlight);
+router.route("/list").get(authenticateAdmin, adminFlightController.listFlight);
 router
   .route("/add")
   .get(authenticateAdmin, adminFlightController.createFlightPage)

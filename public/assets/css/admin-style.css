@@ -4,14 +4,41 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #f8f9fa;
+  margin: 0; /* Ensure no margin to the body */
 }
+
 .login-container {
   background: #fff;
   padding: 2rem;
   border-radius: 0.5rem;
-  width: 35%;
+  width: 90%;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
+
+@media (min-width: 576px) {
+  .login-container {
+    width: 75%;
+  }
+}
+
+@media (min-width: 768px) {
+  .login-container {
+    width: 60%;
+  }
+}
+
+@media (min-width: 992px) {
+  .login-container {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .login-container {
+    width: 35%;
+  }
+}
+
 .login-container .form-control {
   margin-bottom: 1rem;
 }
