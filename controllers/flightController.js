@@ -2,6 +2,7 @@ const { Flights, Seats, Airlines, Airports } = require("../models");
 const ApiError = require("../utils/apiError");
 const seatGenerator = require("../utils/seatGenerator");
 const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 
 const findFligths = async (req, res, next) => {
   try {
@@ -60,6 +61,13 @@ const findFligths = async (req, res, next) => {
         orderData.push(["departure_time", sortOrder]);
       } else if (sortBy === "arrival_time") {
         orderData.push(["arrival_time", sortOrder]);
+      } else if (sortBy === "duration") {
+        orderData.push([
+          Sequelize.literal(
+            "EXTRACT(EPOCH FROM (arrival_time - departure_time)) / 60"
+          ),
+          sortOrder,
+        ]);
       }
     }
 
@@ -229,6 +237,18 @@ const findFlightById = async (req, res, next) => {
 
     if (!flight) {
       return next(new ApiError(`Flight with id '${id}' is not found`, 404));
+    }
+
+    if (flight) {
+      const deptTime = new Date(flight.departure_time);
+      const arrTime = new Date(flight.arrival_time);
+      const duration = (arrTime - deptTime) / 60000;
+      const jam = Math.floor(duration / 60);
+      const menit = duration % 60;
+      const formattedDurasi = `${jam}h ${menit}m`;
+      flight.dataValues.duration = formattedDurasi;
+    } else {
+      flight.dataValues.duration = "N/A";
     }
 
     res.status(200).json({
