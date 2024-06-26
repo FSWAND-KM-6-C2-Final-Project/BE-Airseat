@@ -252,9 +252,9 @@ const createBooking = async (req, res, next) => {
     const bookingCode = booking.booking.booking_code;
 
     await Notifications.create({
-      notification_type: "Notifikasi",
-      notification_title: `Status Pesanan ${bookingCode}`,
-      notification_description: `Pesanan Anda dengan kode booking ${bookingCode} sedang menunggu pembayaran. Silakan lakukan pembayaran untuk mengonfirmasi pesanan Anda.`,
+      notification_type: "Notification",
+      notification_title: `Order Status ${bookingCode}`,
+      notification_description: `Your order with Booking Code : ${bookingCode} is wating for payment. Please make a payment to confirm your order.`,
       user_id: userId,
     });
 
@@ -398,9 +398,9 @@ const updateBookingStatus = async (req, res, next) => {
         );
 
         await Notifications.create({
-          notification_type: "Notifikasi",
-          notification_title: `Status Pesanan ${order_id}`,
-          notification_description: `Pesanan Anda dengan kode booking ${order_id} sudah berhasil terbayar. Lihat detail tiket anda di halaman riwayat pesanan.`,
+          notification_type: "Notification",
+          notification_title: `Order Status ${order_id}`,
+          notification_description: `Your order with Booking Code : ${order_id} has been successfully paid. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
           user_id: getBookingId.user_id,
         });
 
@@ -489,30 +489,30 @@ const updateBookingStatus = async (req, res, next) => {
 
         if (transaction_status === "deny") {
           await Notifications.create({
-            notification_type: "Notifikasi",
-            notification_title: `Status Pesanan ${order_id}`,
-            notification_description: `Pesanan Anda dengan kode booking ${order_id} pembayarannya ditolak. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            notification_type: "Notification",
+            notification_title: `Order Status ${order_id}`,
+            notification_description: `Your order with Booking Code : ${order_id} has been rejected. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
             user_id: getBookingId.user_id,
           });
         } else if (transaction_status === "expire") {
           await Notifications.create({
-            notification_type: "Notifikasi",
-            notification_title: `Status Pesanan ${order_id}`,
-            notification_description: `Pesanan Anda dengan kode booking ${order_id} pembayarannya ditolak. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            notification_type: "Notification",
+            notification_title: `Order Status ${order_id}`,
+            notification_description: `Your order with Booking Code : ${order_id} has been expired. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
             user_id: getBookingId.user_id,
           });
         } else if (transaction_status === "cancel") {
           await Notifications.create({
-            notification_type: "Notifikasi",
-            notification_title: `Status Pesanan ${order_id}`,
-            notification_description: `Pesanan Anda dengan kode booking ${order_id} dibatalkan. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            notification_type: "Notification",
+            notification_title: `Order Status ${order_id}`,
+            notification_description: `Your order with Booking Code : ${order_id} has been cancelled. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
             user_id: getBookingId.user_id,
           });
         } else if (transaction_status === "failure") {
           await Notifications.create({
-            notification_type: "Notifikasi",
-            notification_title: `Status Pesanan ${order_id}`,
-            notification_description: `Pesanan Anda dengan kode booking ${order_id} gagal. Lihat detail tiket anda di halaman riwayat pesanan atau hubungi kami pada airseat.mailsystem@gmail.com`,
+            notification_type: "Notification",
+            notification_title: `Order Status ${order_id}`,
+            notification_description: `Your order with Booking Code : ${order_id} is failed. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
             user_id: getBookingId.user_id,
           });
         }
