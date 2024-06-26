@@ -72,6 +72,9 @@ const processBooking = async (input, userId) => {
       const infants = input.passenger.filter(
         (p) => p.passenger_type === "infant"
       );
+      const childrens = input.passenger.filter(
+        (p) => p.passenger_type === "children"
+      );
 
       if (infants.length > adults.length) {
         throw new Error("Each infant must be accompanied by an adult");
@@ -147,6 +150,64 @@ const processBooking = async (input, userId) => {
 
         const adultSeatKey = `${p[seatField].seat_row}${p[seatField].seat_column}`;
         adultSeatsMap.set(adultSeatKey, { ...p, seat_id: seat.id });
+      }
+
+      for (const p of childrens) {
+        const passenger = await Passengers.create(
+          {
+            first_name: p.first_name,
+            last_name: p.last_name,
+            dob: p.dob,
+            title: p.title,
+            nationality: p.nationality,
+            identification_type: p.identification_type,
+            identification_number: p.identification_number,
+            identification_country: p.identification_country || null,
+            identification_expired: p.identification_expired || null,
+            passenger_type: p.passenger_type || "childrens",
+          },
+          { transaction }
+        );
+
+        const seat = await Seats.findOne({
+          where: {
+            seat_row: p[seatField].seat_row,
+            seat_column: p[seatField].seat_column,
+            flight_id: flightId,
+            seat_status: "available",
+          },
+          transaction,
+        });
+
+        if (!seat) {
+          throw new Error(
+            `Seat ${p[seatField].seat_row}${p[seatField].seat_column} for flight ${flight.flight_number} is not available`
+          );
+        }
+
+        const seatPrice = parseFloat(getSeatPrice(flight, seat.class));
+
+        await Booking_Details.create(
+          {
+            seat_id: seat.id,
+            booking_id: booking.id,
+            passenger_id: passenger.id,
+            flight_id: flightId,
+            price: seatPrice,
+          },
+          { transaction }
+        );
+
+        await seat.update({ seat_status: "locked" }, { transaction });
+
+        totalAmount += seatPrice;
+
+        itemDetails.push({
+          id: bookingCode,
+          name: `#${flight.flight_number} - Seat ${p[seatField].seat_row}${p[seatField].seat_column} - ${p.passenger_type}`,
+          price: seatPrice,
+          quantity: 1,
+        });
       }
 
       for (const p of infants) {
