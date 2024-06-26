@@ -62,17 +62,33 @@ const processBooking = async (input, userId) => {
       { transaction }
     );
 
-    // Start of Booking detail process
     const processFlightDetails = async (flightId, seatField) => {
       let totalAmount = 0;
       const itemDetails = [];
+
+      const adults = input.passenger.filter(
+        (p) => p.passenger_type === "adult"
+      );
+      const infants = input.passenger.filter(
+        (p) => p.passenger_type === "infant"
+      );
+
+      if (infants.length > adults.length) {
+        throw new Error("Each infant must be accompanied by an adult");
+      }
 
       const flight = await Flights.findByPk(flightId);
       if (!flight) {
         throw new Error("Flight not found");
       }
 
-      for (const p of input.passenger) {
+      const adultSeatsMap = new Map();
+      for (const adult of adults) {
+        const adultSeatKey = `${adult[seatField].seat_row}${adult[seatField].seat_column}`;
+        adultSeatsMap.set(adultSeatKey, adult);
+      }
+
+      for (const p of adults) {
         const passenger = await Passengers.create(
           {
             first_name: p.first_name,
@@ -124,15 +140,62 @@ const processBooking = async (input, userId) => {
 
         itemDetails.push({
           id: bookingCode,
-          name: `Flight ${flight.flight_number} - Seat ${p[seatField].seat_row}${p[seatField].seat_column} for ${p.first_name} ${p.last_name}`,
+          name: `#${flight.flight_number} - Seat ${p[seatField].seat_row}${p[seatField].seat_column} - ${p.passenger_type}`,
           price: seatPrice,
+          quantity: 1,
+        });
+
+        const adultSeatKey = `${p[seatField].seat_row}${p[seatField].seat_column}`;
+        adultSeatsMap.set(adultSeatKey, { ...p, seat_id: seat.id });
+      }
+
+      for (const p of infants) {
+        const infantSeatKey = `${p[seatField].seat_row}${p[seatField].seat_column}`;
+        const accompanyingAdult = adultSeatsMap.get(infantSeatKey);
+
+        if (!accompanyingAdult) {
+          throw new Error(
+            `Infant must have the same seat as an accompanying adult. Seat ${infantSeatKey} is not assigned to any accompanying adult.`
+          );
+        }
+
+        const passenger = await Passengers.create(
+          {
+            first_name: p.first_name,
+            last_name: p.last_name,
+            dob: p.dob,
+            title: p.title,
+            nationality: p.nationality,
+            identification_type: p.identification_type,
+            identification_number: p.identification_number,
+            identification_country: p.identification_country || null,
+            identification_expired: p.identification_expired || null,
+            passenger_type: p.passenger_type || "infant",
+          },
+          { transaction }
+        );
+
+        await Booking_Details.create(
+          {
+            seat_id: accompanyingAdult.seat_id,
+            booking_id: booking.id,
+            passenger_id: passenger.id,
+            flight_id: flightId,
+            price: 0,
+          },
+          { transaction }
+        );
+
+        itemDetails.push({
+          id: bookingCode,
+          name: `#${flight.flight_number} - Infant`,
+          price: 0,
           quantity: 1,
         });
       }
 
       return { totalAmount, itemDetails };
     };
-    // End of Booking detail process
 
     const departureDetails = await processFlightDetails(
       input.flight_id,
@@ -294,6 +357,7 @@ const processBooking = async (input, userId) => {
           secure: true,
         },
         customer_details: customerDetails,
+        item_details: itemDetails,
       };
 
       chargeMidtrans = await snap.createTransaction(parameter);
