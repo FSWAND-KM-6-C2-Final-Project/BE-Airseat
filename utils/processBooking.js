@@ -62,6 +62,16 @@ const processBooking = async (input, userId) => {
       { transaction }
     );
 
+    const validPassengerTypes = ["adult", "infant", "children"];
+
+    for (const passenger of input.passenger) {
+      if (!validPassengerTypes.includes(passenger.passenger_type)) {
+        throw new Error(
+          `Invalid passenger type: ${passenger.passenger_type}, passenger_type should be 'adult', 'infant', or 'children'`
+        );
+      }
+    }
+
     const processFlightDetails = async (flightId, seatField) => {
       let totalAmount = 0;
       const itemDetails = [];
