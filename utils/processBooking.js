@@ -432,6 +432,14 @@ const processBooking = async (input, userId) => {
       };
 
       chargeMidtrans = await snap.createTransaction(parameter);
+
+      await booking.update(
+        {
+          payment_url: chargeMidtrans.redirect_url,
+          payment_token: chargeMidtrans.token,
+        },
+        { transaction }
+      );
     } else {
       throw new Error("Payment method is not valid");
     }

@@ -84,6 +84,8 @@ const getDetailBooking = async (req, res, next) => {
         "booking_code",
         "payment_method",
         "payment_id",
+        "payment_url",
+        "payment_token",
         "ordered_by_first_name",
         "ordered_by_last_name",
         "ordered_by_phone_number",

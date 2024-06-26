@@ -66,6 +66,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      payment_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      payment_token: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       flight_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

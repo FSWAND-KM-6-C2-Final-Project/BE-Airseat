@@ -33,6 +33,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      payment_url: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      payment_token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       flight_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
