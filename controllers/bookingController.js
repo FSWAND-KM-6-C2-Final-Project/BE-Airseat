@@ -89,6 +89,7 @@ const getDetailBooking = async (req, res, next) => {
         "ordered_by_first_name",
         "ordered_by_last_name",
         "ordered_by_phone_number",
+        "ordered_by_email",
         "total_amount",
         "booking_status",
         "booking_expired",
@@ -99,6 +100,11 @@ const getDetailBooking = async (req, res, next) => {
         {
           model: Flights,
           attributes: [
+            "id",
+            "price_economy",
+            "price_premium_economy",
+            "price_business",
+            "price_first_class",
             "flight_number",
             "information",
             "departure_time",
@@ -139,6 +145,11 @@ const getDetailBooking = async (req, res, next) => {
         {
           model: Flights,
           attributes: [
+            "id",
+            "price_economy",
+            "price_premium_economy",
+            "price_business",
+            "price_first_class",
             "flight_number",
             "information",
             "departure_time",
