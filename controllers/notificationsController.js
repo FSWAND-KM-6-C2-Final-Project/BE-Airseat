@@ -6,11 +6,19 @@ const findNotifications = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const { page, limit } = req.query;
+    const { page, limit, searchTitle, searchType } = req.query;
 
     const condition = {
       [Op.or]: [{ user_id: null }, { user_id: userId }],
     };
+
+    if (searchTitle) {
+      condition.notification_title = { [Op.iLike]: `%${searchTitle}%` };
+    }
+
+    if (searchType) {
+      condition.notification_type = { [Op.iLike]: `%${searchType}%` };
+    }
 
     const pageNum = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
