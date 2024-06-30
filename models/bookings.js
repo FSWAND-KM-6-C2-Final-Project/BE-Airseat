@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {
           name: "discount_id",
         },
+        as: "discount",
       });
       Bookings.belongsTo(models.Users, {
         foreignKey: {

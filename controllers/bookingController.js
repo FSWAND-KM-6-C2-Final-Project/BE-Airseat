@@ -1,5 +1,7 @@
 const ApiError = require("../utils/apiError");
 const processBooking = require("../utils/processBooking");
+const cron = require("node-cron");
+
 const {
   Bookings,
   Booking_Details,
@@ -9,6 +11,7 @@ const {
   Airlines,
   Notifications,
   Passengers,
+  Discounts,
 } = require("../models");
 const axios = require("axios");
 const { Op } = require("sequelize");
@@ -82,6 +85,7 @@ const getDetailBooking = async (req, res, next) => {
       order: orderData,
       attributes: [
         "booking_code",
+        "discount_id",
         "payment_method",
         "payment_id",
         "payment_url",
@@ -97,6 +101,10 @@ const getDetailBooking = async (req, res, next) => {
       ],
 
       include: [
+        {
+          model: Discounts,
+          as: "discount",
+        },
         {
           model: Flights,
           attributes: [
@@ -543,6 +551,77 @@ const updateBookingStatus = async (req, res, next) => {
   }
 };
 
+cron.schedule("30 * * * *", () => {
+  updateWorker();
+});
+
+const updateWorker = async (req, res, next) => {
+  try {
+    const bookingToUpdate = await Bookings.findAll({
+      where: {
+        booking_status: "unpaid",
+        booking_expired: {
+          [Op.lte]: new Date(),
+        },
+      },
+    });
+
+    if (bookingToUpdate.length > 0) {
+      // Cancel order
+      for (let booking of bookingToUpdate) {
+        await processCancelBooking(booking.booking_code);
+      }
+    }
+  } catch (err) {
+    return next(new ApiError(err.message, 400));
+  }
+};
+
+const processCancelBooking = async (order_id) => {
+  try {
+    const booking = await Bookings.update(
+      {
+        booking_status: "cancelled",
+      },
+      {
+        where: {
+          booking_code: order_id,
+        },
+      }
+    );
+
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+
+    const getBookingId = await Bookings.findOne({
+      where: {
+        booking_code: order_id,
+      },
+    });
+
+    const bookingDetails = await Booking_Details.findAll({
+      where: {
+        booking_id: getBookingId.id,
+      },
+    });
+
+    const seatIds = await bookingDetails.map((detail) => detail.seat_id);
+
+    // Update seat to available
+    await Seats.update(
+      {
+        seat_status: "available",
+      },
+      {
+        where: { id: seatIds },
+      }
+    );
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 const getPaymentStatus = async (req, res, next) => {
   try {
     const { bookingCode } = req.params;
@@ -591,4 +670,5 @@ module.exports = {
   updateBookingStatus,
   getDetailBooking,
   cancelBooking,
+  updateWorker,
 };
