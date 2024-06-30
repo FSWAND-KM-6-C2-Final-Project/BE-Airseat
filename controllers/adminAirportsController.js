@@ -176,6 +176,9 @@ const updateAirport = async (req, res, next) => {
       updateAirport = await Airports.update(
         {
           airport_name: airport_name,
+          airport_city,
+          airport_city_code,
+          airport_continent,
         },
         {
           where: {
