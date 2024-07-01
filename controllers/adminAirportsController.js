@@ -121,7 +121,7 @@ const deleteAirport = async (req, res, next) => {
 
     req.flash("message", "Deleted");
     req.flash("alertType", "dark");
-    res.redirect("admin/airport/list");
+    res.redirect("/admin/airport/list");
   } catch (err) {
     res.render("error", {
       title: "Error",
