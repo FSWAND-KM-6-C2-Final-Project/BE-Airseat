@@ -357,6 +357,13 @@ const cancelBooking = async (req, res, next) => {
       }
     );
 
+    await Notifications.create({
+      notification_type: "Notification",
+      notification_title: `Order Status ${booking_code} is Cancelled`,
+      notification_description: `Your order with Booking Code : ${booking_code} has been cancelled. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
+      user_id: user_id,
+    });
+
     res.status(200).json({
       status: "Success",
       message: "Booking is succesfully cancelled",
@@ -569,7 +576,7 @@ const updateWorker = async (req, res, next) => {
     if (bookingToUpdate.length > 0) {
       // Cancel order
       for (let booking of bookingToUpdate) {
-        await processCancelBooking(booking.booking_code);
+        await processCancelBooking(booking.booking_code, booking.user_id);
       }
     }
   } catch (err) {
@@ -577,7 +584,7 @@ const updateWorker = async (req, res, next) => {
   }
 };
 
-const processCancelBooking = async (order_id) => {
+const processCancelBooking = async (order_id, user_id) => {
   try {
     const booking = await Bookings.update(
       {
@@ -617,6 +624,13 @@ const processCancelBooking = async (order_id) => {
         where: { id: seatIds },
       }
     );
+
+    await Notifications.create({
+      notification_type: "Notification",
+      notification_title: `Order Status ${order_id} is Expired`,
+      notification_description: `Your order with Booking Code : ${order_id} has been expired. Please check your ticket details on the order history page or contact us at airseat.mailsystem@gmail.com.`,
+      user_id: user_id,
+    });
   } catch (err) {
     throw new Error(err.message);
   }
