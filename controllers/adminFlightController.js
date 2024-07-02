@@ -100,8 +100,10 @@ const insertFlight = async (req, res, next) => {
       price_first_class,
     } = req.body;
 
-    const departureTimeISO = new Date(departure_time).toISOString();
-    const arrivalTimeISO = new Date(arrival_time).toISOString();
+    const departureTimeISO = dayjs(departure_time)
+      .tz("Asia/Jakarta")
+      .toISOString();
+    const arrivalTimeISO = dayjs(arrival_time).tz("Asia/Jakarta").toISOString();
 
     const newFlight = await Flights.create({
       airline_id,
