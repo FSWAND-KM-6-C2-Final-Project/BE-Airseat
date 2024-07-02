@@ -55,8 +55,7 @@
                         </div>
                         <div class="col-lg-4">
                             <input class="form-control form-custom" type="datetime-local" name="discount_expired"
-                                id="discount_expired"
-                                value="<%= discount.discount_expired.toISOString().substring(0, 16) %>" required>
+                                id="discount_expired" value="<%= discount.formattedDiscountExpired %>" required>
                         </div>
                     </div>
             </div>
