@@ -8,11 +8,15 @@
   "servers": [
     {
       "url": "https://plucky-agent-424606-s3.et.r.appspot.com",
-      "description": "Production"
+      "description": "Production - GCP"
     },
     {
       "url": "http://localhost:3000",
       "description": "Development"
+    },
+    {
+      "url": "https://airseat.akbarrahmatm.my.id",
+      "description": "Production - Self Hosted"
     }
   ],
   "components": {
