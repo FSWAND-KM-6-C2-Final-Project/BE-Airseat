@@ -129,29 +129,6 @@ describe("[API UPDATE AIRLINE TESTS]", () => {
     expect(response.body.message).toBe(`Airline name should be required!`);
   });
 
-  test("Success - Update Airline", async () => {
-    const airline = {
-      airline_name: "Airseat Air",
-    };
-
-    const filePath = path.resolve(
-      __dirname,
-      "../../docs/img/db-diagram-update.png"
-    );
-
-    const airlineData = await Airlines.findOne();
-
-    const response = await request(app)
-      .patch(`/api/v1/airline/${airlineData.id}`)
-      .field(airline)
-      .attach("airline_picture", filePath);
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe("Success");
-    expect(response.body.message).toBe(`Airline Successfully Updated`);
-    expect(response.body.data).not.toBeNull();
-  });
-
   test("Success - Update Airline With Upload", async () => {
     const airline = {
       airline_name: "Airseat Air",
