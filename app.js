@@ -9,6 +9,7 @@ const config = require(__dirname + "/config/database.js")[env];
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
 const limiter = require("./middlewares/rateLimiter");
+const helmet = require("helmet");
 
 let sequelize;
 if (config.use_env_variable) {
@@ -34,6 +35,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(`${__dirname}/public`));
 app.use(limiter);
+app.use(helmet());
 
 app.use((req, res, next) => {
   req.requestTime = dayjs().format();
