@@ -8,6 +8,7 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const config = require(__dirname + "/config/database.js")[env];
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
+const limiter = require("./middlewares/rateLimiter");
 
 let sequelize;
 if (config.use_env_variable) {
@@ -27,12 +28,12 @@ const cors = require("cors");
 
 const app = express();
 
-// Using middleware
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(`${__dirname}/public`));
+app.use(limiter);
 
 app.use((req, res, next) => {
   req.requestTime = dayjs().format();
@@ -60,15 +61,6 @@ app.use(
 );
 
 app.use(flash());
-
-// app.use((req, res, next) => {
-//   res.setHeader(
-//     "Cache-Control",
-//     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-//   );
-//   res.setHeader("Pragma", "no-cache");
-//   next();
-// });
 
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "ejs");
